@@ -1,3 +1,3 @@
 CATNIP
 
-Climate Analysis Tool: Now In Python
+Climate Analysis Tools: Now In Python
