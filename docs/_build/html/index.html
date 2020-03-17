@@ -1,0 +1,221 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The CATNIP library &#8212; ciid_tools 1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Useful commands" href="instructions.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions.html" title="Useful commands"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">ciid_tools 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-catnip-library">
+<h1>The CATNIP library<a class="headerlink" href="#the-catnip-library" title="Permalink to this headline">¶</a></h1>
+<p>All the functions in the CATNIP library have been through a QA procedure, detailed in the QA instructions section below. All functions should be:</p>
+<ul class="simple">
+<li>Compatible with Python 2 and 3.</li>
+<li>Follow <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">pep8</a> type style guidelines</li>
+<li>Include a docstring that follows either <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">numpy or google</a> docstring style.</li>
+<li>Include a doctest.</li>
+<li>Have a trac ticket and code review associated with them.</li>
+<li>Have been reviewed by someone other than the original author.</li>
+</ul>
+<p><strong>Note:</strong> As of Jan 2020 <em>module load scitools/default</em> is currently the preferred software stack.</p>
+</div>
+<div class="section" id="useful-commands-and-qa-instructions">
+<h1>Useful commands and QA instructions<a class="headerlink" href="#useful-commands-and-qa-instructions" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="instructions.html">Useful commands</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#getting-your-own-local-copy-of-catnip">Getting your own local copy of CATNIP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#doctest-in-brief">Doctest in brief</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="instructions.html#qa-instructions-for-the-function-writer">QA instructions for the function writer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#open-an-issue">Open an issue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#create-a-branch">Create a branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#add-your-function-to-the-branch">Add your function to the branch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#pushing-your-changes-to-the-remote-repository">Pushing your changes to the remote repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#passing-the-function-to-the-reviewer">Passing the function to the reviewer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="instructions.html#qa-instructions-for-the-reviewer">QA instructions for the reviewer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#check-out-the-function-to-be-reviewed">Check out the function to be reviewed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="instructions.html#carry-out-a-code-review">Carry out a code review</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="ciid-tools">
+<h1>CIID tools<a class="headerlink" href="#ciid-tools" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Dew point temperature calculation</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#find-the-date-range-in-a-cube-and-construct-a-constraint">Find the date range in a cube and construct a constraint</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#remove-rim">Remove Rim</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#remove-forecast-co-ordinates">Remove Forecast Co-ordinates</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#sort-cube">Sort cube</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#convert-um-stash-codes-to-iris-stash-codes">Convert UM stash codes to iris stash codes</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#date-chunks">Date chunks</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#add-bounds-to-a-cube">Add bounds to a cube</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#add-a-coordinate-system-to-a-cube">Add a coordinate system to a cube</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#add-unrotated-lat-and-lon-coordinates-as-aux-coord">Add unrotated lat and lon coordinates as aux coord</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#find-the-common-time-period-between-two-cubes">Find the common time period between two cubes</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#calculate-a-seasonal-metric-with-user-defined-years-seasons-and-lat-lon-region">Calculate a seasonal metric with user defined years, seasons and lat/lon region</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#calculate-wind-speed-and-direction-in-degrees">Calculate wind speed and direction in degrees</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#add-time-co-ordinate-categorisations">Add time co-ordinate categorisations</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#compare-two-cubes-and-their-co-ordinates">Compare two cubes and their co-ordinates</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#functions-to-convert-lat-and-lon-points-from-real-to-rotated-or-visa-versa">Functions to convert lat and lon points from real to rotated or visa versa</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#extract-area-from-a-cube-on-rotated-pole">Extract area from a cube on rotated pole</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#calculates-linear-regression-parameters-and-confidence-intervals-it-also-plots-the-output">Calculates linear regression parameters and confidence intervals, it also plots the output</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#regrid-a-cube-to-the-same-grid-as-another-cube-and-or-set-up-a-regridder-to-be-used-multiple-times">Regrid a cube to the same grid as another cube and/or set up a regridder to be used multiple times</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#a-number-of-functions-that-deal-with-the-um-and-precis-date-stamp">A number of functions that deal with the UM and PRECIS date stamp</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html#wind-vector-plotting-function-that-can-also-unrotate-winds-before-plotting">Wind vector plotting function that can also unrotate winds before plotting</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The CATNIP library</a></li>
+<li><a class="reference internal" href="#useful-commands-and-qa-instructions">Useful commands and QA instructions</a></li>
+<li><a class="reference internal" href="#ciid-tools">CIID tools</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="instructions.html"
+                        title="next chapter">Useful commands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions.html" title="Useful commands"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">ciid_tools 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, gredmond.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>
