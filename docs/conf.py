@@ -19,8 +19,8 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0,"/home/h05/gredmond/ciid_tools/lib/ciid_tools")
-
+#sys.path.insert(0,"/home/h05/gredmond/ciid_tools/lib/ciid_tools")
+sys.path.insert(0,"/net/home/h04/ssadri/git-repos/CATNIP/scripts")
 
 # -- General configuration ------------------------------------------------
 
@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ciid_tools'
+project = u'catnip'
 copyright = u'2019, gredmond'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -181,7 +181,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ciid_toolsdoc'
+htmlhelp_basename = 'catnipdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -201,7 +201,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'ciid_tools.tex', u'ciid\\_tools Documentation',
+  ('index', 'catnip.tex', u'ciid\\_tools Documentation',
    u'gredmond', 'manual'),
 ]
 
@@ -231,7 +231,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'ciid_tools', u'ciid_tools Documentation',
+    ('index', 'catnip', u'catnip Documentation',
      [u'gredmond'], 1)
 ]
 
@@ -245,8 +245,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'ciid_tools', u'ciid_tools Documentation',
-   u'gredmond', 'ciid_tools', 'One line description of project.',
+  ('index', 'catnip', u'catnip Documentation',
+   u'gredmond', 'catnip', 'One line description of project.',
    'Miscellaneous'),
 ]
 

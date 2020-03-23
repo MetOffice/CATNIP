@@ -29,7 +29,7 @@ def add_aux_unrotated_coords(cube):
 
 
     >>> import iris
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc')
     >>> print([coord.name() for coord in cube.coords()])
     ['time', 'grid_latitude', 'grid_longitude']
     >>> add_aux_unrotated_coords(cube)

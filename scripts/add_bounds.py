@@ -33,7 +33,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc')
     >>> add_bounds(cube, 'time')
     time coordinate already has bounds, none will be added
     >>> add_bounds(cube, 'grid_latitude')

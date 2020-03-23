@@ -19,7 +19,7 @@ def add_time_coord_cats(cube):
     Cube: cube that has new time categorisation coords added
 
     A simple example:
-    >>> cube_file = '/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc'
+    >>> cube_file = '/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc'
     >>> cube = iris.load_cube(cube_file)
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))

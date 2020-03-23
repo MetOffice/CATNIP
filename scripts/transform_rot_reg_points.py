@@ -31,7 +31,7 @@ def regular_point_to_rotated(cube, lon, lat):
 
     >>> lat = 6.5
     >>> lon = 289 # on 0-360 degree
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'air_temperature')
     >>> rot_lon, rot_lat = regular_point_to_rotated(cube, lon, lat)
     >>> print("{:.3f}".format(rot_lon), "{:.3f}".format(rot_lat))
     -84.330 3.336
@@ -74,7 +74,7 @@ def rotated_point_to_regular(cube, rot_lon, rot_lat):
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'air_temperature')
     >>> rot_lat = 3.34
     >>> rot_lon = -84.33
     >>> reg_lon, reg_lat = rotated_point_to_regular(cube, rot_lon, rot_lat)

@@ -18,7 +18,7 @@ def compare_coords(c1, c2):
     An example:
 
     >>> import iris
-    >>> data_dir = '/project/ciid/projects/ciid_tools/stock_cubes'
+    >>> data_dir = '/project/ciid/projects/catnip/stock_cubes'
     >>> cube1 = iris.load_cube(data_dir + '/gcm_monthly.pp', 'air_temperature')
     >>> cube2 = iris.load_cube(data_dir + '/FGOALS-g2_ua@925_nov.nc')
     >>>
@@ -79,7 +79,7 @@ def compare_cubes(cube1, cube2):
     An example:
 
     >>> import iris
-    >>> data_dir = '/project/ciid/projects/ciid_tools/stock_cubes'
+    >>> data_dir = '/project/ciid/projects/catnip/stock_cubes'
     >>> cube1 = iris.load_cube(data_dir + '/gcm_monthly.pp', 'x_wind')
     >>> cube2 = iris.load_cube(data_dir + '/FGOALS-g2_ua@925_nov.nc')
     >>> compare_cubes(cube1, cube2) # doctest: +NORMALIZE_WHITESPACE

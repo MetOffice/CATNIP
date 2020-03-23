@@ -20,7 +20,7 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     max_lon: The maximum longitude point of the desired extracted cube.
 
     An example:
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'air_temperature')
     >>> min_lat = 50
     >>> min_lon = -10
     >>> max_lat = 60

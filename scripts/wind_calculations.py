@@ -23,8 +23,8 @@ def windspeed(u_cube, v_cube):
 
     A simple example:
 
-    >>> u_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'x_wind')
-    >>> v_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'y_wind')
+    >>> u_cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp', 'x_wind')
+    >>> v_cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp', 'y_wind')
     >>> ws = windspeed(u_cube, v_cube)
     >>> ws.attributes['formula']
     'sqrt(u**2, v**2)'
@@ -83,8 +83,8 @@ def wind_direction(u_cube, v_cube, unrotate=True):
 
     A simple example:
 
-    >>> u_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'x_wind')
-    >>> v_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'y_wind')
+    >>> u_cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'x_wind')
+    >>> v_cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'y_wind')
     >>> angle = wind_direction(u_cube, v_cube)
     data is on rotated coord system, un-rotating . . .
     >>> angle.attributes['formula']

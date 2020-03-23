@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Dew point temperature calculation &#8212; ciid_tools 1 documentation</title>
+    <title>Dew point temperature calculation &#8212; catnip 1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -32,7 +32,7 @@
         <li class="right" >
           <a href="instructions.html" title="Useful commands"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ciid_tools 1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">catnip 1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -89,8 +89,8 @@ Constants:</p>
 calculate_dewpoint function, to dewpoint directly
 output from the UM i.e. uses the fortran routine</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt1.pp&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt2.pp&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/dewpointtest_pt1.pp&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/dewpointtest_pt2.pp&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;surface_air_pressure&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;specific_humidity&#39;</span><span class="p">)</span>
@@ -142,7 +142,7 @@ constraint that spans the time period of the cube.</p>
 </tbody>
 </table>
 <p>See below for an example, this is from a CMIP5 abrupt4xC02 run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_file</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_file</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">cube_file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_str</span><span class="p">,</span> <span class="n">end_str</span><span class="p">,</span> <span class="n">dr_constraint</span> <span class="o">=</span> <span class="n">get_date_range</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
 <span class="go">0490-11-01 00:00:00</span>
@@ -186,7 +186,7 @@ to (error handling) by gredmond</p>
 </table>
 <p>See below for examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_rr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cube_list_rr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_rr</span><span class="p">)</span>
@@ -197,7 +197,7 @@ to (error handling) by gredmond</p>
 <span class="go">Removed 8 size rim from specific_humidity</span>
 <span class="go">Removed 8 size rim from x_wind</span>
 <span class="go">Removed 8 size rim from y_wind</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_mslp_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_mslp_monthly.pp&#39;</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">mslp_cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="go">Removed 8 size rim from air_pressure_at_sea_level</span>
@@ -265,7 +265,7 @@ to (error handling) by gredmond</p>
 </table>
 <p>See below for examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_fcr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">cube_fcr</span> <span class="o">=</span> <span class="n">remove_forecast_coordinates</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cube_list_fcr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_fcr</span><span class="p">)</span>
@@ -505,7 +505,7 @@ to add bounds to the data, e.g. if data
 are instantaneous, time bounds are not
 appropriate.</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">)</span>
 <span class="go">time coordinate already has bounds, none will be added</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span>
@@ -589,7 +589,7 @@ values.</p>
 </table>
 <p>See below for an example that should be run with python3:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()])</span>
 <span class="go">[&#39;time&#39;, &#39;grid_latitude&#39;, &#39;grid_longitude&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_aux_unrotated_coords</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
@@ -659,7 +659,7 @@ must have bounds.</p>
 </tbody>
 </table>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;/project/ciid/projects/ciid_tools/stock_cubes/&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;/project/ciid/projects/catnip/stock_cubes/&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">file_</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;daily.19990801_19990823.pp&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">file_</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;daily.19990808_19990830.pp&quot;</span>
@@ -724,7 +724,7 @@ where continuous seasons are important
 iris.aggregated_by is better.</p>
 <p>See an example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># load a rcm cube</span>
-<span class="gp">... </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seas_min_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span>
 <span class="go">Calculating min for 2000-2000 mam</span>
 <span class="go">Calculating min for 2000-2000 jja</span>
@@ -737,7 +737,7 @@ iris.aggregated_by is better.</p>
 <span class="go">Calculating mean for 2000-2001 jjas</span>
 <span class="go">Calculating mean for 2000-2001 on</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># now load a gcm cube</span>
-<span class="gp">... </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seas_pc_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube2</span><span class="p">,</span> <span class="n">seas_mons</span><span class="o">=</span><span class="p">[[</span><span class="mi">11</span><span class="p">]],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;percentile&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span> <span class="n">ext_area</span><span class="o">=</span><span class="p">[</span><span class="mi">340</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
 <span class="go">Calculating percentile for 490-747 n</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># print an example of the output</span>
@@ -808,8 +808,8 @@ and navigate to the relevant UM version and stash code:</p>
 </tbody>
 </table>
 <p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="n">wind_direction</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">)</span>
 <span class="go">data is on rotated coord system, un-rotating . . .</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span>
@@ -853,8 +853,8 @@ and navigate to the relevant UM version and stash code:</p>
 </tbody>
 </table>
 <p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span> <span class="o">=</span> <span class="n">windspeed</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span>
 <span class="go">&#39;sqrt(u**2, v**2)&#39;</span>
@@ -883,43 +883,42 @@ on the data, not all of the coords added will be relevant.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>iris cube that has a coordinate called 'time'</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>cube</strong></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">cube that has new time categorisation coords added</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>Cube</strong> (<em>cube that has new time categorisation coords added</em>)</li>
+<li><em>A simple example</em></li>
+<li><em>&gt;&gt;&gt; cube_file = ‘/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc’</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(cube_file)</em></li>
+<li><em>&gt;&gt;&gt; coord_names = [coord.name() for coord in cube.coords()]</em></li>
+<li><em>&gt;&gt;&gt; print((‘, ‘.join(coord_names)))</em></li>
+<li><em>time, grid_latitude, grid_longitude</em></li>
+<li><em>&gt;&gt;&gt; add_time_coord_cats(cube)</em></li>
+<li><em>&gt;&gt;&gt; coord_names = [coord.name() for coord in cube.coords()]</em></li>
+<li><em>&gt;&gt;&gt; print((‘, ‘.join(coord_names)))</em></li>
+<li><em>time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year</em></li>
+<li><em>&gt;&gt;&gt; # print every 50th value of the added time cat coords</em></li>
+<li><strong>… for c in coord_names[3</strong> (<em>]:</em>)</li>
+<li><em>…     print(cube.coord(c).long_name)</em></li>
+<li><em>…     print(cube.coord(c).points[::50])</em></li>
+<li><em>…</em></li>
+<li><em>day_of_month</em></li>
+<li><em>[ 1 21 11  1 21 11  1 21]</em></li>
+<li><em>day_of_year</em></li>
+<li><em>[  1  51 101 151 201 251 301 351]</em></li>
+<li><em>month</em></li>
+<li><em>[‘Jan’ ‘Feb’ ‘Apr’ ‘Jun’ ‘Jul’ ‘Sep’ ‘Nov’ ‘Dec’]</em></li>
+<li><em>month_number</em></li>
+<li><em>[ 1  2  4  6  7  9 11 12]</em></li>
+<li><em>season</em></li>
+<li><em>[‘djf’ ‘djf’ ‘mam’ ‘jja’ ‘jja’ ‘son’ ‘son’ ‘djf’]</em></li>
+<li><em>season_number</em></li>
+<li><em>[0 0 1 2 2 3 3 0]</em></li>
+<li><em>year</em></li>
+<li><em>[2000 2000 2000 2000 2000 2000 2000 2000]</em></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-<p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_file</span> <span class="o">=</span> <span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">cube_file</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">coord_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">((</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coord_names</span><span class="p">)))</span>
-<span class="go">time, grid_latitude, grid_longitude</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">add_time_coord_cats</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">coord_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">((</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coord_names</span><span class="p">)))</span>
-<span class="go">time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># print every 50th value of the added time cat coords</span>
-<span class="gp">... </span><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">coord_names</span><span class="p">[</span><span class="mi">3</span><span class="p">:]:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">long_name</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">[::</span><span class="mi">50</span><span class="p">])</span>
-<span class="gp">...</span>
-<span class="go">day_of_month</span>
-<span class="go">[ 1 21 11  1 21 11  1 21]</span>
-<span class="go">day_of_year</span>
-<span class="go">[  1  51 101 151 201 251 301 351]</span>
-<span class="go">month</span>
-<span class="go">[&#39;Jan&#39; &#39;Feb&#39; &#39;Apr&#39; &#39;Jun&#39; &#39;Jul&#39; &#39;Sep&#39; &#39;Nov&#39; &#39;Dec&#39;]</span>
-<span class="go">month_number</span>
-<span class="go">[ 1  2  4  6  7  9 11 12]</span>
-<span class="go">season</span>
-<span class="go">[&#39;djf&#39; &#39;djf&#39; &#39;mam&#39; &#39;jja&#39; &#39;jja&#39; &#39;son&#39; &#39;son&#39; &#39;djf&#39;]</span>
-<span class="go">season_number</span>
-<span class="go">[0 0 1 2 2 3 3 0]</span>
-<span class="go">year</span>
-<span class="go">[2000 2000 2000 2000 2000 2000 2000 2000]</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </div>
@@ -941,24 +940,22 @@ point values, bounds and coordinate system.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>c1</strong> (<em>iris coordinate from a cube</em>) – </li>
 <li><strong>c2</strong> (<em>iris coordinate from a cube</em>) – </li>
+<li><strong>example</strong> (<em>An</em>) – </li>
+<li><strong>import iris</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>data_dir = '/project/ciid/projects/catnip/stock_cubes'</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube1 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/gcm_monthly.pp'</strong><strong>, </strong><strong>'air_temperature'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube2 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/FGOALS-g2_ua&#64;925_nov.nc'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>&gt;&gt;&gt;</strong> – </li>
+<li><strong>compare_coords</strong><strong>(</strong><strong>cube1.coord</strong><strong>(</strong><strong>'latitude'</strong><strong>)</strong><strong>, </strong><strong>cube2.coord</strong><strong>(</strong><strong>'latitude'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>values differ</strong> (<em>var_name</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>dtypes differ</strong> (<em>Point</em>) – </li>
+<li><strong>has bounds</strong><strong>, </strong><strong>the other doesn't</strong> (<em>One</em>) – </li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
-<span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compare_coords</span><span class="p">(</span><span class="n">cube1</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span> <span class="n">cube2</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">))</span>
-<span class="go">long_name values differ: None and latitude</span>
-<span class="go">var_name values differ: None and lat</span>
-<span class="go">Point dtypes differ: float32 and float64</span>
-<span class="go">One has bounds, the other doesn&#39;t</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -974,46 +971,43 @@ Results are printed to the screen</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>cube1</strong> (<em>iris cube</em>) – </li>
 <li><strong>cube2</strong> (<em>iris cube</em>) – </li>
+<li><strong>example</strong> (<em>An</em>) – </li>
+<li><strong>import iris</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>data_dir = '/project/ciid/projects/catnip/stock_cubes'</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube1 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/gcm_monthly.pp'</strong><strong>, </strong><strong>'x_wind'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube2 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/FGOALS-g2_ua&#64;925_nov.nc'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>compare_cubes</strong><strong>(</strong><strong>cube1</strong><strong>, </strong><strong>cube2</strong><strong>) </strong><strong># doctest</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>Cube name and data checks ~~~~~</strong> (<em>~~~~~</em>) – </li>
+<li><strong>values differ</strong> (<em>var_name</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>dimensions differ</strong> (<em>Cube</em>) – </li>
+<li><strong>dtypes differ</strong> (<em>Point</em>) – </li>
+<li><strong>types differ</strong> (<em>Data</em>) – </li>
+<li><strong>Coordinate checks ~~~~~</strong> (<em>~~~~~</em>) – </li>
+<li><strong>- Dimensions coords differ on the following coord</strong><strong>(</strong><strong>s</strong><strong>)</strong> (<em>WARNING</em>) – </li>
+<li><strong>matching dim coords</strong> (<em>Checking</em>) – </li>
+<li><strong>longitude vs longitude --</strong> (<em>--</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values are different</strong> (<em>Point</em>) – </li>
+<li><strong>dtypes differ</strong> – </li>
+<li><strong>has bounds</strong><strong>, </strong><strong>the other doesn't</strong> (<em>One</em>) – </li>
+<li><strong>latitude vs latitude --</strong> (<em>--</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>do not match</strong> (<em>Shapes</em>) – </li>
+<li><strong>values are different</strong> – </li>
+<li><strong>dtypes differ</strong> – </li>
+<li><strong>has bounds</strong><strong>, </strong><strong>the other doesn't</strong> – </li>
+<li><strong>- Dimensions coords differ on the following coord</strong><strong>(</strong><strong>s</strong><strong>)</strong> – [‘air_pressure’, ‘forecast_period’, ‘forecast_reference_time’,
+‘height’, ‘month_number’, ‘time’, ‘year’]</li>
+<li><strong>have no matching aux coords</strong> (<em>Cubes</em>) – </li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">compare_cubes</span><span class="p">(</span><span class="n">cube1</span><span class="p">,</span> <span class="n">cube2</span><span class="p">)</span> <span class="c1"># doctest: +NORMALIZE_WHITESPACE</span>
-<span class="go">~~~~~ Cube name and data checks ~~~~~</span>
-<span class="go">long_name values differ: None and Eastward Wind</span>
-<span class="go">standard_name values differ: x_wind and eastward_wind</span>
-<span class="go">var_name values differ: None and ua</span>
-<span class="go">Cube dimensions differ: 2 and 3</span>
-<span class="go">Data dtypes differ: float32 and float64</span>
-<span class="go">Data types differ: &lt;class &#39;numpy.ndarray&#39;&gt; and &lt;class &#39;numpy.ma.core.MaskedArray&#39;&gt;</span>
-<span class="go">~~~~~ Coordinate checks ~~~~~</span>
-<span class="go">WARNING - Dimensions coords differ on the following coord(s): [&#39;time&#39;]</span>
-<span class="go">Checking matching dim coords</span>
-<span class="go">-- longitude vs longitude --</span>
-<span class="go">long_name values differ: None and longitude</span>
-<span class="go">var_name values differ: None and lon</span>
-<span class="go">Point values are different</span>
-<span class="go">Point dtypes differ: float32 and float64</span>
-<span class="go">One has bounds, the other doesn&#39;t</span>
-<span class="go">-- latitude vs latitude --</span>
-<span class="go">long_name values differ: None and latitude</span>
-<span class="go">var_name values differ: None and lat</span>
-<span class="go">Shapes do not match: (144,) and (145,)</span>
-<span class="go">Point values are different</span>
-<span class="go">Point dtypes differ: float32 and float64</span>
-<span class="go">One has bounds, the other doesn&#39;t</span>
-<span class="go">WARNING - Dimensions coords differ on the following coord(s):</span>
-<span class="go">    [&#39;air_pressure&#39;, &#39;forecast_period&#39;, &#39;forecast_reference_time&#39;,</span>
-<span class="go">    &#39;height&#39;, &#39;month_number&#39;, &#39;time&#39;, &#39;year&#39;]</span>
-<span class="go">Cubes have no matching aux coords</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </div>
@@ -1044,26 +1038,24 @@ Longitude can be either 0-360 or -180-180 degree.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
 <li><strong>rot_lon</strong> (<em>The equivalent longitude point on the grid of the input cube</em>)</li>
 <li><strong>rot_lat</strong> (<em>The equivalent latitude point on the grid of the input cube</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; lat = 6.5</em></li>
+<li><em>&gt;&gt;&gt; lon = 289 # on 0-360 degree</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; rot_lon, rot_lat = regular_point_to_rotated(cube, lon, lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(rot_lon), “{:.3f}”.format(rot_lat))</em>)</li>
+<li><em>-84.330 3.336</em></li>
+<li><em>&gt;&gt;&gt; lat = 6.5</em></li>
+<li><em>&gt;&gt;&gt; lon = -71 # on -180-180 degree</em></li>
+<li><em>&gt;&gt;&gt; rot_lon, rot_lat = regular_point_to_rotated(cube, lon, lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(rot_lon), “{:.3f}”.format(rot_lat))</em>)</li>
+<li><em>-84.330 3.336</em></li>
 </ul>
 </p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span> <span class="o">=</span> <span class="mf">6.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lon</span> <span class="o">=</span> <span class="mi">289</span> <span class="c1"># on 0-360 degree</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lon</span><span class="p">,</span> <span class="n">rot_lat</span> <span class="o">=</span> <span class="n">regular_point_to_rotated</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rot_lon</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rot_lat</span><span class="p">))</span>
-<span class="go">-84.330 3.336</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span> <span class="o">=</span> <span class="mf">6.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">71</span> <span class="c1"># on -180-180 degree</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lon</span><span class="p">,</span> <span class="n">rot_lat</span> <span class="o">=</span> <span class="n">regular_point_to_rotated</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rot_lon</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rot_lat</span><span class="p">))</span>
-<span class="go">-84.330 3.336</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1087,26 +1079,24 @@ Longitude output in -180-180 degree format.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
 <li><strong>reg_lon</strong> (<em>The equivalent real longitude point.</em>)</li>
 <li><strong>reg_lat</strong> (<em>The equivalent real latitude point.</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; rot_lat = 3.34</em></li>
+<li><em>&gt;&gt;&gt; rot_lon = -84.33</em></li>
+<li><em>&gt;&gt;&gt; reg_lon, reg_lat = rotated_point_to_regular(cube, rot_lon, rot_lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(reg_lon), “{:.3f}”.format(reg_lat))</em>)</li>
+<li><em>-71.003 6.502</em></li>
+<li><em>&gt;&gt;&gt; rot_lat = 40</em></li>
+<li><em>&gt;&gt;&gt; rot_lon = 370</em></li>
+<li><em>&gt;&gt;&gt; reg_lon, reg_lat = rotated_point_to_regular(cube, rot_lon, rot_lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(reg_lon), “{:.3f}”.format(reg_lat))</em>)</li>
+<li><em>116.741 82.265</em></li>
 </ul>
 </p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lat</span> <span class="o">=</span> <span class="mf">3.34</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mf">84.33</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reg_lon</span><span class="p">,</span> <span class="n">reg_lat</span> <span class="o">=</span> <span class="n">rotated_point_to_regular</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">rot_lon</span><span class="p">,</span> <span class="n">rot_lat</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reg_lon</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reg_lat</span><span class="p">))</span>
-<span class="go">-71.003 6.502</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lat</span> <span class="o">=</span> <span class="mi">40</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lon</span> <span class="o">=</span> <span class="mi">370</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reg_lon</span><span class="p">,</span> <span class="n">reg_lat</span> <span class="o">=</span> <span class="n">rotated_point_to_regular</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">rot_lon</span><span class="p">,</span> <span class="n">rot_lat</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reg_lon</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reg_lat</span><span class="p">))</span>
-<span class="go">116.741 82.265</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </div>
@@ -1117,38 +1107,38 @@ Longitude output in -180-180 degree format.</p>
 <span class="target" id="module-extract_rot_cube"></span><dl class="function">
 <dt id="extract_rot_cube.extract_rot_cube">
 <code class="descclassname">extract_rot_cube.</code><code class="descname">extract_rot_cube</code><span class="sig-paren">(</span><em>cube</em>, <em>min_lat</em>, <em>min_lon</em>, <em>max_lat</em>, <em>max_lon</em><span class="sig-paren">)</span><a class="headerlink" href="#extract_rot_cube.extract_rot_cube" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function extracts the specific region from the cube.
-This region is specified by the user using real (not rotated)
-min/max lat and lon.</p>
+<dd><p>Function etracts the specific region from the cube.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>cube on rotated coord system</em><em>, </em><em>used as reference grid for transformation.</em>) – </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>extracted_cube</strong></td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">cube covering the (real) lon lat area specified by the user</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>min_lat</strong> (<em>The minimum latitude point of the desired extracted cube.</em>)</li>
+<li><strong>min_lon</strong> (<em>The minimum longitude point of the desired extracted cube.</em>)</li>
+<li><strong>max_lat</strong> (<em>The maximum latitude point of the desired extracted cube.</em>)</li>
+<li><strong>max_lon</strong> (<em>The maximum longitude point of the desired extracted cube.</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; min_lat = 50</em></li>
+<li><em>&gt;&gt;&gt; min_lon = -10</em></li>
+<li><em>&gt;&gt;&gt; max_lat = 60</em></li>
+<li><em>&gt;&gt;&gt; max_lon = 0</em></li>
+<li><em>&gt;&gt;&gt; extracted_cube = extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon)</em></li>
+<li><em>&gt;&gt;&gt; print(np.max(extracted_cube.coord(‘latitude’).points))</em></li>
+<li><em>61.47165097005264</em></li>
+<li><em>&gt;&gt;&gt; print(np.min(extracted_cube.coord(‘latitude’).points))</em></li>
+<li><em>48.213032844268646</em></li>
+<li><em>&gt;&gt;&gt; print(np.max(extracted_cube.coord(‘longitude’).points))</em></li>
+<li><em>3.642576550089792</em></li>
+<li><em>&gt;&gt;&gt; print(np.min(extracted_cube.coord(‘longitude’).points))</em></li>
+<li><em>-16.385571344717235</em></li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">min_lat</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">min_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_lat</span> <span class="o">=</span> <span class="mi">60</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_lon</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">extracted_cube</span> <span class="o">=</span> <span class="n">extract_rot_cube</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">61.47165097005264</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">48.213032844268646</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">3.642576550089792</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">-16.385571344717235</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </div>
@@ -1189,23 +1179,21 @@ Sect.8.3.7 and 8.3.10</p>
 <li><strong>xreg</strong> (<em>x values spanning xmin to xmax linearly spaced, for plotting against  yi CI curve.</em>)</li>
 <li><strong>y_conf_int_lo</strong> (<em>for plotting, lower bound of CI region for yi</em>)</li>
 <li><strong>y_conf_int_hi</strong> (<em>for plotting, upper bound of CI region for yi</em>)</li>
+<li><em>A simple example</em></li>
+<li><em>&gt;&gt;&gt; x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])</em></li>
+<li><em>&gt;&gt;&gt; y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])</em></li>
+<li><em>&gt;&gt;&gt; slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, slope_hi_pts,             xreg, y_conf_int_lo, y_conf_int_hi = ci_interval(x, y)</em></li>
+<li><em>Calculating the 95.0% confidence interval</em></li>
+<li><strong>&gt;&gt;&gt; print(‘CI gradient’, “{</strong> (<em>.2f}”.format(slope_conf_int))</em>)</li>
+<li><em>CI gradient 0.62</em></li>
+<li><strong>&gt;&gt;&gt; print(‘CI intercept’, “{</strong> (<em>.2f}”.format(intcp_conf_int))</em>)</li>
+<li><em>CI intercept 2.81</em></li>
 </ul>
 </p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">slope_conf_int</span><span class="p">,</span> <span class="n">intcp_conf_int</span><span class="p">,</span> <span class="n">xpts</span><span class="p">,</span> <span class="n">slope_lo_pts</span><span class="p">,</span> <span class="n">slope_hi_pts</span><span class="p">,</span>             <span class="n">xreg</span><span class="p">,</span> <span class="n">y_conf_int_lo</span><span class="p">,</span> <span class="n">y_conf_int_hi</span> <span class="o">=</span> <span class="n">ci_interval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="go">Calculating the 95.0% confidence interval</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CI gradient&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">slope_conf_int</span><span class="p">))</span>
-<span class="go">CI gradient 0.62</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CI intercept&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intcp_conf_int</span><span class="p">))</span>
-<span class="go">CI intercept 2.81</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1230,22 +1218,20 @@ TODO: use sklearn to perform regression</p>
 <li><strong>intcp</strong> (<em>intercept i.e. c in y = mx + c</em>)</li>
 <li><strong>xpts</strong> (<em>the min and max value of xi, used to plot line of best fit</em>)</li>
 <li><strong>ypts</strong> (<em>the min and max of the y solutions to line of best fit for plotting</em>)</li>
+<li><em>A simple example</em></li>
+<li><em>&gt;&gt;&gt; x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])</em></li>
+<li><em>&gt;&gt;&gt; y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])</em></li>
+<li><em>&gt;&gt;&gt; grad, intcp, xp, yp, sum_res = linear_regress(x, y)</em></li>
+<li><strong>&gt;&gt;&gt; print(‘gradient’, “{</strong> (<em>.2f}”.format(grad))</em>)</li>
+<li><em>gradient 0.54</em></li>
+<li><strong>&gt;&gt;&gt; print(‘intercept’, “{</strong> (<em>.2f}”.format(intcp))</em>)</li>
+<li><em>intercept 3.07</em></li>
 </ul>
 </p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">grad</span><span class="p">,</span> <span class="n">intcp</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">sum_res</span> <span class="o">=</span> <span class="n">linear_regress</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;gradient&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span>
-<span class="go">gradient 0.54</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intcp</span><span class="p">))</span>
-<span class="go">intercept 3.07</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1318,25 +1304,23 @@ and both input grids must also contain monotonic, bounded, 1D spatial coordinate
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cube_reg</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">input cube on the grid of target_cube</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>cube_reg</strong> (<em>input cube on the grid of target_cube</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; tgrid = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; cube_reg = regrid_to_target(cube, tgrid)</em></li>
+<li><em>regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear</em></li>
+<li><em>&gt;&gt;&gt; print(cube.shape, tgrid.shape)</em></li>
+<li><em>(145, 192) (2, 433, 444)</em></li>
+<li><em>&gt;&gt;&gt; print(cube_reg.shape)</em></li>
+<li><em>(433, 444)</em></li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tgrid</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_reg</span> <span class="o">=</span> <span class="n">regrid_to_target</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">tgrid</span><span class="p">)</span>
-<span class="go">regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tgrid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="go">(145, 192) (2, 433, 444)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube_reg</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="go">(433, 444)</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1369,25 +1353,23 @@ and both input grids must also contain monotonic, bounded, 1D spatial coordinate
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>regridder</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">a cached regridder which can be used on any iris cube which has the same grid as cube.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>regridder</strong> (<em>a cached regridder which can be used on any iris cube which has the same grid as cube.</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; tgrid = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; regridder = set_regridder(cube, tgrid)</em></li>
+<li><em>&gt;&gt;&gt; cube2 = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp’, ‘cloud_area_fraction’)</em></li>
+<li><em>&gt;&gt;&gt; print(cube2.shape)</em></li>
+<li><em>(145, 192)</em></li>
+<li><em>&gt;&gt;&gt; regridder(cube2)</em></li>
+<li><strong>&lt;iris ‘Cube’ of cloud_area_fraction / (1) (grid_latitude</strong> (<em>433; grid_longitude: 444)&gt;</em>)</li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tgrid</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regridder</span> <span class="o">=</span> <span class="n">set_regridder</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">tgrid</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud_area_fraction&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="go">(145, 192)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">regridder</span><span class="p">(</span><span class="n">cube2</span><span class="p">)</span>
-<span class="go">&lt;iris &#39;Cube&#39; of cloud_area_fraction / (1) (grid_latitude: 433; grid_longitude: 444)&gt;</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </div>
@@ -1421,30 +1403,25 @@ Assuming no missing dates.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>filelist</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of strings giving the filenames</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>filelist</strong> (<em>list of strings giving the filenames</em>)</li>
+<li><em>&gt;&gt;&gt; runid = ‘akwss’</em></li>
+<li><em>&gt;&gt;&gt; startd = datetime(1980, 9, 1)</em></li>
+<li><em>&gt;&gt;&gt; endd = datetime(1980, 9, 3)</em></li>
+<li><em>&gt;&gt;&gt; freq = ‘pa’</em></li>
+<li><strong>&gt;&gt;&gt; print (UMFileList(runid, startd, endd, freq)) # doctest</strong> (<em>+NORMALIZE_WHITESPACE</em>)</li>
+<li><em>[‘akwssa.pai0910.pp’, ‘akwssa.pai0920.pp’, ‘akwssa.pai0930.pp’]</em></li>
+<li><em>&gt;&gt;&gt; startd = datetime(1980, 9, 1)</em></li>
+<li><em>&gt;&gt;&gt; endd = datetime(1980, 12, 31)</em></li>
+<li><em>&gt;&gt;&gt; freq = ‘pm’</em></li>
+<li><strong>&gt;&gt;&gt; print (UMFileList(runid, startd, endd, freq)) # doctest</strong> (<em>+NORMALIZE_WHITESPACE</em>)</li>
+<li><em>[‘akwssa.pmi0sep.pp’, ‘akwssa.pmi0oct.pp’,</em> – ‘akwssa.pmi0nov.pp’, ‘akwssa.pmi0dec.pp’]</li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">runid</span> <span class="o">=</span> <span class="s1">&#39;akwss&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">startd</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">endd</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="s1">&#39;pa&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">UMFileList</span><span class="p">(</span><span class="n">runid</span><span class="p">,</span> <span class="n">startd</span><span class="p">,</span> <span class="n">endd</span><span class="p">,</span> <span class="n">freq</span><span class="p">))</span> <span class="c1"># doctest: +NORMALIZE_WHITESPACE</span>
-<span class="go">[&#39;akwssa.pai0910.pp&#39;, &#39;akwssa.pai0920.pp&#39;, &#39;akwssa.pai0930.pp&#39;]</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">startd</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">endd</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1980</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">31</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">freq</span> <span class="o">=</span> <span class="s1">&#39;pm&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">UMFileList</span><span class="p">(</span><span class="n">runid</span><span class="p">,</span> <span class="n">startd</span><span class="p">,</span> <span class="n">endd</span><span class="p">,</span> <span class="n">freq</span><span class="p">))</span> <span class="c1"># doctest: +NORMALIZE_WHITESPACE</span>
-<span class="go">[&#39;akwssa.pmi0sep.pp&#39;, &#39;akwssa.pmi0oct.pp&#39;,</span>
-<span class="go"> &#39;akwssa.pmi0nov.pp&#39;, &#39;akwssa.pmi0dec.pp&#39;]</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1463,18 +1440,16 @@ DOES NOT SUPPORT 3 monthly seasons e.g. JJA as described in the manual
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>dt</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">datetime object of the input datestamp</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>dt</strong> (<em>datetime object of the input datestamp</em>)</li>
+<li><em>&gt;&gt;&gt; print (convertFromUMStamp(‘k5bu0’, ‘YYMDH’))</em></li>
+<li><strong>2005-11-30 00</strong> (<em>00:00</em>)</li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">convertFromUMStamp</span><span class="p">(</span><span class="s1">&#39;k5bu0&#39;</span><span class="p">,</span> <span class="s1">&#39;YYMDH&#39;</span><span class="p">))</span>
-<span class="go">2005-11-30 00:00:00</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1493,26 +1468,24 @@ into UM date stamp.
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>UMstr</strong></p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string with UMdatestamp</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>UMstr</strong> (<em>string with UMdatestamp</em>)</li>
+<li><em>&gt;&gt;&gt; dt = datetime(1981, 11, 2)</em></li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMMM’))</em></li>
+<li><strong>1981-11-02 00</strong> (<em>00:00 i1nov</em>)</li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMDH’))</em></li>
+<li><strong>1981-11-02 00</strong> (<em>00:00 i1b20</em>)</li>
+<li><em>&gt;&gt;&gt; dt = cdatetime(1981, 2, 30)</em></li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMMM’))</em></li>
+<li><strong>1981-02-30 00</strong> (<em>00:00 i1feb</em>)</li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMDH’))</em></li>
+<li><strong>1981-02-30 00</strong> (<em>00:00 i12u0</em>)</li>
+</ul>
+</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1981</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">convertToUMStamp</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;YYMMM&#39;</span><span class="p">))</span>
-<span class="go">1981-11-02 00:00:00 i1nov</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">convertToUMStamp</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;YYMDH&#39;</span><span class="p">))</span>
-<span class="go">1981-11-02 00:00:00 i1b20</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dt</span> <span class="o">=</span> <span class="n">cdatetime</span><span class="p">(</span><span class="mi">1981</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">convertToUMStamp</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;YYMMM&#39;</span><span class="p">))</span>
-<span class="go">1981-02-30 00:00:00 i1feb</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">convertToUMStamp</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="s1">&#39;YYMDH&#39;</span><span class="p">))</span>
-<span class="go">1981-02-30 00:00:00 i12u0</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1528,6 +1501,19 @@ into UM date stamp.
 <li><strong>c</strong> (<em>character</em><em> or </em><em>number to convert</em>) – </li>
 <li><strong>a character to convert from left to right in the table</strong> (<em>Supply</em>) – </li>
 <li><strong>an int to convert from right to left in the table</strong> (<em>Supply</em>) – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>'1'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>1</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>'c'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>12</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>'s'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>28</strong> – </li>
+<li><strong>does the reverse conversions</strong> (<em>Also</em>) – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>1</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>1</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>12</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>c</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>28</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>s</strong> – </li>
 </ul>
 </td>
 </tr>
@@ -1539,23 +1525,6 @@ into UM date stamp.
 </tr>
 </tbody>
 </table>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisD2</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">))</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisD2</span><span class="p">(</span><span class="s1">&#39;c&#39;</span><span class="p">))</span>
-<span class="go">12</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisD2</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">))</span>
-<span class="go">28</span>
-</pre></div>
-</div>
-<p>Also does the reverse conversions:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisD2</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisD2</span><span class="p">(</span><span class="mi">12</span><span class="p">))</span>
-<span class="go">c</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisD2</span><span class="p">(</span><span class="mi">28</span><span class="p">))</span>
-<span class="go">s</span>
-</pre></div>
-</div>
 </dd></dl>
 
 <dl class="function">
@@ -1691,7 +1660,7 @@ and navigate to the relevant UM version and stash code:</p>
         <li class="right" >
           <a href="instructions.html" title="Useful commands"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">ciid_tools 1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">catnip 1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

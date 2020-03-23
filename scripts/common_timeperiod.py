@@ -33,7 +33,7 @@ def common_timeperiod(cube1, cube2):
 
     An example:
 
-    >>> dir = "/project/ciid/projects/ciid_tools/stock_cubes/"
+    >>> dir = "/project/ciid/projects/catnip/stock_cubes/"
     >>> file_ = dir + "daily.19990801_19990823.pp"
     >>> cube1=iris.load_cube(file_)
     >>> file_ = dir + "daily.19990808_19990830.pp"
