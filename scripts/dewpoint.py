@@ -44,8 +44,8 @@ def calculate_dewpoint(P, Q, T):
     output from the UM i.e. uses the fortran routine
 
     >>> import iris
-    >>> file1='/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt1.pp'
-    >>> file2='/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt2.pp'
+    >>> file1='/project/ciid/projects/catnip/stock_cubes/dewpointtest_pt1.pp'
+    >>> file2='/project/ciid/projects/catnip/stock_cubes/dewpointtest_pt2.pp'
     >>> P=iris.load_cube(file2, 'surface_air_pressure')
     >>> T=iris.load_cube(file1, 'air_temperature')
     >>> Q=iris.load_cube(file1, 'specific_humidity')

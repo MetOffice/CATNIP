@@ -19,7 +19,7 @@ def remove_forecast_coordinates(iris_cube):
     See below for examples:
 
     >>> cube_list_fcr = iris.cube.CubeList()
-    >>> cube_list = iris.load('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp')
+    >>> cube_list = iris.load('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp')
     >>> for cube in cube_list:
     ...     cube_fcr = remove_forecast_coordinates(cube)
     ...     cube_list_fcr.append(cube_fcr)

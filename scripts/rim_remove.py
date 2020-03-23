@@ -22,7 +22,7 @@ def rim_remove(cube, rim_width):
     See below for examples:
  
     >>> cube_list_rr = iris.cube.CubeList()
-    >>> cube_list = iris.load('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp')
+    >>> cube_list = iris.load('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp')
     >>> for cube in cube_list:
     ...     cube_rr = rim_remove(cube, 8)
     ...     cube_list_rr.append(cube_rr)    
@@ -33,7 +33,7 @@ def rim_remove(cube, rim_width):
     Removed 8 size rim from specific_humidity
     Removed 8 size rim from x_wind
     Removed 8 size rim from y_wind
-    >>> mslp_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_mslp_monthly.pp')
+    >>> mslp_cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_mslp_monthly.pp')
     >>> 
     >>> mslp_cube_rr = rim_remove(mslp_cube, 8)
     Removed 8 size rim from air_pressure_at_sea_level

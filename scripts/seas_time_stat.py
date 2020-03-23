@@ -45,7 +45,7 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
     See an example:
 
     >>> # load a rcm cube
-    ... cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+    ... cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc')
     >>> seas_min_cubelist = seas_time_stat(cube, metric='min', years=[2000,2000])
     Calculating min for 2000-2000 mam
     Calculating min for 2000-2000 jja
@@ -58,7 +58,7 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
     Calculating mean for 2000-2001 jjas
     Calculating mean for 2000-2001 on
     >>> # now load a gcm cube
-    ... cube2 = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc')
+    ... cube2 = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/FGOALS-g2_ua@925_nov.nc')
     >>> seas_pc_cubelist = seas_time_stat(cube2, seas_mons=[[11]], metric='percentile', pc=95, ext_area=[340, 350, 0,10])
     Calculating percentile for 490-747 n
     >>> # print an example of the output

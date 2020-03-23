@@ -36,8 +36,8 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'air_temperature')
-    >>> tgrid = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp', 'air_temperature')
+    >>> tgrid = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'air_temperature')
     >>> cube_reg = regrid_to_target(cube, tgrid)
     regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear
     >>> print(cube.shape, tgrid.shape)
@@ -126,10 +126,10 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'air_temperature')
-    >>> tgrid = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> cube = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp', 'air_temperature')
+    >>> tgrid = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp', 'air_temperature')
     >>> regridder = set_regridder(cube, tgrid)
-    >>> cube2 = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'cloud_area_fraction')
+    >>> cube2 = iris.load_cube('/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp', 'cloud_area_fraction')
     >>> print(cube2.shape)
     (145, 192)
     >>> regridder(cube2)

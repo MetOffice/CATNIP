@@ -28,7 +28,7 @@ def get_date_range(cube):
 
     See below for an example, this is from a CMIP5 abrupt4xC02 run:
 
-    >>> cube_file='/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc'
+    >>> cube_file='/project/ciid/projects/catnip/stock_cubes/FGOALS-g2_ua@925_nov.nc'
     >>> cube = iris.load_cube(cube_file)
     >>> start_str, end_str, dr_constraint = get_date_range(cube)
     0490-11-01 00:00:00
