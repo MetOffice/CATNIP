@@ -1,0 +1,320 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Remove Rim &#8212; ciid_tools 1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to ciid_tools’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to ciid_tools’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ciid_tools 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="remove-rim">
+<h1>Remove Rim<a class="headerlink" href="#remove-rim" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-rim_remove"></span><p>This function was written by tcrocker and added
+to (error handling) by gredmond</p>
+<dl class="function">
+<dt id="rim_remove.rim_remove">
+<code class="descclassname">rim_remove.</code><code class="descname">rim_remove</code><span class="sig-paren">(</span><em>cube</em>, <em>rim_width</em><span class="sig-paren">)</span><a class="headerlink" href="#rim_remove.rim_remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return IRIS cube with rim removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>input iris cube</em>) – </li>
+<li><strong>rim_width</strong> (<em>integer</em><em>, </em><em>number of grid points to remove from edge of lat and long</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rrcube</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rim removed cube</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See below for examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_rr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/precis/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cube_list_rr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_rr</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Removed 8 size rim from Heavyside function on pressure levels</span>
+<span class="go">Removed 8 size rim from air_temperature</span>
+<span class="go">Removed 8 size rim from relative_humidity</span>
+<span class="go">Removed 8 size rim from specific_humidity</span>
+<span class="go">Removed 8 size rim from x_wind</span>
+<span class="go">Removed 8 size rim from y_wind</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/precis/stock_cubes/rcm_mslp_monthly.pp&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">mslp_cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="go">Removed 8 size rim from air_pressure_at_sea_level</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">432</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">444</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">432</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">444</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rrrr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">mslp_cube_rr</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="go">WARNING - This cube has already had it&#39;s rim removed</span>
+<span class="go">Removed 8 size rim from air_pressure_at_sea_level</span>
+</pre></div>
+</div>
+<p>Now test for failures:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">Please provide a positive integer for rim_width</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">Please provide a positive integer &gt; 0 for rim_width</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">length of lat or lon coord is &lt; rim_width*2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">Please provide a positive integer &gt; 0 for rim_width</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">Please provide a positive integer for rim_width</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="convert-um-stash-codes-to-iris-stash-codes">
+<h1>Convert UM stash codes to iris stash codes<a class="headerlink" href="#convert-um-stash-codes-to-iris-stash-codes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-umpy_stash"></span><p>written by gredmond, some bits taken from hadts.</p>
+<dl class="function">
+<dt id="umpy_stash.umstash_2_pystash">
+<code class="descclassname">umpy_stash.</code><code class="descname">umstash_2_pystash</code><span class="sig-paren">(</span><em>stash</em><span class="sig-paren">)</span><a class="headerlink" href="#umpy_stash.umstash_2_pystash" title="Permalink to this definition">¶</a></dt>
+<dd><p>function to take um style stash codes e.g. 24, 05216
+and convert them into ‘python’ stash codes e.g.m01s00i024, m01s05i216</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stash</strong> (<em>a tuple</em><em>, </em><em>list</em><em> or </em><em>string of stash codes</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>stash_list</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of python stash codes</td>
+</tr>
+</tbody>
+</table>
+<p>Some basic examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;24&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+<span class="go">[&#39;m01s00i024&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span><span class="s1">&#39;16222&#39;</span><span class="p">,</span><span class="s1">&#39;3236&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+<span class="go">[&#39;m01s00i024&#39;, &#39;m01s16i222&#39;, &#39;m01s03i236&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span><span class="s1">&#39;15201&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+<span class="go">[&#39;m01s00i001&#39;, &#39;m01s15i201&#39;]</span>
+</pre></div>
+</div>
+<p>Now test that it fails when appropriate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;-24&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">AttributeError</span>: <span class="n">stash item -24 contains non-numerical characters. Numbers only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;1234567&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">stash item is 1234567. Stash items must be no longer than 5 characters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;aaa&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">AttributeError</span>: <span class="n">stash item aaa contains non-numerical characters. Numbers only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;24a&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">AttributeError</span>: <span class="n">stash item 24a contains non-numerical characters. Numbers only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">24 must be a string</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="remove-forecast-co-ordinates">
+<h1>Remove Forecast Co-ordinates<a class="headerlink" href="#remove-forecast-co-ordinates" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-remove_forecast_coordinates"></span><p>Author: ssadri</p>
+<dl class="function">
+<dt id="remove_forecast_coordinates.remove_forecast_coordinates">
+<code class="descclassname">remove_forecast_coordinates.</code><code class="descname">remove_forecast_coordinates</code><span class="sig-paren">(</span><em>iris_cube</em><span class="sig-paren">)</span><a class="headerlink" href="#remove_forecast_coordinates.remove_forecast_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>iris_cube</strong> (<em>input iris_cube</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>iris_cube</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">iris cube without the forecast_period and forecast_reference_time coordinates</td>
+</tr>
+</tbody>
+</table>
+<p>See below for examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_fcr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/precis/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">cube_fcr</span> <span class="o">=</span> <span class="n">remove_forecast_coordinates</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cube_list_fcr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_fcr</span><span class="p">)</span>
+<span class="go">Removed the forecast_period coordinate from Heavyside function on pressure levels cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from Heavyside function on pressure levels cube</span>
+<span class="go">Removed the forecast_period coordinate from air_temperature cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from air_temperature cube</span>
+<span class="go">Removed the forecast_period coordinate from relative_humidity cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from relative_humidity cube</span>
+<span class="go">Removed the forecast_period coordinate from specific_humidity cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from specific_humidity cube</span>
+<span class="go">Removed the forecast_period coordinate from x_wind cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from x_wind cube</span>
+<span class="go">Removed the forecast_period coordinate from y_wind cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from y_wind cube</span>
+</pre></div>
+</div>
+<p>Now check if the forecast coordinates have been removed</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list_fcr</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">cube_nfc</span> <span class="o">=</span> <span class="n">remove_forecast_coordinates</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="section" id="other-information">
+<h2>Other information<a class="headerlink" href="#other-information" title="Permalink to this headline">¶</a></h2>
+<p>Trac pages can be found at x, code lives on x. Instructions for using ciid_tools can be found x.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Remove Rim</a></li>
+<li><a class="reference internal" href="#convert-um-stash-codes-to-iris-stash-codes">Convert UM stash codes to iris stash codes</a></li>
+<li><a class="reference internal" href="#remove-forecast-co-ordinates">Remove Forecast Co-ordinates</a><ul>
+<li><a class="reference internal" href="#other-information">Other information</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to ciid_tools’s documentation!</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/blah.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to ciid_tools’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">ciid_tools 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, gredmond.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.
+    </div>
+  </body>
+</html>

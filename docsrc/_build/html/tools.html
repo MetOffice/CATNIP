@@ -1,0 +1,1671 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Dew point temperature calculation &#8212; catnip 1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Useful commands" href="instructions.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions.html" title="Useful commands"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">catnip 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="dew-point-temperature-calculation">
+<h1>Dew point temperature calculation<a class="headerlink" href="#dew-point-temperature-calculation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-dewpoint"></span><p>Created on Oct, 2018</p>
+<dl class="function">
+<dt id="dewpoint.calculate_dewpoint">
+<code class="descclassname">dewpoint.</code><code class="descname">calculate_dewpoint</code><span class="sig-paren">(</span><em>P</em>, <em>Q</em>, <em>T</em><span class="sig-paren">)</span><a class="headerlink" href="#dewpoint.calculate_dewpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to calculate the dew point temperature, it
+expects three iris cubes P, Q, T. Stash codes needed are
+00001, 03237, 03236.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>T</strong> (<em>1.5m temperature cube</em>) – </li>
+<li><strong>Q</strong> (<em>1.5m specific humidity cube</em>) – </li>
+<li><strong>P</strong> (<em>P star cube</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>TD</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">1.5m dew point temperature cube</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Based on the UM routine /home/h04/precis/um/vn4.5/source/umpl/DEWPNT1A.dk
+which uses /home/h04/precis/um/vn4.5/source/umpl/QSAT2A.dk
+Constants:</p>
+<blockquote>
+<div><ul class="simple">
+<li>LC       is the latent heat of condensation of water at 0 deg C.</li>
+<li>RL1      is the latent heat of evaporation</li>
+<li>TM       is the temperature at which fresh waster freezes</li>
+<li>EPSILON  is the ratio of molecular weights of water and dry air</li>
+<li>R        the gas constant for dry air (J/kg/K)</li>
+<li>RV       gas constant for moist air (J/kg/K)</li>
+</ul>
+</div></blockquote>
+<p>This test compares dewpoint calculated by the
+calculate_dewpoint function, to dewpoint directly
+output from the UM i.e. uses the fortran routine</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/dewpointtest_pt1.pp&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/dewpointtest_pt2.pp&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;surface_air_pressure&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;specific_humidity&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DEWPOINT</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TD</span> <span class="o">=</span> <span class="n">calculate_dewpoint</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="go">WARNING dewpoint temp. &gt; air temp ---&gt; setting TD = T</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diff</span> <span class="o">=</span> <span class="n">DEWPOINT</span> <span class="o">-</span> <span class="n">TD</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="go">0.37731934</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="go">-0.31027222</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="go">2.934921e-05</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="go">0.0058857435</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="find-the-date-range-in-a-cube-and-construct-a-constraint">
+<h1>Find the date range in a cube and construct a constraint<a class="headerlink" href="#find-the-date-range-in-a-cube-and-construct-a-constraint" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-get_date_range"></span><p>Written by gredmond
+NOTE: that whilst this function works for model data,
+there can be problems with obs data sets.</p>
+<dl class="function">
+<dt id="get_date_range.get_date_range">
+<code class="descclassname">get_date_range.</code><code class="descname">get_date_range</code><span class="sig-paren">(</span><em>cube</em><span class="sig-paren">)</span><a class="headerlink" href="#get_date_range.get_date_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a cube and calculates the time period spanned by the cube.
+It returns a string of the start and end date, and an iris
+constraint that spans the time period of the cube.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>cube which must include a dimension coordinate called 'time'</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>start_date_str</strong> (<em>string of the first time in the cube as a dd/mm/yyyy date</em>)</li>
+<li><strong>end_date_str</strong> (<em>string of the last time in the cube as a dd/mm/yyyy date</em>)</li>
+<li><strong>date_range</strong> (<em>iris constraint that spans the range between the</em>) – first and last date</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See below for an example, this is from a CMIP5 abrupt4xC02 run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_file</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">cube_file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_str</span><span class="p">,</span> <span class="n">end_str</span><span class="p">,</span> <span class="n">dr_constraint</span> <span class="o">=</span> <span class="n">get_date_range</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="go">0490-11-01 00:00:00</span>
+<span class="go">0747-12-01 00:00:00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">start_str</span><span class="p">)</span>
+<span class="go">1/11/490</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">end_str</span><span class="p">)</span>
+<span class="go">1/12/747</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="remove-rim">
+<h1>Remove Rim<a class="headerlink" href="#remove-rim" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-rim_remove"></span><p>This function was written by tcrocker and added
+to (error handling) by gredmond</p>
+<dl class="function">
+<dt id="rim_remove.rim_remove">
+<code class="descclassname">rim_remove.</code><code class="descname">rim_remove</code><span class="sig-paren">(</span><em>cube</em>, <em>rim_width</em><span class="sig-paren">)</span><a class="headerlink" href="#rim_remove.rim_remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return IRIS cube with rim removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>input iris cube</em>) – </li>
+<li><strong>rim_width</strong> (<em>integer</em><em>, </em><em>number of grid points to remove from edge of lat and long</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>rrcube</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rim removed cube</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See below for examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_rr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cube_list_rr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_rr</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Removed 8 size rim from Heavyside function on pressure levels</span>
+<span class="go">Removed 8 size rim from air_temperature</span>
+<span class="go">Removed 8 size rim from relative_humidity</span>
+<span class="go">Removed 8 size rim from specific_humidity</span>
+<span class="go">Removed 8 size rim from x_wind</span>
+<span class="go">Removed 8 size rim from y_wind</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_mslp_monthly.pp&#39;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">mslp_cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="go">Removed 8 size rim from air_pressure_at_sea_level</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">432</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">444</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">432</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mslp_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;grid_longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
+<span class="go">444</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rrrr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">mslp_cube_rr</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="go">WARNING - This cube has already had it&#39;s rim removed</span>
+<span class="go">Removed 8 size rim from air_pressure_at_sea_level</span>
+</pre></div>
+</div>
+<p>Now test for failures:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mf">8.2</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">Please provide a positive integer for rim_width</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">Please provide a positive integer &gt; 0 for rim_width</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">length of lat or lon coord is &lt; rim_width*2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">Please provide a positive integer &gt; 0 for rim_width</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">Please provide a positive integer for rim_width</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="remove-forecast-co-ordinates">
+<h1>Remove Forecast Co-ordinates<a class="headerlink" href="#remove-forecast-co-ordinates" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-remove_forecast_coordinates"></span><p>Author: ssadri</p>
+<dl class="function">
+<dt id="remove_forecast_coordinates.remove_forecast_coordinates">
+<code class="descclassname">remove_forecast_coordinates.</code><code class="descname">remove_forecast_coordinates</code><span class="sig-paren">(</span><em>iris_cube</em><span class="sig-paren">)</span><a class="headerlink" href="#remove_forecast_coordinates.remove_forecast_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>iris_cube</strong> (<em>input iris_cube</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>iris_cube</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">iris cube without the forecast_period and forecast_reference_time coordinates</td>
+</tr>
+</tbody>
+</table>
+<p>See below for examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_fcr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">cube_fcr</span> <span class="o">=</span> <span class="n">remove_forecast_coordinates</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">cube_list_fcr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_fcr</span><span class="p">)</span>
+<span class="go">Removed the forecast_period coordinate from Heavyside function on pressure levels cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from Heavyside function on pressure levels cube</span>
+<span class="go">Removed the forecast_period coordinate from air_temperature cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from air_temperature cube</span>
+<span class="go">Removed the forecast_period coordinate from relative_humidity cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from relative_humidity cube</span>
+<span class="go">Removed the forecast_period coordinate from specific_humidity cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from specific_humidity cube</span>
+<span class="go">Removed the forecast_period coordinate from x_wind cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from x_wind cube</span>
+<span class="go">Removed the forecast_period coordinate from y_wind cube</span>
+<span class="go">Removed the forecast_reference_time coordinate from y_wind cube</span>
+</pre></div>
+</div>
+<p>Now check if the forecast coordinates have been removed</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list_fcr</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">cube_nfc</span> <span class="o">=</span> <span class="n">remove_forecast_coordinates</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_period coordinate, but found none.&#39;</span>
+<span class="go">&#39;Expected to find exactly 1 forecast_reference_time coordinate, but found none.&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="sort-cube">
+<h1>Sort cube<a class="headerlink" href="#sort-cube" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-sort_cube"></span><dl class="function">
+<dt id="sort_cube.sort_cube">
+<code class="descclassname">sort_cube.</code><code class="descname">sort_cube</code><span class="sig-paren">(</span><em>cube</em>, <em>coord</em><span class="sig-paren">)</span><a class="headerlink" href="#sort_cube.sort_cube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to sort a cube by a coordinate. Taken from
+<a class="reference external" href="http://nbviewer.jupyter.org/gist/pelson/9763057">http://nbviewer.jupyter.org/gist/pelson/9763057</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>Iris cube to sort</em>) – </li>
+<li><strong>coord</strong> (<em>coord to sort by</em><em> (</em><em>string</em><em>)</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cube</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">a new cube sorted by the coord</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span><span class="o">.</span><span class="n">add_aux_coord</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">AuxCoord</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">long_name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">[0 1 2 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">sort_cube</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="go">[2 1 0 3]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">))</span>
+<span class="go">AuxCoord(array([0, 1, 2, 3]), standard_name=None, units=Unit(&#39;1&#39;), long_name=&#39;test&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="convert-um-stash-codes-to-iris-stash-codes">
+<h1>Convert UM stash codes to iris stash codes<a class="headerlink" href="#convert-um-stash-codes-to-iris-stash-codes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-umpy_stash"></span><p>written by gredmond, some bits taken from hadts.</p>
+<dl class="function">
+<dt id="umpy_stash.umstash_2_pystash">
+<code class="descclassname">umpy_stash.</code><code class="descname">umstash_2_pystash</code><span class="sig-paren">(</span><em>stash</em><span class="sig-paren">)</span><a class="headerlink" href="#umpy_stash.umstash_2_pystash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to take um style stash codes e.g. 24, 05216
+and convert them into ‘python’ stash codes e.g.m01s00i024, m01s05i216</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stash</strong> (<em>a tuple</em><em>, </em><em>list</em><em> or </em><em>string of stash codes</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>stash_list</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of python stash codes</td>
+</tr>
+</tbody>
+</table>
+<p>Some basic examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;24&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+<span class="go">[&#39;m01s00i024&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span><span class="s1">&#39;16222&#39;</span><span class="p">,</span><span class="s1">&#39;3236&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+<span class="go">[&#39;m01s00i024&#39;, &#39;m01s16i222&#39;, &#39;m01s03i236&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span><span class="s1">&#39;15201&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+<span class="go">[&#39;m01s00i001&#39;, &#39;m01s15i201&#39;]</span>
+</pre></div>
+</div>
+<p>Now test that it fails when appropriate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;-24&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">AttributeError</span>: <span class="n">stash item -24 contains non-numerical characters. Numbers only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;1234567&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">IndexError</span>: <span class="n">stash item is 1234567. Stash items must be no longer than 5 characters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;aaa&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">AttributeError</span>: <span class="n">stash item aaa contains non-numerical characters. Numbers only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="s1">&#39;24a&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">AttributeError</span>: <span class="n">stash item 24a contains non-numerical characters. Numbers only</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sc</span> <span class="o">=</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">umstash_2_pystash</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># doctest: +ELLIPSIS</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">24 must be a string</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="date-chunks">
+<h1>Date chunks<a class="headerlink" href="#date-chunks" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-date_chunks"></span><p>CIID Tools: Create date chunks
+Created by Hamish Steptoe (<a class="reference external" href="mailto:hamish&#46;steptoe&#37;&#52;&#48;metoffice&#46;gov&#46;uk">hamish<span>&#46;</span>steptoe<span>&#64;</span>metoffice<span>&#46;</span>gov<span>&#46;</span>uk</a>)
+Created on 11/12/18</p>
+<dl class="function">
+<dt id="date_chunks.date_chunks">
+<code class="descclassname">date_chunks.</code><code class="descname">date_chunks</code><span class="sig-paren">(</span><em>startdate</em>, <em>enddate</em>, <em>yearchunk</em>, <em>indatefmt='%Y/%m/%d'</em>, <em>outdatefmt='%Y/%m/%d'</em><span class="sig-paren">)</span><a class="headerlink" href="#date_chunks.date_chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make date chunks from min and max date range</p>
+<p>Make contiguous pairs of date intervals to aid chunking
+of MASS retrievals. Where the date interval is not a multiple
+of <cite>yearchunk</cite>, intervals of less than <cite>yearchunk</cite> may be returned.
+See <code class="docutils literal notranslate"><span class="pre">Examples</span></code> for useage.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>startdate</strong> (<em>string</em>) – Starting date (min date)</li>
+<li><strong>enddate</strong> (<em>string</em>) – Ending date (max date)</li>
+<li><strong>yearchunk</strong> (<em>int</em>) – Year chunks to split the date interval into</li>
+<li><strong>indatefmt</strong> (<em>string</em><em>, </em><em>optional</em>) – String format for input dates. Defaults to yyyy/mm/dd</li>
+<li><strong>outdatefmt</strong> (<em>string</em><em>, </em><em>optional</em>) – String format for ouput dates. Defaults to yyyy/mm/dd</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of strings of date intervals</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">list</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code> – If <cite>enddate</cite> (ie. max date) is less than or equal to <cite>startdate</cite> (ie. min date)</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">Excpetion</span></code> – If <cite>yearchunk</cite> is not an integer</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">Exception</span></code> – If not using python 3</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">date_chunks</span><span class="p">(</span><span class="s1">&#39;1851/1/1&#39;</span><span class="p">,</span> <span class="s1">&#39;1899/12/31&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="go">[(&#39;1851/01/01&#39;, &#39;1875/12/26&#39;), (&#39;1875/12/26&#39;, &#39;1899/12/31&#39;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">date_chunks</span><span class="p">(</span><span class="s1">&#39;1890/1/1&#39;</span><span class="p">,</span> <span class="s1">&#39;1942/12/31&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="go">[(&#39;1890/01/01&#39;, &#39;1914/12/27&#39;), (&#39;1914/12/27&#39;, &#39;1939/12/21&#39;), (&#39;1939/12/21&#39;, &#39;1942/12/31&#39;)]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is only compatible with python 3.
+Author: Hamish Steptoe</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="add-bounds-to-a-cube">
+<h1>Add bounds to a cube<a class="headerlink" href="#add-bounds-to-a-cube" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-add_bounds"></span><p>Author: Grace Redmond</p>
+<dl class="function">
+<dt id="add_bounds.add_bounds">
+<code class="descclassname">add_bounds.</code><code class="descname">add_bounds</code><span class="sig-paren">(</span><em>cube</em>, <em>coord_names</em>, <em>bound_position=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#add_bounds.add_bounds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple function to check whether a
+coordinate in a cube has bounds, and
+add them if it doesn’t.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>iris cube</em>) – </li>
+<li><strong>coord_names</strong> (<em>string</em><em> or </em><em>list of strings containing the name/s</em>) – of the coordinates you want to add bounds to.</li>
+<li><strong>bound_position</strong> (<em>Optional</em><em>, </em><em>the desired position of the bounds relative to</em>) – the position of the points. Default is 0.5.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cube</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cube with bounds added</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Need to be careful that it is appropriate
+to add bounds to the data, e.g. if data
+are instantaneous, time bounds are not
+appropriate.</p>
+<p>An example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">)</span>
+<span class="go">time coordinate already has bounds, none will be added</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span>
+<span class="go">grid_latitude bounds added</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;grid_latitude&#39;</span><span class="p">,</span><span class="s1">&#39;grid_longitude&#39;</span><span class="p">])</span>
+<span class="go">grid_latitude coordinate already has bounds, none will be added</span>
+<span class="go">grid_longitude bounds added</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="add-a-coordinate-system-to-a-cube">
+<h1>Add a coordinate system to a cube<a class="headerlink" href="#add-a-coordinate-system-to-a-cube" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-add_coord_system"></span><p>Author: Hamish Steptoe
+Edited and added to by: Grace Redmond</p>
+<dl class="function">
+<dt id="add_coord_system.add_coord_system">
+<code class="descclassname">add_coord_system.</code><code class="descname">add_coord_system</code><span class="sig-paren">(</span><em>cube</em><span class="sig-paren">)</span><a class="headerlink" href="#add_coord_system.add_coord_system" title="Permalink to this definition">¶</a></dt>
+<dd><p>A cube must have a coordinate system in order to be regridded.</p>
+<p>This function checks whether a cube has a coordinate system. If
+the cube has no coordinate system, the standard the ellipsoid
+representation wgs84 (ie. the one used by GPS) is added.</p>
+<p>Note: It will not work for rotated pole data without a
+coordinate system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>iris cube</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>cube</strong> – cube didn’t have one already.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">The input cube with coordinate system added, if the</td>
+</tr>
+</tbody>
+</table>
+<p>A simple example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span><span class="o">=</span><span class="s1">&#39;/project/ciid/obs_datasets/asia/APHRODITE/gtopo30_025deg.nc&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coord_system</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_coord_system</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="go">Coordinate system  GeogCS(6371229.0) added to cube</span>
+<span class="go">&lt;iris &#39;Cube&#39; of height / (1) (latitude: 281; longitude: 361)&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coord_system</span><span class="p">)</span>
+<span class="go">GeogCS(6371229.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="add-unrotated-lat-and-lon-coordinates-as-aux-coord">
+<h1>Add unrotated lat and lon coordinates as aux coord<a class="headerlink" href="#add-unrotated-lat-and-lon-coordinates-as-aux-coord" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-add_aux_unrotated_coords"></span><p>Author: Saeed Sadri
+Additional content: Grace Redmond</p>
+<dl class="function">
+<dt id="add_aux_unrotated_coords.add_aux_unrotated_coords">
+<code class="descclassname">add_aux_unrotated_coords.</code><code class="descname">add_aux_unrotated_coords</code><span class="sig-paren">(</span><em>cube</em><span class="sig-paren">)</span><a class="headerlink" href="#add_aux_unrotated_coords.add_aux_unrotated_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes a cube that is on a rotated pole
+coordinate system and adds to it, two addtional
+auxillary coordinates to hold the unrotated coordinate
+values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>iris cube on an rotated pole coordinate system</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>cube</strong> (<em>input cube with auxilliary coordinates of unrotated</em>)</li>
+<li><em>latitude and longitude</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See below for an example that should be run with python3:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()])</span>
+<span class="go">[&#39;time&#39;, &#39;grid_latitude&#39;, &#39;grid_longitude&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">add_aux_unrotated_coords</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()])</span>
+<span class="go">[&#39;time&#39;, &#39;grid_latitude&#39;, &#39;grid_longitude&#39;, &#39;latitude&#39;, &#39;longitude&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">))</span>
+<span class="go">AuxCoord(array([[35.32243855, 35.33914928, 35.355619  , ..., 35.71848081,</span>
+<span class="go">        35.70883111, 35.69893388],</span>
+<span class="go">       [35.10317609, 35.11986604, 35.13631525, ..., 35.49871728,</span>
+<span class="go">        35.48908   , 35.47919551],</span>
+<span class="go">       [34.88390966, 34.90057895, 34.91700776, ..., 35.27895246,</span>
+<span class="go">        35.26932754, 35.25945571],</span>
+<span class="go">       ...,</span>
+<span class="go">       [ 6.13961446,  6.15413611,  6.16844578, ...,  6.48307389,</span>
+<span class="go">         6.47472284,  6.46615667],</span>
+<span class="go">       [ 5.92011032,  5.93461779,  5.94891347, ...,  6.26323044,</span>
+<span class="go">         6.25488773,  6.24633011],</span>
+<span class="go">       [ 5.70060768,  5.71510098,  5.72938268, ...,  6.04338876,</span>
+<span class="go">         6.03505439,  6.02650532]]), standard_name=None, units=Unit(&#39;degrees&#39;), long_name=&#39;latitude&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(360, 136, 109)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(136, 109)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">(136, 109)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="find-the-common-time-period-between-two-cubes">
+<h1>Find the common time period between two cubes<a class="headerlink" href="#find-the-common-time-period-between-two-cubes" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-common_timeperiod"></span><p>Written by gredmond
+NOTE: that whilst this function works for model data,
+there can be problems with obs data sets.</p>
+<dl class="function">
+<dt id="common_timeperiod.common_timeperiod">
+<code class="descclassname">common_timeperiod.</code><code class="descname">common_timeperiod</code><span class="sig-paren">(</span><em>cube1</em>, <em>cube2</em><span class="sig-paren">)</span><a class="headerlink" href="#common_timeperiod.common_timeperiod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in two cubes and finds the common time
+period between them. This period is then extracted
+from both cubes. Cubes with common time period are returned,
+along with strings of the start end end times of the
+common time period (format DD/MM/YYYY.) The input
+cubes must have a coordinate called ‘time’ which
+must have bounds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube1</strong> (<em>cube that must have a coord called time.</em>) – </li>
+<li><strong>cube2</strong> (<em>cube that must have a coord called time.</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>start_date_str</strong> (<em>string of start date for the common period.</em>)</li>
+<li><strong>end_date_str</strong> (<em>string of end date for the common period.</em>)</li>
+<li><strong>cube1_common</strong> (<em>cube1 with the common time period between cube1 and cube2 extracted.</em>)</li>
+<li><strong>cube2_common</strong> (<em>cube2 with the common time period between cube1 and cube2 extracted.</em>)</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>An example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;/project/ciid/projects/catnip/stock_cubes/&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file_</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;daily.19990801_19990823.pp&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file_</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;daily.19990808_19990830.pp&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">st</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">common_timeperiod</span><span class="p">(</span><span class="n">cube1</span><span class="p">,</span> <span class="n">cube2</span><span class="p">)</span>
+<span class="go">Common time period:</span>
+<span class="go">(&#39;8/8/1999&#39;, &#39;23/8/1999&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">DimCoord([1999-08-08 12:00:00], bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], standard_name=&#39;time&#39;, calendar=&#39;360_day&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">DimCoord([1999-08-08 12:00:00], bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], standard_name=&#39;time&#39;, calendar=&#39;360_day&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">DimCoord([1999-08-22 12:00:00], bounds=[[1999-08-22 00:00:00, 1999-08-23 00:00:00]], standard_name=&#39;time&#39;, calendar=&#39;360_day&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">DimCoord([1999-08-22 12:00:00], bounds=[[1999-08-22 00:00:00, 1999-08-23 00:00:00]], standard_name=&#39;time&#39;, calendar=&#39;360_day&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="calculate-a-seasonal-metric-with-user-defined-years-seasons-and-lat-lon-region">
+<h1>Calculate a seasonal metric with user defined years, seasons and lat/lon region<a class="headerlink" href="#calculate-a-seasonal-metric-with-user-defined-years-seasons-and-lat-lon-region" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-seas_time_stat"></span><p>Author: Grace Redmond</p>
+<dl class="function">
+<dt id="seas_time_stat.seas_time_stat">
+<code class="descclassname">seas_time_stat.</code><code class="descname">seas_time_stat</code><span class="sig-paren">(</span><em>cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2]], metric='mean', pc=[], years=[], ext_area=[]</em><span class="sig-paren">)</span><a class="headerlink" href="#seas_time_stat.seas_time_stat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in a cube and calculates a seasonal metric. Defaults to
+mean of ‘mam’,’jja’,’son’ and ‘djf’ over the whole time span
+of the cube. However, the user can specify seasons by month
+number i.e. ond=[10,11,12], the start and end years, the metric
+calculated and a lat lon region to extract for the calculation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>Input cube that must contain a coordinate called 'time'</em>) – </li>
+<li><strong>seas_mons</strong> (<em>list of seasons to calculate the metric over</em><em>,</em>) – defaults to seas_mons=[[3,4,5],[6,7,8],[9,10,11],[12,1,2]].</li>
+<li><strong>metric</strong> (<em>string</em><em>, </em><em>optional argument</em><em>, </em><em>defaults to 'mean'</em><em>, </em><em>but can</em>) – be ‘mean’, ‘std_dev’, ‘min’, ‘max’ or ‘percentile’</li>
+<li><strong>pc</strong> (<em>optional argument</em><em>, </em><em>percentile level to calculate</em><em>,</em>) – must be an integer and must be set if metric=’percentile’.</li>
+<li><strong>years</strong> (<em>list of start and end year</em><em>, </em><em>default is</em>) – the whole time span of the cube.</li>
+<li><strong>ext_area</strong> (<em>optional argument</em><em>, </em><em>if set expects a list of</em>) – the form [lonmin, lonmax, latmin, latmax].</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>cube_list</strong> – season of the calculated metric</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">a cube list containing one cube per</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The main draw back is that the function does not take
+account for seasons that span more than one year
+i.e. djf, and will calculate the metric over all months
+that meet the season criteria. For calculation
+where continuous seasons are important
+iris.aggregated_by is better.</p>
+<p>See an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># load a rcm cube</span>
+<span class="gp">... </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seas_min_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span>
+<span class="go">Calculating min for 2000-2000 mam</span>
+<span class="go">Calculating min for 2000-2000 jja</span>
+<span class="go">Calculating min for 2000-2000 son</span>
+<span class="go">Calculating min for 2000-2000 djf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seas_mean_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">seas_mons</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">],[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">]],</span> <span class="n">ext_area</span><span class="o">=</span><span class="p">[</span><span class="mi">340</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+<span class="go">WARNING - the cube is on a rotated pole, the area you extract might not be where you think it is! You can use regular_point_to_rotated to check your ext_area lat and lon</span>
+<span class="go">Calculating mean for 2000-2001 jf</span>
+<span class="go">Calculating mean for 2000-2001 jja</span>
+<span class="go">Calculating mean for 2000-2001 jjas</span>
+<span class="go">Calculating mean for 2000-2001 on</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># now load a gcm cube</span>
+<span class="gp">... </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seas_pc_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube2</span><span class="p">,</span> <span class="n">seas_mons</span><span class="o">=</span><span class="p">[[</span><span class="mi">11</span><span class="p">]],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;percentile&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span> <span class="n">ext_area</span><span class="o">=</span><span class="p">[</span><span class="mi">340</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+<span class="go">Calculating percentile for 490-747 n</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># print an example of the output</span>
+<span class="gp">... </span><span class="nb">print</span><span class="p">(</span><span class="n">seas_mean_cubelist</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">air_pressure_at_sea_level / (Pa)    (grid_latitude: 46; grid_longitude: 23)</span>
+<span class="go">     Dimension coordinates:</span>
+<span class="go">          grid_latitude                           x                   -</span>
+<span class="go">          grid_longitude                          -                   x</span>
+<span class="go">     Scalar coordinates:</span>
+<span class="go">          season: jja</span>
+<span class="go">          season_fullname: junjulaug</span>
+<span class="go">          time: 2000-07-16 00:00:00, bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)</span>
+<span class="go">     Attributes:</span>
+<span class="go">          Conventions: CF-1.5</span>
+<span class="go">          STASH: m01s16i222</span>
+<span class="go">          source: Data from Met Office Unified Model</span>
+<span class="go">     Cell methods:</span>
+<span class="go">          mean: time (1 hour)</span>
+<span class="go">          mean: time</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="calculate-wind-speed-and-direction-in-degrees">
+<h1>Calculate wind speed and direction in degrees<a class="headerlink" href="#calculate-wind-speed-and-direction-in-degrees" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-wind_calculations"></span><p>Author(s): Grace Redmond, Saeed Sadri, and UKCP code library</p>
+<dl class="function">
+<dt id="wind_calculations.wind_direction">
+<code class="descclassname">wind_calculations.</code><code class="descname">wind_direction</code><span class="sig-paren">(</span><em>u_cube</em>, <em>v_cube</em>, <em>unrotate=True</em><span class="sig-paren">)</span><a class="headerlink" href="#wind_calculations.wind_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adapted from UKCP common_analysis.py
+(<a class="reference external" href="http://fcm1/projects/UKCPClimateServices/browser/trunk/code/">http://fcm1/projects/UKCPClimateServices/browser/trunk/code/</a>)</p>
+<p>This function calculates the direction of the wind vector,
+which is the “to” direction (e.g. Northwards)
+(i.e. NOT Northerly, the “from” direction!)
+and the CF Convensions say it should be measured
+clockwise from North. If the data is on rotated pole, the
+rotate_winds iris function is applied as a default, but this
+can be turned off.</p>
+<p>Note: If you are unsure whether your winds need to be
+unrotated you can use <a class="reference external" href="http://www-nwp/umdoc/pages/stashtech.html">http://www-nwp/umdoc/pages/stashtech.html</a>
+and navigate to the relevant UM version and stash code:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Rotate=0 means data is relative to the model grid and DOES need to be unrotated.</li>
+<li>Rotate=1 means data is relative to the lat-lon grid and DOES NOT need unrotating.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u_cube</strong> (<em>cube of eastward wind</em>) – </li>
+<li><strong>v_cube</strong> (<em>cube of northward wind</em>) – </li>
+<li><strong>unrotate</strong> (<em>boolean</em><em>, </em><em>defaults to True. If true and data is rotated pole</em><em>, </em><em>the winds are unrotated</em><em>, </em><em>if set to False</em><em>, </em><em>they are not.</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>angle_cube</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cube of wind direction in degrees (wind direction ‘to’ not ‘from’)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A simple example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="n">wind_direction</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">)</span>
+<span class="go">data is on rotated coord system, un-rotating . . .</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span>
+<span class="go">&#39;(-(arctan2(v, u)*180/pi)+90)%360&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">angle</span><span class="o">.</span><span class="n">data</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">angle</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="go">0.0181427 359.99008</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span><span class="o">.</span><span class="n">standard_name</span>
+<span class="go">&#39;wind_to_direction&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Now take the same data and calculate the wind direction WITHOUT rotating</span>
+<span class="gp">... </span><span class="n">angle_unrot</span> <span class="o">=</span> <span class="n">wind_direction</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">,</span> <span class="n">unrotate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Print the difference between wind direction data</span>
+<span class="gp">... </span><span class="c1"># where unrotate=True unrotate=False to illustrate</span>
+<span class="gp">... </span><span class="c1"># the importance of getting the correct unrotate option</span>
+<span class="gp">... </span><span class="nb">print</span><span class="p">(</span><span class="n">angle</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,:</span><span class="mi">10</span><span class="p">]</span> <span class="o">-</span> <span class="n">angle_unrot</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">,:</span><span class="mi">10</span><span class="p">])</span>
+<span class="go">[-26.285324 -26.203125 -26.120728 -26.038239 -25.955551 -25.872742</span>
+<span class="go"> -25.78981  -25.70668  -25.623428 -25.539993]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="wind_calculations.windspeed">
+<code class="descclassname">wind_calculations.</code><code class="descname">windspeed</code><span class="sig-paren">(</span><em>u_cube</em>, <em>v_cube</em><span class="sig-paren">)</span><a class="headerlink" href="#wind_calculations.windspeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function calculates wind speed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u_cube</strong> (<em>cube of eastward wind</em>) – </li>
+<li><strong>v_cube</strong> (<em>cube of northward wind</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>windspeed_cube</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cube of wind speed in same units as input cubes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>A simple example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span> <span class="o">=</span> <span class="n">windspeed</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span>
+<span class="go">&#39;sqrt(u**2, v**2)&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">data</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">ws</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+<span class="go">0.010195612 13.077045</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span><span class="o">.</span><span class="n">standard_name</span>
+<span class="go">&#39;wind_speed&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="add-time-co-ordinate-categorisations">
+<h1>Add time co-ordinate categorisations<a class="headerlink" href="#add-time-co-ordinate-categorisations" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-add_time_coord_cats"></span><dl class="function">
+<dt id="add_time_coord_cats.add_time_coord_cats">
+<code class="descclassname">add_time_coord_cats.</code><code class="descname">add_time_coord_cats</code><span class="sig-paren">(</span><em>cube</em><span class="sig-paren">)</span><a class="headerlink" href="#add_time_coord_cats.add_time_coord_cats" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function takes in an iris cube, and adds a range of
+numeric co-ordinate categorisations to it. Depending
+on the data, not all of the coords added will be relevant.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>iris cube that has a coordinate called 'time'</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>Cube</strong> (<em>cube that has new time categorisation coords added</em>)</li>
+<li><em>A simple example</em></li>
+<li><em>&gt;&gt;&gt; cube_file = ‘/project/ciid/projects/catnip/stock_cubes/mslp.daily.rcm.viet.nc’</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(cube_file)</em></li>
+<li><em>&gt;&gt;&gt; coord_names = [coord.name() for coord in cube.coords()]</em></li>
+<li><em>&gt;&gt;&gt; print((‘, ‘.join(coord_names)))</em></li>
+<li><em>time, grid_latitude, grid_longitude</em></li>
+<li><em>&gt;&gt;&gt; add_time_coord_cats(cube)</em></li>
+<li><em>&gt;&gt;&gt; coord_names = [coord.name() for coord in cube.coords()]</em></li>
+<li><em>&gt;&gt;&gt; print((‘, ‘.join(coord_names)))</em></li>
+<li><em>time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year</em></li>
+<li><em>&gt;&gt;&gt; # print every 50th value of the added time cat coords</em></li>
+<li><strong>… for c in coord_names[3</strong> (<em>]:</em>)</li>
+<li><em>…     print(cube.coord(c).long_name)</em></li>
+<li><em>…     print(cube.coord(c).points[::50])</em></li>
+<li><em>…</em></li>
+<li><em>day_of_month</em></li>
+<li><em>[ 1 21 11  1 21 11  1 21]</em></li>
+<li><em>day_of_year</em></li>
+<li><em>[  1  51 101 151 201 251 301 351]</em></li>
+<li><em>month</em></li>
+<li><em>[‘Jan’ ‘Feb’ ‘Apr’ ‘Jun’ ‘Jul’ ‘Sep’ ‘Nov’ ‘Dec’]</em></li>
+<li><em>month_number</em></li>
+<li><em>[ 1  2  4  6  7  9 11 12]</em></li>
+<li><em>season</em></li>
+<li><em>[‘djf’ ‘djf’ ‘mam’ ‘jja’ ‘jja’ ‘son’ ‘son’ ‘djf’]</em></li>
+<li><em>season_number</em></li>
+<li><em>[0 0 1 2 2 3 3 0]</em></li>
+<li><em>year</em></li>
+<li><em>[2000 2000 2000 2000 2000 2000 2000 2000]</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="compare-two-cubes-and-their-co-ordinates">
+<h1>Compare two cubes and their co-ordinates<a class="headerlink" href="#compare-two-cubes-and-their-co-ordinates" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-compare"></span><p>Author:Chris Kent’s work, extended by Grace Redmond
+Date:04/2019</p>
+<dl class="function">
+<dt id="compare.compare_coords">
+<code class="descclassname">compare.</code><code class="descname">compare_coords</code><span class="sig-paren">(</span><em>c1</em>, <em>c2</em><span class="sig-paren">)</span><a class="headerlink" href="#compare.compare_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two iris coordinates - checks names, shape,
+point values, bounds and coordinate system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>c1</strong> (<em>iris coordinate from a cube</em>) – </li>
+<li><strong>c2</strong> (<em>iris coordinate from a cube</em>) – </li>
+<li><strong>example</strong> (<em>An</em>) – </li>
+<li><strong>import iris</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>data_dir = '/project/ciid/projects/catnip/stock_cubes'</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube1 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/gcm_monthly.pp'</strong><strong>, </strong><strong>'air_temperature'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube2 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/FGOALS-g2_ua&#64;925_nov.nc'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>&gt;&gt;&gt;</strong> – </li>
+<li><strong>compare_coords</strong><strong>(</strong><strong>cube1.coord</strong><strong>(</strong><strong>'latitude'</strong><strong>)</strong><strong>, </strong><strong>cube2.coord</strong><strong>(</strong><strong>'latitude'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>values differ</strong> (<em>var_name</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>dtypes differ</strong> (<em>Point</em>) – </li>
+<li><strong>has bounds</strong><strong>, </strong><strong>the other doesn't</strong> (<em>One</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="compare.compare_cubes">
+<code class="descclassname">compare.</code><code class="descname">compare_cubes</code><span class="sig-paren">(</span><em>cube1</em>, <em>cube2</em><span class="sig-paren">)</span><a class="headerlink" href="#compare.compare_cubes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares two cubes for  names, data, coordinates.
+Does not yet include attributes
+Results are printed to the screen</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cube1</strong> (<em>iris cube</em>) – </li>
+<li><strong>cube2</strong> (<em>iris cube</em>) – </li>
+<li><strong>example</strong> (<em>An</em>) – </li>
+<li><strong>import iris</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>data_dir = '/project/ciid/projects/catnip/stock_cubes'</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube1 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/gcm_monthly.pp'</strong><strong>, </strong><strong>'x_wind'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>cube2 = iris.load_cube</strong><strong>(</strong><strong>data_dir + '/FGOALS-g2_ua&#64;925_nov.nc'</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>compare_cubes</strong><strong>(</strong><strong>cube1</strong><strong>, </strong><strong>cube2</strong><strong>) </strong><strong># doctest</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>Cube name and data checks ~~~~~</strong> (<em>~~~~~</em>) – </li>
+<li><strong>values differ</strong> (<em>var_name</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>dimensions differ</strong> (<em>Cube</em>) – </li>
+<li><strong>dtypes differ</strong> (<em>Point</em>) – </li>
+<li><strong>types differ</strong> (<em>Data</em>) – </li>
+<li><strong>Coordinate checks ~~~~~</strong> (<em>~~~~~</em>) – </li>
+<li><strong>- Dimensions coords differ on the following coord</strong><strong>(</strong><strong>s</strong><strong>)</strong> (<em>WARNING</em>) – </li>
+<li><strong>matching dim coords</strong> (<em>Checking</em>) – </li>
+<li><strong>longitude vs longitude --</strong> (<em>--</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values are different</strong> (<em>Point</em>) – </li>
+<li><strong>dtypes differ</strong> – </li>
+<li><strong>has bounds</strong><strong>, </strong><strong>the other doesn't</strong> (<em>One</em>) – </li>
+<li><strong>latitude vs latitude --</strong> (<em>--</em>) – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>values differ</strong> – </li>
+<li><strong>do not match</strong> (<em>Shapes</em>) – </li>
+<li><strong>values are different</strong> – </li>
+<li><strong>dtypes differ</strong> – </li>
+<li><strong>has bounds</strong><strong>, </strong><strong>the other doesn't</strong> – </li>
+<li><strong>- Dimensions coords differ on the following coord</strong><strong>(</strong><strong>s</strong><strong>)</strong> – [‘air_pressure’, ‘forecast_period’, ‘forecast_reference_time’,
+‘height’, ‘month_number’, ‘time’, ‘year’]</li>
+<li><strong>have no matching aux coords</strong> (<em>Cubes</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="functions-to-convert-lat-and-lon-points-from-real-to-rotated-or-visa-versa">
+<h1>Functions to convert lat and lon points from real to rotated or visa versa<a class="headerlink" href="#functions-to-convert-lat-and-lon-points-from-real-to-rotated-or-visa-versa" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-transform_rot_reg_points"></span><p>Author: Grace Redmond
+Date: 04/2019</p>
+<dl class="function">
+<dt id="transform_rot_reg_points.regular_point_to_rotated">
+<code class="descclassname">transform_rot_reg_points.</code><code class="descname">regular_point_to_rotated</code><span class="sig-paren">(</span><em>cube</em>, <em>lon</em>, <em>lat</em><span class="sig-paren">)</span><a class="headerlink" href="#transform_rot_reg_points.regular_point_to_rotated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to convert a regular lon lat point to
+the equivalent point on a rotated pole grid
+defined by the coordinate system of an input cube.
+Longitude can be either 0-360 or -180-180 degree.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>cube on rotated coord system</em>) – </li>
+<li><strong>lon</strong> (<em>float of regular longitude point</em>) – </li>
+<li><strong>lat</strong> (<em>float of regular latitude point</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>rot_lon</strong> (<em>The equivalent longitude point on the grid of the input cube</em>)</li>
+<li><strong>rot_lat</strong> (<em>The equivalent latitude point on the grid of the input cube</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; lat = 6.5</em></li>
+<li><em>&gt;&gt;&gt; lon = 289 # on 0-360 degree</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; rot_lon, rot_lat = regular_point_to_rotated(cube, lon, lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(rot_lon), “{:.3f}”.format(rot_lat))</em>)</li>
+<li><em>-84.330 3.336</em></li>
+<li><em>&gt;&gt;&gt; lat = 6.5</em></li>
+<li><em>&gt;&gt;&gt; lon = -71 # on -180-180 degree</em></li>
+<li><em>&gt;&gt;&gt; rot_lon, rot_lat = regular_point_to_rotated(cube, lon, lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(rot_lon), “{:.3f}”.format(rot_lat))</em>)</li>
+<li><em>-84.330 3.336</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="transform_rot_reg_points.rotated_point_to_regular">
+<code class="descclassname">transform_rot_reg_points.</code><code class="descname">rotated_point_to_regular</code><span class="sig-paren">(</span><em>cube</em>, <em>rot_lon</em>, <em>rot_lat</em><span class="sig-paren">)</span><a class="headerlink" href="#transform_rot_reg_points.rotated_point_to_regular" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to convert a rotated lon lat point to
+the equivalent real lon lat point. Rotation of input point
+defined by the coordinate system of the input cube.
+Longitude output in -180-180 degree format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>cube on rotated coord system</em><em>, </em><em>used as reference grid for transformation.</em>) – </li>
+<li><strong>rot_lon</strong> (<em>float of rotated longitude point</em>) – </li>
+<li><strong>rot_lat</strong> (<em>float of rotated latitude point</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>reg_lon</strong> (<em>The equivalent real longitude point.</em>)</li>
+<li><strong>reg_lat</strong> (<em>The equivalent real latitude point.</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; rot_lat = 3.34</em></li>
+<li><em>&gt;&gt;&gt; rot_lon = -84.33</em></li>
+<li><em>&gt;&gt;&gt; reg_lon, reg_lat = rotated_point_to_regular(cube, rot_lon, rot_lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(reg_lon), “{:.3f}”.format(reg_lat))</em>)</li>
+<li><em>-71.003 6.502</em></li>
+<li><em>&gt;&gt;&gt; rot_lat = 40</em></li>
+<li><em>&gt;&gt;&gt; rot_lon = 370</em></li>
+<li><em>&gt;&gt;&gt; reg_lon, reg_lat = rotated_point_to_regular(cube, rot_lon, rot_lat)</em></li>
+<li><strong>&gt;&gt;&gt; print(“{</strong> (<em>.3f}”.format(reg_lon), “{:.3f}”.format(reg_lat))</em>)</li>
+<li><em>116.741 82.265</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="extract-area-from-a-cube-on-rotated-pole">
+<h1>Extract area from a cube on rotated pole<a class="headerlink" href="#extract-area-from-a-cube-on-rotated-pole" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-extract_rot_cube"></span><dl class="function">
+<dt id="extract_rot_cube.extract_rot_cube">
+<code class="descclassname">extract_rot_cube.</code><code class="descname">extract_rot_cube</code><span class="sig-paren">(</span><em>cube</em>, <em>min_lat</em>, <em>min_lon</em>, <em>max_lat</em>, <em>max_lon</em><span class="sig-paren">)</span><a class="headerlink" href="#extract_rot_cube.extract_rot_cube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function etracts the specific region from the cube.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>cube on rotated coord system</em><em>, </em><em>used as reference grid for transformation.</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
+<li><strong>min_lat</strong> (<em>The minimum latitude point of the desired extracted cube.</em>)</li>
+<li><strong>min_lon</strong> (<em>The minimum longitude point of the desired extracted cube.</em>)</li>
+<li><strong>max_lat</strong> (<em>The maximum latitude point of the desired extracted cube.</em>)</li>
+<li><strong>max_lon</strong> (<em>The maximum longitude point of the desired extracted cube.</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; min_lat = 50</em></li>
+<li><em>&gt;&gt;&gt; min_lon = -10</em></li>
+<li><em>&gt;&gt;&gt; max_lat = 60</em></li>
+<li><em>&gt;&gt;&gt; max_lon = 0</em></li>
+<li><em>&gt;&gt;&gt; extracted_cube = extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon)</em></li>
+<li><em>&gt;&gt;&gt; print(np.max(extracted_cube.coord(‘latitude’).points))</em></li>
+<li><em>61.47165097005264</em></li>
+<li><em>&gt;&gt;&gt; print(np.min(extracted_cube.coord(‘latitude’).points))</em></li>
+<li><em>48.213032844268646</em></li>
+<li><em>&gt;&gt;&gt; print(np.max(extracted_cube.coord(‘longitude’).points))</em></li>
+<li><em>3.642576550089792</em></li>
+<li><em>&gt;&gt;&gt; print(np.min(extracted_cube.coord(‘longitude’).points))</em></li>
+<li><em>-16.385571344717235</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="calculates-linear-regression-parameters-and-confidence-intervals-it-also-plots-the-output">
+<h1>Calculates linear regression parameters and confidence intervals, it also plots the output<a class="headerlink" href="#calculates-linear-regression-parameters-and-confidence-intervals-it-also-plots-the-output" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-regress_ci"></span><p>Authors:Dave Rowell, Grace Redmond</p>
+<dl class="function">
+<dt id="regress_ci.ci_interval">
+<code class="descclassname">regress_ci.</code><code class="descname">ci_interval</code><span class="sig-paren">(</span><em>xi</em>, <em>yi</em>, <em>alpha=0.05</em><span class="sig-paren">)</span><a class="headerlink" href="#regress_ci.ci_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates  Confidence interval (default 95%) parameters for two
+numpy arrays of dimension 1. Returns include the gradient
+and intercept of the confidence interval.</p>
+<p>It also returns vectors for confidence interval plotting:
+-  the high/low confidence interval of the slope
+-  the high low curves of confidence interval of yi.</p>
+<p>Parameters have been calculated using von Storch &amp;
+Zwiers Statisical Analysis in Climate Research
+Sect.8.3.7 and 8.3.10</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xi</strong> (<em>numpy array of dimension 1</em>) – </li>
+<li><strong>yi</strong> (<em>dependant variable</em><em>, </em><em>numpy array of dimension 1</em>) – </li>
+<li><strong>alpha</strong> (<em>required confidence interval</em><em> (</em><em>e.g. 0.05 for 95%</em><em>)</em><em> Default is 0.05.</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>slope_conf_int</strong> (<em>Gradient of confidence interval</em>)</li>
+<li><strong>intcp_conf_int</strong> (<em>Intercept (calculated using mean(yi)) of confidence interval</em>)</li>
+<li><strong>xpts</strong> (<em>the min and max value of xi.</em>)</li>
+<li><strong>slope_lo_pts</strong> (<em>for plotting, min and max y value of lower bound of CI of slope</em>)</li>
+<li><strong>slope_hi_pts</strong> (<em>for plotting, min and max y value of upper bound of CI of slope</em>)</li>
+<li><strong>xreg</strong> (<em>x values spanning xmin to xmax linearly spaced, for plotting against  yi CI curve.</em>)</li>
+<li><strong>y_conf_int_lo</strong> (<em>for plotting, lower bound of CI region for yi</em>)</li>
+<li><strong>y_conf_int_hi</strong> (<em>for plotting, upper bound of CI region for yi</em>)</li>
+<li><em>A simple example</em></li>
+<li><em>&gt;&gt;&gt; x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])</em></li>
+<li><em>&gt;&gt;&gt; y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])</em></li>
+<li><em>&gt;&gt;&gt; slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, slope_hi_pts,             xreg, y_conf_int_lo, y_conf_int_hi = ci_interval(x, y)</em></li>
+<li><em>Calculating the 95.0% confidence interval</em></li>
+<li><strong>&gt;&gt;&gt; print(‘CI gradient’, “{</strong> (<em>.2f}”.format(slope_conf_int))</em>)</li>
+<li><em>CI gradient 0.62</em></li>
+<li><strong>&gt;&gt;&gt; print(‘CI intercept’, “{</strong> (<em>.2f}”.format(intcp_conf_int))</em>)</li>
+<li><em>CI intercept 2.81</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="regress_ci.linear_regress">
+<code class="descclassname">regress_ci.</code><code class="descname">linear_regress</code><span class="sig-paren">(</span><em>xi</em>, <em>yi</em><span class="sig-paren">)</span><a class="headerlink" href="#regress_ci.linear_regress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solves y = mx + c by returning the
+least squares solution to a linear matrix
+equation. Expects two numpy arrays of dimension 1.
+TODO: use sklearn to perform regression</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xi</strong> (<em>numpy array of dimension 1</em>) – </li>
+<li><strong>yi</strong> (<em>dependant variable</em><em>, </em><em>numpy array of dimension 1</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>grad</strong> (<em>gradient i.e. m in y = mx + c</em>)</li>
+<li><strong>intcp</strong> (<em>intercept i.e. c in y = mx + c</em>)</li>
+<li><strong>xpts</strong> (<em>the min and max value of xi, used to plot line of best fit</em>)</li>
+<li><strong>ypts</strong> (<em>the min and max of the y solutions to line of best fit for plotting</em>)</li>
+<li><em>A simple example</em></li>
+<li><em>&gt;&gt;&gt; x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])</em></li>
+<li><em>&gt;&gt;&gt; y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])</em></li>
+<li><em>&gt;&gt;&gt; grad, intcp, xp, yp, sum_res = linear_regress(x, y)</em></li>
+<li><strong>&gt;&gt;&gt; print(‘gradient’, “{</strong> (<em>.2f}”.format(grad))</em>)</li>
+<li><em>gradient 0.54</em></li>
+<li><strong>&gt;&gt;&gt; print(‘intercept’, “{</strong> (<em>.2f}”.format(intcp))</em>)</li>
+<li><em>intercept 3.07</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="regress_ci.plot_regress">
+<code class="descclassname">regress_ci.</code><code class="descname">plot_regress</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>best_fit=True</em>, <em>CI_region=True</em>, <em>CI_slope=False</em>, <em>alpha=0.05</em>, <em>num_plot=111</em>, <em>title=''</em>, <em>xlabel=''</em>, <em>ylabel=''</em><span class="sig-paren">)</span><a class="headerlink" href="#regress_ci.plot_regress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produces an x and y scatter plot and calculates the correlation
+coefficient, as a default it will also plot the line of best fit
+(using linear regression), and the 95% confidence region.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>numpy array of dimension 1</em>) – </li>
+<li><strong>y</strong> (<em>dependant variable</em><em>, </em><em>numpy array of dimension 1</em>) – </li>
+<li><strong>best_fit</strong> (<em>True</em><em> or </em><em>False depending on whether a line of best fit is</em>) – required, default is set to True.</li>
+<li><strong>CI_region</strong> (<em>True</em><em> or </em><em>False depending on whether plotting the confidence</em>) – region is required, default is set to True.</li>
+<li><strong>CI_slope</strong> (<em>True</em><em> or </em><em>False depending on whether the CI slope lines</em>) – are required, default is set to False.</li>
+<li><strong>alpha</strong> (<em>required confidence interval</em><em> (</em><em>e.g. 0.05 for 95%</em><em>)</em><em> Default is 0.05.</em>) – </li>
+<li><strong>num_plot</strong> (<em>polot/subplot position</em><em>, </em><em>default is 111.</em>) – </li>
+<li><strong>title</strong> (<em>title of plot.</em>) – </li>
+<li><strong>xlabel</strong> (<em>x axis label.</em>) – </li>
+<li><strong>ylabel</strong> (<em>y axis label.</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><em>A scatter plot of x and y, can be visualised using</em></li>
+<li><em>plt.show() or saved using plt.savefig()</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<a class="reference internal image-reference" href="_images/regress_ci.png"><img alt="_images/regress_ci.png" src="_images/regress_ci.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="regrid-a-cube-to-the-same-grid-as-another-cube-and-or-set-up-a-regridder-to-be-used-multiple-times">
+<h1>Regrid a cube to the same grid as another cube and/or set up a regridder to be used multiple times<a class="headerlink" href="#regrid-a-cube-to-the-same-grid-as-another-cube-and-or-set-up-a-regridder-to-be-used-multiple-times" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-regrid_to_target"></span><p>Author: Grace Redmond
+Date: 04/2019</p>
+<dl class="function">
+<dt id="regrid_to_target.regrid_to_target">
+<code class="descclassname">regrid_to_target.</code><code class="descname">regrid_to_target</code><span class="sig-paren">(</span><em>cube</em>, <em>target_cube</em>, <em>method='linear'</em>, <em>extrap='mask'</em>, <em>mdtol=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#regrid_to_target.regrid_to_target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in two cubes, and regrids one onto the grid
+of the other. Optional arguments include the method
+of regridding, default is linear. The method of
+extrapolation (if it is required), the default is
+to mask the data, even if the source data is not
+a masked array. And, if the method is areaweighted,
+choose a missing data tolerance, default is 0.5.
+For full info, see <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html">https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html</a></p>
+<p>Note: areaweighted is VERY picky, it will not allow you to regrid using
+this method if the two input cubes are not on the same coordinate system,
+and both input grids must also contain monotonic, bounded, 1D spatial coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>cube you want to regrid</em>) – </li>
+<li><strong>target_cube</strong> (<em>cube on the target grid</em>) – </li>
+<li><strong>method</strong> (<em>method of regridding</em><em>, </em><em>options are 'linear'</em><em>, </em><em>'nearest' and 'areaweighted'.</em>) – </li>
+<li><strong>extrap</strong> (<em>extraopolation mode</em><em>, </em><em>options are 'mask'</em><em>, </em><em>'nan'</em><em>, </em><em>'error' and 'nanmask'</em>) – </li>
+<li><strong>mdtol</strong> (<em>tolerated fraction of masked data in any given target grid-box</em><em>, </em><em>only used if method='areaweighted'</em><em>, </em><em>between 0 and 1.</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>cube_reg</strong> (<em>input cube on the grid of target_cube</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; tgrid = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; cube_reg = regrid_to_target(cube, tgrid)</em></li>
+<li><em>regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear</em></li>
+<li><em>&gt;&gt;&gt; print(cube.shape, tgrid.shape)</em></li>
+<li><em>(145, 192) (2, 433, 444)</em></li>
+<li><em>&gt;&gt;&gt; print(cube_reg.shape)</em></li>
+<li><em>(433, 444)</em></li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="regrid_to_target.set_regridder">
+<code class="descclassname">regrid_to_target.</code><code class="descname">set_regridder</code><span class="sig-paren">(</span><em>cube</em>, <em>target_cube</em>, <em>method='linear'</em>, <em>extrap='mask'</em>, <em>mdtol=0.5</em><span class="sig-paren">)</span><a class="headerlink" href="#regrid_to_target.set_regridder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes in two cubes, and sets up a regridder, mapping
+one cube to another. The most computationally expensive
+part of regridding is setting up the re-gridder, if you
+have a lot of cubes to re-grid, this will save time.
+Optional arguments include the method of regridding,
+default is linear.The method of extrapolation (if
+it is required), the default is to mask the data,
+even if the source data is not a masked array. And,
+if the method is areaweighted, choose a missing data
+tolerance, default is 0.5.
+For full info, see <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html">https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html</a></p>
+<p>Note: areaweighted is VERY picky, it will not allow you to regrid using
+this method if the two input cubes are not on the same coordinate system,
+and both input grids must also contain monotonic, bounded, 1D spatial coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cube</strong> (<em>cube you want to regrid</em>) – </li>
+<li><strong>target_cube</strong> (<em>cube on the target grid</em>) – </li>
+<li><strong>method</strong> (<em>method of regridding</em><em>, </em><em>options are 'linear'</em><em>, </em><em>'nearest' and 'areaweighted'.</em>) – </li>
+<li><strong>extrap</strong> (<em>extraopolation mode</em><em>, </em><em>options are 'mask'</em><em>, </em><em>'nan'</em><em>, </em><em>'error' and 'nanmask'</em>) – </li>
+<li><strong>mdtol</strong> (<em>tolerated fraction of masked data in any given target grid-box</em><em>, </em><em>only used if method='areaweighted'</em><em>, </em><em>between 0 and 1.</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>regridder</strong> (<em>a cached regridder which can be used on any iris cube which has the same grid as cube.</em>)</li>
+<li><em>An example</em></li>
+<li><em>&gt;&gt;&gt; cube = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; tgrid = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/rcm_monthly.pp’, ‘air_temperature’)</em></li>
+<li><em>&gt;&gt;&gt; regridder = set_regridder(cube, tgrid)</em></li>
+<li><em>&gt;&gt;&gt; cube2 = iris.load_cube(‘/project/ciid/projects/catnip/stock_cubes/gcm_monthly.pp’, ‘cloud_area_fraction’)</em></li>
+<li><em>&gt;&gt;&gt; print(cube2.shape)</em></li>
+<li><em>(145, 192)</em></li>
+<li><em>&gt;&gt;&gt; regridder(cube2)</em></li>
+<li><strong>&lt;iris ‘Cube’ of cloud_area_fraction / (1) (grid_latitude</strong> (<em>433; grid_longitude: 444)&gt;</em>)</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="a-number-of-functions-that-deal-with-the-um-and-precis-date-stamp">
+<h1>A number of functions that deal with the UM and PRECIS date stamp<a class="headerlink" href="#a-number-of-functions-that-deal-with-the-um-and-precis-date-stamp" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-umdates"></span><p>Various utility functions below for dealing with PRECIS and UM date stamps.</p>
+<dl class="function">
+<dt id="umdates.UMFileList">
+<code class="descclassname">umdates.</code><code class="descname">UMFileList</code><span class="sig-paren">(</span><em>runid</em>, <em>startd</em>, <em>endd</em>, <em>freq</em><span class="sig-paren">)</span><a class="headerlink" href="#umdates.UMFileList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give a (thoretical) list of UM date format files between 2 dates.
+Assuming no missing dates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>runid</strong> (<em>model runid</em>) – </li>
+<li><strong>startd</strong> (<em>start date</em><em>(</em><em>date</em><em>)</em>) – </li>
+<li><strong>endd</strong> (<em>end date</em><em>(</em><em>date</em><em>)</em>) – </li>
+<li><strong>freq</strong> – </li>
+<li><strong>frequency of data according to PRECIS technical manual</strong> (<em>Specifies</em>) – </li>
+<li><strong>D1</strong> (<em>table</em>) – </li>
+<li><strong>http</strong> (<em>//www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=118</em>) – </li>
+<li><strong>only supports</strong> (<em>Currently</em>) – </li>
+<li><strong>pa</strong> (<em>Timeseries of daily data spanning 1 month</em><em> (</em><em>beginning 0z on the 1st day</em><em>)</em>) – </li>
+<li><strong>pj</strong> (<em>Timeseries of hourly data spanning 1 day</em><em> (</em><em>0z - 24z</em><em>)</em>) – </li>
+<li><strong>pm</strong> (<em>Monthly average data for 1 month</em>) – </li>
+<li><strong>currently supported</strong> (<em>Not</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>filelist</strong> (<em>list of strings giving the filenames</em>)</li>
+<li><em>&gt;&gt;&gt; runid = ‘akwss’</em></li>
+<li><em>&gt;&gt;&gt; startd = datetime(1980, 9, 1)</em></li>
+<li><em>&gt;&gt;&gt; endd = datetime(1980, 9, 3)</em></li>
+<li><em>&gt;&gt;&gt; freq = ‘pa’</em></li>
+<li><strong>&gt;&gt;&gt; print (UMFileList(runid, startd, endd, freq)) # doctest</strong> (<em>+NORMALIZE_WHITESPACE</em>)</li>
+<li><em>[‘akwssa.pai0910.pp’, ‘akwssa.pai0920.pp’, ‘akwssa.pai0930.pp’]</em></li>
+<li><em>&gt;&gt;&gt; startd = datetime(1980, 9, 1)</em></li>
+<li><em>&gt;&gt;&gt; endd = datetime(1980, 12, 31)</em></li>
+<li><em>&gt;&gt;&gt; freq = ‘pm’</em></li>
+<li><strong>&gt;&gt;&gt; print (UMFileList(runid, startd, endd, freq)) # doctest</strong> (<em>+NORMALIZE_WHITESPACE</em>)</li>
+<li><em>[‘akwssa.pmi0sep.pp’, ‘akwssa.pmi0oct.pp’,</em> – ‘akwssa.pmi0nov.pp’, ‘akwssa.pmi0dec.pp’]</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="umdates.convertFromUMStamp">
+<code class="descclassname">umdates.</code><code class="descname">convertFromUMStamp</code><span class="sig-paren">(</span><em>datestamp</em>, <em>fmt</em><span class="sig-paren">)</span><a class="headerlink" href="#umdates.convertFromUMStamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert UM date stamp to normal python date.
+DOES NOT SUPPORT 3 monthly seasons e.g. JJA as described in the manual
+<a class="reference external" href="http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119">http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>datestamp</strong> (<em>UM datestamp</em>) – </li>
+<li><strong>fmt</strong> (<em>either 'YYMMM'</em><em> or </em><em>'YYMDH'</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>dt</strong> (<em>datetime object of the input datestamp</em>)</li>
+<li><em>&gt;&gt;&gt; print (convertFromUMStamp(‘k5bu0’, ‘YYMDH’))</em></li>
+<li><strong>2005-11-30 00</strong> (<em>00:00</em>)</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="umdates.convertToUMStamp">
+<code class="descclassname">umdates.</code><code class="descname">convertToUMStamp</code><span class="sig-paren">(</span><em>dt</em>, <em>fmt</em><span class="sig-paren">)</span><a class="headerlink" href="#umdates.convertToUMStamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert python datetime object or netcdf datetime object
+into UM date stamp.
+<a class="reference external" href="http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119">http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dt</strong> (<em>Python datetime object to convert</em>) – </li>
+<li><strong>fmt</strong> (<em>either 'YYMMM'</em><em> or </em><em>'YYMDH'. Will not convert seasonal</em><em> (</em><em>e.g. JJA</em><em>)</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>UMstr</strong> (<em>string with UMdatestamp</em>)</li>
+<li><em>&gt;&gt;&gt; dt = datetime(1981, 11, 2)</em></li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMMM’))</em></li>
+<li><strong>1981-11-02 00</strong> (<em>00:00 i1nov</em>)</li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMDH’))</em></li>
+<li><strong>1981-11-02 00</strong> (<em>00:00 i1b20</em>)</li>
+<li><em>&gt;&gt;&gt; dt = cdatetime(1981, 2, 30)</em></li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMMM’))</em></li>
+<li><strong>1981-02-30 00</strong> (<em>00:00 i1feb</em>)</li>
+<li><em>&gt;&gt;&gt; print (dt, convertToUMStamp(dt, ‘YYMDH’))</em></li>
+<li><strong>1981-02-30 00</strong> (<em>00:00 i12u0</em>)</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="umdates.precisD2">
+<code class="descclassname">umdates.</code><code class="descname">precisD2</code><span class="sig-paren">(</span><em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#umdates.precisD2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert characters according to PRECIS table D2
+<a class="reference external" href="http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119">http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119</a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>c</strong> (<em>character</em><em> or </em><em>number to convert</em>) – </li>
+<li><strong>a character to convert from left to right in the table</strong> (<em>Supply</em>) – </li>
+<li><strong>an int to convert from right to left in the table</strong> (<em>Supply</em>) – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>'1'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>1</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>'c'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>12</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>'s'</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>28</strong> – </li>
+<li><strong>does the reverse conversions</strong> (<em>Also</em>) – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>1</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>1</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>12</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>c</strong> – </li>
+<li><strong>print</strong><strong> (</strong><strong>precisD2</strong><strong>(</strong><strong>28</strong><strong>)</strong><strong>)</strong> (<em>&gt;&gt;&gt;</em>) – </li>
+<li><strong>s</strong> – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>conv</strong></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">converted value: int if input is string, string if input is int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="umdates.precisYY">
+<code class="descclassname">umdates.</code><code class="descname">precisYY</code><span class="sig-paren">(</span><em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#umdates.precisYY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert year (int) into 2 character UM year</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>y</strong> (<em>int</em>) – </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>YY</strong></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string 2 letter UM year character</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">precisYY</span><span class="p">(</span><span class="mi">1973</span><span class="p">))</span>
+<span class="go">h3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="wind-vector-plotting-function-that-can-also-unrotate-winds-before-plotting">
+<h1>Wind vector plotting function that can also unrotate winds before plotting<a class="headerlink" href="#wind-vector-plotting-function-that-can-also-unrotate-winds-before-plotting" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-vector_plot"></span><dl class="function">
+<dt id="vector_plot.vector_plot">
+<code class="descclassname">vector_plot.</code><code class="descname">vector_plot</code><span class="sig-paren">(</span><em>u_cube</em>, <em>v_cube</em>, <em>unrotate=False</em>, <em>npts=30</em>, <em>num_plot=111</em>, <em>title=''</em><span class="sig-paren">)</span><a class="headerlink" href="#vector_plot.vector_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>A plotting function to produce a quick wind
+vector plot. Output is a plot with windspeed
+contours and wind vectors. Optionally the
+u and v components can be unrotated.</p>
+<p>Note: If you are unsure whether your winds need to be
+unrotated you can use <a class="reference external" href="http://www-nwp/umdoc/pages/stashtech.html">http://www-nwp/umdoc/pages/stashtech.html</a>
+and navigate to the relevant UM version and stash code:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Rotate=0 means data is relative to the model grid and DOES need to be unrotated.</li>
+<li>Rotate=1 means data is relative to the lat-lon grid and DOES NOT need unrotating.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u_cube</strong> (<em>iris 2D cube of u wind component</em>) – </li>
+<li><strong>v_cube</strong> (<em>iris 2D cube of v wind component</em>) – </li>
+<li><strong>unrotate</strong> (<em>if set to True will unrotate wind vectors</em><em>, </em><em>default is False.</em>) – </li>
+<li><strong>npts</strong> (<em>integer</em><em>, </em><em>plot can look crowded</em><em>, </em><em>so plot vector arrow every npts</em><em> (</em><em>1=every point</em><em>, </em><em>50=every 50th point</em><em>)</em><em>, </em><em>defaults to 30.</em>) – </li>
+<li><strong>num_plot</strong> (<em>if subplots required the plot number e.g. 121 can be specified here. Defaults to 111.</em>) – </li>
+<li><strong>title</strong> (<em>plot title</em><em>, </em><em>must be a string</em><em>, </em><em>defaults to blank.</em>) – </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<a class="reference internal image-reference" href="_images/rcm_rot_vs_unrot.png"><img alt="_images/rcm_rot_vs_unrot.png" src="_images/rcm_rot_vs_unrot.png" style="width: 600px;" /></a>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Dew point temperature calculation</a></li>
+<li><a class="reference internal" href="#find-the-date-range-in-a-cube-and-construct-a-constraint">Find the date range in a cube and construct a constraint</a></li>
+<li><a class="reference internal" href="#remove-rim">Remove Rim</a></li>
+<li><a class="reference internal" href="#remove-forecast-co-ordinates">Remove Forecast Co-ordinates</a></li>
+<li><a class="reference internal" href="#sort-cube">Sort cube</a></li>
+<li><a class="reference internal" href="#convert-um-stash-codes-to-iris-stash-codes">Convert UM stash codes to iris stash codes</a></li>
+<li><a class="reference internal" href="#date-chunks">Date chunks</a></li>
+<li><a class="reference internal" href="#add-bounds-to-a-cube">Add bounds to a cube</a></li>
+<li><a class="reference internal" href="#add-a-coordinate-system-to-a-cube">Add a coordinate system to a cube</a></li>
+<li><a class="reference internal" href="#add-unrotated-lat-and-lon-coordinates-as-aux-coord">Add unrotated lat and lon coordinates as aux coord</a></li>
+<li><a class="reference internal" href="#find-the-common-time-period-between-two-cubes">Find the common time period between two cubes</a></li>
+<li><a class="reference internal" href="#calculate-a-seasonal-metric-with-user-defined-years-seasons-and-lat-lon-region">Calculate a seasonal metric with user defined years, seasons and lat/lon region</a></li>
+<li><a class="reference internal" href="#calculate-wind-speed-and-direction-in-degrees">Calculate wind speed and direction in degrees</a></li>
+<li><a class="reference internal" href="#add-time-co-ordinate-categorisations">Add time co-ordinate categorisations</a></li>
+<li><a class="reference internal" href="#compare-two-cubes-and-their-co-ordinates">Compare two cubes and their co-ordinates</a></li>
+<li><a class="reference internal" href="#functions-to-convert-lat-and-lon-points-from-real-to-rotated-or-visa-versa">Functions to convert lat and lon points from real to rotated or visa versa</a></li>
+<li><a class="reference internal" href="#extract-area-from-a-cube-on-rotated-pole">Extract area from a cube on rotated pole</a></li>
+<li><a class="reference internal" href="#calculates-linear-regression-parameters-and-confidence-intervals-it-also-plots-the-output">Calculates linear regression parameters and confidence intervals, it also plots the output</a></li>
+<li><a class="reference internal" href="#regrid-a-cube-to-the-same-grid-as-another-cube-and-or-set-up-a-regridder-to-be-used-multiple-times">Regrid a cube to the same grid as another cube and/or set up a regridder to be used multiple times</a></li>
+<li><a class="reference internal" href="#a-number-of-functions-that-deal-with-the-um-and-precis-date-stamp">A number of functions that deal with the UM and PRECIS date stamp</a></li>
+<li><a class="reference internal" href="#wind-vector-plotting-function-that-can-also-unrotate-winds-before-plotting">Wind vector plotting function that can also unrotate winds before plotting</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="instructions.html"
+                        title="previous chapter">Useful commands</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tools.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="instructions.html" title="Useful commands"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">catnip 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, gredmond.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

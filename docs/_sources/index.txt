@@ -1,0 +1,30 @@
+Welcome to ciid_tools's documentation!
+======================================
+
+This is my first attempt at sphinx.
+
+A header
+========
+
+Here is some important text.::
+
+    print('cheese')
+    >> cheese
+
+
+Guide
+^^^^^
+
+.. toctree::
+   :maxdepth: 2
+ 
+   blah
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
