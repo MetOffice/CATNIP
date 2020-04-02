@@ -1,16 +1,16 @@
-#Author: Grace Redmond
-
+"""
+Created on March, 2020
+Authors: Grace Redmond
+"""
 
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
 import iris.quickplot as qplt
-import cartopy
-import cartopy.feature as cfeat
-import cartopy.crs as ccrs
-import numpy as np
 import iris
+from catnip.analysis import linear_regress, ci_interval
+
+
 
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
 
@@ -73,6 +73,64 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
     ax.set_extent([x.points[0],x.points[-1],y.points[0],y.points[-1]],transform)
     plt.title(title)    
     print("plot {} created".format(title))
+
+
+def plot_regress(x, y, best_fit=True, CI_region=True, CI_slope=False, alpha=0.05, num_plot=111, title='', xlabel='', ylabel=''):
+
+    """
+    Produces an x and y scatter plot and calculates the correlation
+    coefficient, as a default it will also plot the line of best fit
+    (using linear regression), and the 95% confidence region.
+
+    args
+    ----
+    x: numpy array of dimension 1
+    y: dependant variable, numpy array of dimension 1
+    best_fit: True or False depending on whether a line of best fit is
+              required, default is set to True.
+    CI_region: True or False depending on whether plotting the confidence
+              region is required, default is set to True.
+    CI_slope: True or False depending on whether the CI slope lines
+               are required, default is set to False.
+    alpha: required confidence interval (e.g. 0.05 for 95%). Default is 0.05.
+    num_plot: polot/subplot position, default is 111.
+    title: title of plot.
+    xlabel: x axis label.
+    ylabel: y axis label.
+
+    Returns
+    -------
+    A scatter plot of x and y, can be visualised using
+    plt.show() or saved using plt.savefig()
+    """
+
+    # Calculate the line of best fit, y = mx + c
+    grad, intcp, xp, yp = linear_regress(x, y)
+
+    # Calculate the confidence interval
+    slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, slope_hi_pts, \
+        xreg, y_conf_int_lo, y_conf_int_hi = ci_interval(x, y, alpha)
+
+    # calculate the correlation coefficient for x and y
+    corr = "{:.3f}".format(np.corrcoef(x, y)[0][1])
+    print(('Correlation coefficent for x and y: ' + corr))
+
+    print(('Plotting . . . ' + title))
+    plt.subplot(num_plot)
+    plt.scatter(x, y)
+    if best_fit:
+        plt.plot(xp, yp, color='k', linewidth=1.5, label='y=mx+c')
+    if CI_slope:
+        plt.plot(xpts, slope_lo_pts, xpts, slope_hi_pts, linestyle=':', color='g', linewidth=1.5)
+    if CI_region:
+        plt.plot(xreg, y_conf_int_lo, linestyle='--', color='orange', linewidth=1.5,
+                 label='{}% confidence region'.format(str((1-alpha)*100)))
+        plt.plot(xreg, y_conf_int_hi, linestyle='--', color='orange', linewidth=1.5)
+    plt.xlim(xpts)
+    plt.title(title + '\n Correlation coefficient: ' + corr)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.legend(loc='best', fontsize=10)
 
 
 if __name__ == "__main__":
