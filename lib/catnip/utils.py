@@ -484,7 +484,6 @@ def convertFromUMStamp(datestamp, fmt):
     return dt
 
 
-
 def convertToUMStamp(dt, fmt):
     '''
     Convert python datetime object or netcdf datetime object
@@ -537,7 +536,6 @@ def convertToUMStamp(dt, fmt):
     return UMstr
 
 
-
 def precisYY(y):
     '''
     Convert year (int) into 2 character UM year
@@ -563,7 +561,6 @@ def precisYY(y):
     decades = precisD2(decades - 180)
     YY = '{}{}'.format(decades, onedigityrs)
     return YY
-
 
 
 def precisD2(c):
@@ -621,7 +618,6 @@ def precisD2(c):
             conv = chr(c + 87)
 
     return conv
-
 
 
 def UMFileList(runid, startd, endd, freq):
