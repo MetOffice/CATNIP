@@ -6,10 +6,11 @@ Authors: Grace Redmond, Saeed Sadri, Hamish Steptoe
 import iris
 import iris.analysis
 import numpy as np
-from six import string_types
+from six import string_types, integer_types
 import iris.coord_categorisation as iccat
 from ascend import shape
-
+import os.path
+import config
 
 def add_aux_unrotated_coords(cube):
     """
@@ -30,9 +31,8 @@ def add_aux_unrotated_coords(cube):
 
     See below for an example that should be run with python3:
 
-
-    >>> import iris
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+    >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> cube = iris.load_cube(file)
     >>> print([coord.name() for coord in cube.coords()])
     ['time', 'grid_latitude', 'grid_longitude']
     >>> add_aux_unrotated_coords(cube)
@@ -128,7 +128,9 @@ def add_bounds(cube, coord_names, bound_position=0.5):
 
         An example:
 
-        >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+
+        >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+        >>> cube = iris.load_cube(file)
         >>> add_bounds(cube, 'time')
         time coordinate already has bounds, none will be added
         >>> add_bounds(cube, 'grid_latitude')
@@ -190,7 +192,7 @@ def add_coord_system(cube):
 
     A simple example:
 
-    >>> file='/project/ciid/obs_datasets/asia/APHRODITE/gtopo30_025deg.nc'
+    >>> file = os.path.join(config.DATA_DIR, 'gtopo30_025deg.nc')
     >>> cube = iris.load_cube(file)
     >>> print(cube.coord('latitude').coord_system)
     None
@@ -246,8 +248,9 @@ def add_time_coord_cats(cube):
     Cube: cube that has new time categorisation coords added
 
     A simple example:
-    >>> cube_file = '/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc'
-    >>> cube = iris.load_cube(cube_file)
+
+    >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> cube = iris.load_cube(file)
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude
@@ -342,7 +345,9 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     max_lon: The maximum longitude point of the desired extracted cube.
 
     An example:
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube = iris.load_cube(file, 'air_temperature')
     >>> min_lat = 50
     >>> min_lon = -10
     >>> max_lat = 60
@@ -385,7 +390,8 @@ def remove_forecast_coordinates(iris_cube):
     See below for examples:
 
     >>> cube_list_fcr = iris.cube.CubeList()
-    >>> cube_list = iris.load('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp')
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube_list = iris.load(file)
     >>> for cube in cube_list:
     ...     cube_fcr = remove_forecast_coordinates(cube)
     ...     cube_list_fcr.append(cube_fcr)
@@ -450,7 +456,8 @@ def rim_remove(cube, rim_width):
     See below for examples:
 
     >>> cube_list_rr = iris.cube.CubeList()
-    >>> cube_list = iris.load('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp')
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube_list = iris.load(file)
     >>> for cube in cube_list:
     ...     cube_rr = rim_remove(cube, 8)
     ...     cube_list_rr.append(cube_rr)

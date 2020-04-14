@@ -12,6 +12,8 @@ import sys
 import re
 from six import string_types
 from datetime import datetime, timedelta
+import os.path
+import config
 
 # when all scitools versions with netcdftime are retired we can remove this
 # try - except
@@ -48,11 +50,10 @@ def common_timeperiod(cube1, cube2):
 
     An example:
 
-    >>> dir = "/project/ciid/projects/ciid_tools/stock_cubes/"
-    >>> file_ = dir + "daily.19990801_19990823.pp"
-    >>> cube1=iris.load_cube(file_)
-    >>> file_ = dir + "daily.19990808_19990830.pp"
-    >>> cube2=iris.load_cube(file_)
+    >>> file1 = os.path.join(config.DATA_DIR, 'daily.19990801_19990823.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'daily.19990808_19990830.pp')
+    >>> cube1=iris.load_cube(file1)
+    >>> cube2=iris.load_cube(file2)
     >>> st, et, c1, c2 = common_timeperiod(cube1, cube2)
     Common time period:
     ('8/8/1999', '23/8/1999')
@@ -134,10 +135,10 @@ def compare_coords(c1, c2):
 
     An example:
 
-    >>> import iris
-    >>> data_dir = '/project/ciid/projects/ciid_tools/stock_cubes'
-    >>> cube1 = iris.load_cube(data_dir + '/gcm_monthly.pp', 'air_temperature')
-    >>> cube2 = iris.load_cube(data_dir + '/FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> cube1 = iris.load_cube(file1, 'air_temperature')
+    >>> cube2 = iris.load_cube(file2)
     >>>
     >>> compare_coords(cube1.coord('latitude'), cube2.coord('latitude'))
     long_name values differ: None and latitude
@@ -195,10 +196,10 @@ def compare_cubes(cube1, cube2):
 
     An example:
 
-    >>> import iris
-    >>> data_dir = '/project/ciid/projects/ciid_tools/stock_cubes'
-    >>> cube1 = iris.load_cube(data_dir + '/gcm_monthly.pp', 'x_wind')
-    >>> cube2 = iris.load_cube(data_dir + '/FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> cube1 = iris.load_cube(file1, 'x_wind')
+    >>> cube2 = iris.load_cube(file2)
     >>> compare_cubes(cube1, cube2) # doctest: +NORMALIZE_WHITESPACE
     ~~~~~ Cube name and data checks ~~~~~
     long_name values differ: None and Eastward Wind
@@ -210,12 +211,6 @@ def compare_cubes(cube1, cube2):
     ~~~~~ Coordinate checks ~~~~~
     WARNING - Dimensions coords differ on the following coord(s): ['time']
     Checking matching dim coords
-    -- longitude vs longitude --
-    long_name values differ: None and longitude
-    var_name values differ: None and lon
-    Point values are different
-    Point dtypes differ: float32 and float64
-    One has bounds, the other doesn't
     -- latitude vs latitude --
     long_name values differ: None and latitude
     var_name values differ: None and lat
@@ -223,10 +218,15 @@ def compare_cubes(cube1, cube2):
     Point values are different
     Point dtypes differ: float32 and float64
     One has bounds, the other doesn't
-    WARNING - Dimensions coords differ on the following coord(s):
-        ['air_pressure', 'forecast_period', 'forecast_reference_time',
-        'height', 'month_number', 'time', 'year']
+    -- longitude vs longitude --
+    long_name values differ: None and longitude
+    var_name values differ: None and lon
+    Point values are different
+    Point dtypes differ: float32 and float64
+    One has bounds, the other doesn't
+    WARNING - Dimensions coords differ on the following coord(s): ['air_pressure', 'forecast_period', 'forecast_reference_time', 'height', 'month_number', 'time', 'year']
     Cubes have no matching aux coords
+
     """
 
     print("~~~~~ Cube name and data checks ~~~~~")
@@ -372,8 +372,8 @@ def get_date_range(cube):
 
     See below for an example, this is from a CMIP5 abrupt4xC02 run:
 
-    >>> cube_file='/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc'
-    >>> cube = iris.load_cube(cube_file)
+    >>> file = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> cube = iris.load_cube(file)
     >>> start_str, end_str, dr_constraint = get_date_range(cube)
     0490-11-01 00:00:00
     0747-12-01 00:00:00
@@ -418,7 +418,6 @@ def sort_cube(cube, coord):
 
     e.g.
 
-    >>> import iris
     >>> cube = iris.cube.Cube([0, 1, 2, 3])
     >>> cube.add_aux_coord(iris.coords.AuxCoord([2, 1, 0, 3], long_name='test'), 0)
     >>> print(cube.data)
