@@ -21,7 +21,7 @@ Useful commands and QA instructions
    instructions
 
 
-CIID tools
+CATNIP tools
 ==========
 
 .. toctree::

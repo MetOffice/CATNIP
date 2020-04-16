@@ -19,7 +19,8 @@ except:
 
 def calculate_dewpoint(P, Q, T):
 
-    """ A function to calculate the dew point temperature, it
+    """
+    A function to calculate the dew point temperature, it
     expects three iris cubes P, Q, T. Stash codes needed are
     00001, 03237, 03236.
 
@@ -69,8 +70,7 @@ def calculate_dewpoint(P, Q, T):
     2.934921e-05
     >>> print(np.std(diff.data))
     0.0058857435
-
- """
+    """
 
     # Set constants
     LC = 2.501E6
@@ -130,11 +130,11 @@ def calculate_dewpoint(P, Q, T):
 
 
 def linear_regress(xi, yi):
+
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
     equation. Expects two numpy arrays of dimension 1.
-    TODO: use sklearn to perform regression
 
     args
     ----
@@ -148,7 +148,13 @@ def linear_regress(xi, yi):
     xpts: the min and max value of xi, used to plot line of best fit
     ypts: the min and max of the y solutions to line of best fit for plotting
 
+    Notes
+    ------
+    TODO: use sklearn to perform regression
+
+
     A simple example:
+
     >>> x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])
     >>> y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])
     >>> grad, intcp, xp, yp, sum_res = linear_regress(x, y)
@@ -175,7 +181,7 @@ def linear_regress(xi, yi):
         xpts = [xmin, xmax]
         ypts = grad*np.array(xpts)+intcp
 
-        return grad, intcp, xpts, ypts, sum_res
+    return grad, intcp, xpts, ypts, sum_res
 
 
 def ci_interval(xi, yi, alpha=0.05):
@@ -188,10 +194,6 @@ def ci_interval(xi, yi, alpha=0.05):
     It also returns vectors for confidence interval plotting:
     -  the high/low confidence interval of the slope
     -  the high low curves of confidence interval of yi.
-
-    Parameters have been calculated using von Storch &
-    Zwiers Statisical Analysis in Climate Research
-    Sect.8.3.7 and 8.3.10
 
     args
     ----
@@ -210,7 +212,13 @@ def ci_interval(xi, yi, alpha=0.05):
     y_conf_int_lo: for plotting, lower bound of CI region for yi
     y_conf_int_hi: for plotting, upper bound of CI region for yi
 
+    Notes
+    -----
+    Parameters have been calculated using von Storch & Zwiers Statisical Analysis in Climate Research
+    Sect.8.3.7 and 8.3.10
+
     A simple example:
+
     >>> x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])
     >>> y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])
     >>> slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, slope_hi_pts, \
@@ -220,6 +228,7 @@ def ci_interval(xi, yi, alpha=0.05):
     CI gradient 0.62
     >>> print('CI intercept', "{:.2f}".format(intcp_conf_int))
     CI intercept 2.81
+
     """
 
     if xi.shape != yi.shape:
@@ -280,7 +289,7 @@ def ci_interval(xi, yi, alpha=0.05):
         intcp_lo = intcp - intcp_conf_int
         intcp_hi = intcp + intcp_conf_int
 
-        return slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, \
+    return slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, \
                     slope_hi_pts, xreg, y_conf_int_lo, y_conf_int_hi
 
 
@@ -295,10 +304,6 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
     choose a missing data tolerance, default is 0.5.
     For full info, see https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html
 
-    Note: areaweighted is VERY picky, it will not allow you to regrid using
-    this method if the two input cubes are not on the same coordinate system,
-    and both input grids must also contain monotonic, bounded, 1D spatial coordinates.
-
     args
     ----
     cube: cube you want to regrid
@@ -310,6 +315,11 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
     Returns
     -------
     cube_reg: input cube on the grid of target_cube
+
+    Notes
+    -----
+    areaweighted is VERY picky, it will not allow you to regrid using this method if the two input cubes are not on the
+    same coordinate system, and both input grids must also contain monotonic, bounded, 1D spatial coordinates.
 
     An example:
 
@@ -383,7 +393,7 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
     even if the source data is not a masked array. And,
     if the method is areaweighted, choose a missing data
     tolerance, default is 0.5.
-    For full info, see https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html
+
 
     Note: areaweighted is VERY picky, it will not allow you to regrid using
     this method if the two input cubes are not on the same coordinate system,
@@ -400,6 +410,11 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
     Returns
     -------
     regridder: a cached regridder which can be used on any iris cube which has the same grid as cube.
+
+
+    Notes
+    -----
+    See https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html for more information
 
     An example:
 
@@ -658,6 +673,10 @@ def regular_point_to_rotated(cube, lon, lat):
     rot_lon: The equivalent longitude point on the grid of the input cube
     rot_lat: The equivalent latitude point on the grid of the input cube
 
+    Notes
+    -----
+
+
     An example:
 
     >>> lat = 6.5
@@ -702,6 +721,9 @@ def rotated_point_to_regular(cube, rot_lon, rot_lat):
     -------
     reg_lon: The equivalent real longitude point.
     reg_lat: The equivalent real latitude point.
+
+    Notes
+    -----
 
     An example:
 

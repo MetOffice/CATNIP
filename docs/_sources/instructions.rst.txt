@@ -124,7 +124,7 @@ Pushing your changes to the remote repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 you can push your branch to the remote github repository using this command::
 
-    git push --set-upstream origin [branch name]
+    git push -u origin [branch name]
 
 
 Passing the function to the reviewer
