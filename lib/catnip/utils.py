@@ -469,7 +469,7 @@ def convertFromUMStamp(datestamp, fmt):
     Notes
     -----
     Does not support 3 monthly seasons e.g. JJA as described in the Precis technical manual, page 119.
-    
+
 
     >>> print (convertFromUMStamp('k5bu0', 'YYMDH'))
     2005-11-30 00:00:00
