@@ -20,7 +20,7 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 #sys.path.insert(0,"/home/h05/gredmond/ciid_tools/lib/ciid_tools")
-sys.path.insert(0,"/net/home/h04/ssadri/git-repos/CATNIP/lib/catnip")
+sys.path.insert(0,"../lib/catnip")
 
 # -- General configuration ------------------------------------------------
 
