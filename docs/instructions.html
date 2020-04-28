@@ -131,7 +131,13 @@ a local copy of the CATNIP library by cloning it either</p>
 <h2>Create a branch<a class="headerlink" href="#create-a-branch" title="Permalink to this headline">¶</a></h2>
 <p>In Git, creating a branch is a way to start a separate line of development. This is usually done when a developer
 needs to fix a bug or add new features without affecting the current working code.</p>
-<p>To create a branch off the CATNIP trunk:</p>
+<p>To create a branch off the CATNIP master branch, make sure you are in the checked out directory of your repository,e.g.
+<em>cd ~/CATNIP</em> then in case you already have another branch:</p>
+<p>First make sure you are in the master branch and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+</pre></div>
+</div>
+<p>Then create your branch by running this command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">branch</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -141,7 +147,7 @@ needs to fix a bug or add new features without affecting the current working cod
 </div>
 <p>output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">master</span>
-<span class="o">*</span> <span class="n">branch</span> <span class="n">name</span>
+<span class="o">*</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -172,13 +178,13 @@ changes be discussed by the collaborators and any further changes be discussed. 
 </div>
 <div class="section" id="check-out-the-branch-to-be-reviewed">
 <h2>Check out the branch to be reviewed<a class="headerlink" href="#check-out-the-branch-to-be-reviewed" title="Permalink to this headline">¶</a></h2>
-<p>Sometimes to do a review you need to actually work from someone else’s branch. To do this we need to first checkout the
-remote branch. First we need to fetch the remote branches so that we have access to them locally.</p>
-<p>We do this by running the following command:</p>
+<p>Sometimes to do a review you need to actually work from someone else’s branch. To do this we first need to fetch the
+remote branches so that we have access to them locally. Make sure you are in the checked out directory,
+e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">fetch</span> <span class="n">origin</span>
 </pre></div>
 </div>
-<p>Next we checkout the branch we want:</p>
+<p>Next we check out the branch we want:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="p">[</span><span class="n">remote_branch_name</span><span class="p">]</span> <span class="n">origin</span><span class="o">/</span><span class="p">[</span><span class="n">remote_branch_name</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -205,7 +211,7 @@ remote branch. First we need to fetch the remote branches so that we have access
 <dt>Also bear in mind that ideally all functions will:</dt>
 <dd><ul class="first last simple">
 <li>Compatible with Python 2 and 3 (you can use <a class="reference external" href="https://docs.python.org/2/library/2to3.html">2to3</a></li>
-<li>Follow the <a class="reference external" href="https://docs.pylint.org/en/1.6.0/features.html">pylint</a></li>
+<li>Follow the <a class="reference external" href="https://docs.pylint.org/en/1.6.0/features.html">pylint</a> type style guidelines.</li>
 <li>Include a docstring that follows either <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">numpy or google</a> docstring style.</li>
 </ul>
 </dd>

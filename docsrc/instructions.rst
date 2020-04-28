@@ -4,7 +4,7 @@ Useful commands
 Below are some fcm commands and tips I have found useful.
 
 Getting your own local copy of CATNIP
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 CATNIP is a Metoffice/Private repository. You must have a github account with at least a *Read* access. You can get
 a local copy of the CATNIP library by cloning it either
@@ -94,7 +94,14 @@ Create a branch
 In Git, creating a branch is a way to start a separate line of development. This is usually done when a developer
 needs to fix a bug or add new features without affecting the current working code.
 
-To create a branch off the CATNIP trunk::
+To create a branch off the CATNIP master branch, make sure you are in the checked out directory of your repository,e.g.
+*cd ~/CATNIP* then in case you already have another branch:
+
+First make sure you are in the master branch and run::
+
+    git checkout master
+
+Then create your branch by running this command::
 
     git branch [branch name]
 
@@ -106,7 +113,7 @@ The above command will create the new branch and sets it as your working branch 
 output::
 
       master
-    * branch name
+    * [branch name]
 
 
 Add your function to the branch
@@ -138,14 +145,13 @@ https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/cr
 
 Check out the branch to be reviewed
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Sometimes to do a review you need to actually work from someone else's branch. To do this we need to first checkout the
-remote branch. First we need to fetch the remote branches so that we have access to them locally.
-
-We do this by running the following command::
+Sometimes to do a review you need to actually work from someone else's branch. To do this we first need to fetch the
+remote branches so that we have access to them locally. Make sure you are in the checked out directory,
+e.g. *cd ~/CATNIP*, then run the following command::
 
     git fetch origin
 
-Next we checkout the branch we want::
+Next we check out the branch we want::
 
     git checkout -b [remote_branch_name] origin/[remote_branch_name]
 
@@ -168,7 +174,7 @@ Things to consider:
 
 Also bear in mind that ideally all functions will:
     - Compatible with Python 2 and 3 (you can use `2to3 <https://docs.python.org/2/library/2to3.html>`_
-    - Follow the `pylint <https://docs.pylint.org/en/1.6.0/features.html>`_
+    - Follow the `pylint <https://docs.pylint.org/en/1.6.0/features.html>`_ type style guidelines.
     - Include a docstring that follows either `numpy or google <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ docstring style.
 
 Go back and forth with the code writer until you are both happy with the function
