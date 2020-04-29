@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import iris
 import iris.analysis as ia
 import cartopy.crs as ccrs
+import os.path
+import config
 
 try:
     from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
@@ -50,9 +52,9 @@ def calculate_dewpoint(P, Q, T):
     calculate_dewpoint function, to dewpoint directly
     output from the UM i.e. uses the fortran routine
 
-    >>> import iris
-    >>> file1='/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt1.pp'
-    >>> file2='/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt2.pp'
+
+    >>> file1 = os.path.join(config.DATA_DIR, 'dewpointtest_pt1.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'dewpointtest_pt2.pp')
     >>> P=iris.load_cube(file2, 'surface_air_pressure')
     >>> T=iris.load_cube(file1, 'air_temperature')
     >>> Q=iris.load_cube(file1, 'specific_humidity')
@@ -323,8 +325,10 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'air_temperature')
-    >>> tgrid = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube = iris.load_cube(file1, 'air_temperature')
+    >>> tgrid = iris.load_cube(file2, 'air_temperature')
     >>> cube_reg = regrid_to_target(cube, tgrid)
     regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear
     >>> print(cube.shape, tgrid.shape)
@@ -418,10 +422,12 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'air_temperature')
-    >>> tgrid = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube = iris.load_cube(file1, 'air_temperature')
+    >>> tgrid = iris.load_cube(file2, 'air_temperature')
     >>> regridder = set_regridder(cube, tgrid)
-    >>> cube2 = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'cloud_area_fraction')
+    >>> cube2 = iris.load_cube(file1, 'cloud_area_fraction')
     >>> print(cube2.shape)
     (145, 192)
     >>> regridder(cube2)
@@ -510,8 +516,10 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
 
     See an example:
 
+    >>> file1 = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
     >>> # load a rcm cube
-    ... cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+    ... cube = iris.load_cube(file1)
     >>> seas_min_cubelist = seas_time_stat(cube, metric='min', years=[2000,2000])
     Calculating min for 2000-2000 mam
     Calculating min for 2000-2000 jja
@@ -524,7 +532,7 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
     Calculating mean for 2000-2001 jjas
     Calculating mean for 2000-2001 on
     >>> # now load a gcm cube
-    ... cube2 = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc')
+    ... cube2 = iris.load_cube(file2)
     >>> seas_pc_cubelist = seas_time_stat(cube2, seas_mons=[[11]], metric='percentile', pc=95, ext_area=[340, 350, 0,10])
     Calculating percentile for 490-747 n
     >>> # print an example of the output
@@ -679,9 +687,10 @@ def regular_point_to_rotated(cube, lon, lat):
 
     An example:
 
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
     >>> lat = 6.5
     >>> lon = 289 # on 0-360 degree
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> cube = iris.load_cube(file, 'air_temperature')
     >>> rot_lon, rot_lat = regular_point_to_rotated(cube, lon, lat)
     >>> print("{:.3f}".format(rot_lon), "{:.3f}".format(rot_lat))
     -84.330 3.336
@@ -727,7 +736,8 @@ def rotated_point_to_regular(cube, rot_lon, rot_lat):
 
     An example:
 
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube = iris.load_cube(file, 'air_temperature')
     >>> rot_lat = 3.34
     >>> rot_lon = -84.33
     >>> reg_lon, reg_lat = rotated_point_to_regular(cube, rot_lon, rot_lat)
@@ -769,8 +779,9 @@ def windspeed(u_cube, v_cube):
 
     A simple example:
 
-    >>> u_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'x_wind')
-    >>> v_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp', 'y_wind')
+    >>> file = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> u_cube = iris.load_cube(file, 'x_wind')
+    >>> v_cube = iris.load_cube(file, 'y_wind')
     >>> ws = windspeed(u_cube, v_cube)
     >>> ws.attributes['formula']
     'sqrt(u**2, v**2)'
@@ -829,8 +840,9 @@ def wind_direction(u_cube, v_cube, unrotate=True):
 
     A simple example:
 
-    >>> u_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'x_wind')
-    >>> v_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'y_wind')
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> u_cube = iris.load_cube(file, 'x_wind')
+    >>> v_cube = iris.load_cube(file, 'y_wind')
     >>> angle = wind_direction(u_cube, v_cube)
     data is on rotated coord system, un-rotating . . .
     >>> angle.attributes['formula']
