@@ -18,7 +18,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="analysis module" href="tools.html" />
+    <link rel="next" title="Dew point temperature calculation" href="tools.html" />
     <link rel="prev" title="The CATNIP library" href="index.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -31,7 +31,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tools.html" title="analysis module"
+          <a href="tools.html" title="Dew point temperature calculation"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="index.html" title="The CATNIP library"
@@ -129,15 +129,7 @@ a local copy of the CATNIP library by cloning it either</p>
 </div>
 <div class="section" id="create-a-branch">
 <h2>Create a branch<a class="headerlink" href="#create-a-branch" title="Permalink to this headline">¶</a></h2>
-<p>In Git, creating a branch is a way to start a separate line of development. This is usually done when a developer
-needs to fix a bug or add new features without affecting the current working code.</p>
-<p>To create a branch off the CATNIP master branch, make sure you are in the checked out directory of your repository,e.g.
-<em>cd ~/CATNIP</em> then in case you already have another branch:</p>
-<p>First make sure you are in the master branch and run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
-</pre></div>
-</div>
-<p>Then create your branch by running this command:</p>
+<p>To create a branch off the CATNIP trunk:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">branch</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -147,7 +139,7 @@ needs to fix a bug or add new features without affecting the current working cod
 </div>
 <p>output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">master</span>
-<span class="o">*</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
+<span class="o">*</span> <span class="n">branch</span> <span class="n">name</span>
 </pre></div>
 </div>
 </div>
@@ -166,70 +158,37 @@ needs to fix a bug or add new features without affecting the current working cod
 <div class="section" id="pushing-your-changes-to-the-remote-repository">
 <h2>Pushing your changes to the remote repository<a class="headerlink" href="#pushing-your-changes-to-the-remote-repository" title="Permalink to this headline">¶</a></h2>
 <p>you can push your branch to the remote github repository using this command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="o">-</span><span class="n">u</span> <span class="n">origin</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">upstream</span> <span class="n">origin</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="passing-the-function-to-the-reviewer">
 <h2>Passing the function to the reviewer<a class="headerlink" href="#passing-the-function-to-the-reviewer" title="Permalink to this headline">¶</a></h2>
-<p>To tell others about the changes that you have pushed to a branch you make a pull request. This would allow for your
-changes be discussed by the collaborators and any further changes be discussed. More details here:
-<a class="reference external" href="https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request">https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request</a></p>
-</div>
-<div class="section" id="check-out-the-branch-to-be-reviewed">
-<h2>Check out the branch to be reviewed<a class="headerlink" href="#check-out-the-branch-to-be-reviewed" title="Permalink to this headline">¶</a></h2>
-<p>Sometimes to do a review you need to actually work from someone else’s branch. To do this we first need to fetch the
-remote branches so that we have access to them locally. Make sure you are in the checked out directory,
-e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">fetch</span> <span class="n">origin</span>
-</pre></div>
-</div>
-<p>Next we check out the branch we want:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">checkout</span> <span class="o">-</span><span class="n">b</span> <span class="p">[</span><span class="n">remote_branch_name</span><span class="p">]</span> <span class="n">origin</span><span class="o">/</span><span class="p">[</span><span class="n">remote_branch_name</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>In later versions of git is simpler:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">fetch</span>
-<span class="n">gti</span> <span class="n">checkout</span> <span class="p">[</span><span class="n">remote_branch_name</span><span class="p">]</span>
-</pre></div>
-</div>
+<p><strong>NEW GITHUB RELEVANT INSTRUCTIONS TO BE ADDED</strong>
+e.g. how to make a pull request</p>
 </div>
 </div>
 <div class="section" id="qa-instructions-for-the-reviewer">
 <h1>QA instructions for the reviewer<a class="headerlink" href="#qa-instructions-for-the-reviewer" title="Permalink to this headline">¶</a></h1>
-<dl class="docutils">
-<dt>Things to consider:</dt>
-<dd><ul class="first last simple">
-<li>Can I run the code without error</li>
-<li>Are the associated tests, e.g. docstring tests pass successfully (run the script with -v option to see result of the doctest)</li>
-<li>Are you satisfied the change set fulfils the requirement set out in the ticket?</li>
-<li>Are you happy that the change does not cause any undesirable side effects?</li>
-<li>Is the documentation for this change sufficient, accurate, and understandable?</li>
-<li>Are there impacts on existing functionality?</li>
-</ul>
-</dd>
-<dt>Also bear in mind that ideally all functions will:</dt>
-<dd><ul class="first last simple">
-<li>Compatible with Python 2 and 3 (you can use <a class="reference external" href="https://docs.python.org/2/library/2to3.html">2to3</a></li>
-<li>Follow the <a class="reference external" href="https://docs.pylint.org/en/1.6.0/features.html">pylint</a> type style guidelines.</li>
+<div class="section" id="check-out-the-function-to-be-reviewed">
+<h2>Check out the function to be reviewed<a class="headerlink" href="#check-out-the-function-to-be-reviewed" title="Permalink to this headline">¶</a></h2>
+<p><strong>NEW GITHUB RELEVANT INSTRUCTIONS TO BE ADDED</strong></p>
+<p>e.g. how to respond to a pull-request</p>
+</div>
+<div class="section" id="carry-out-a-code-review">
+<h2>Carry out a code review<a class="headerlink" href="#carry-out-a-code-review" title="Permalink to this headline">¶</a></h2>
+<p><strong>NEED TO DECIDE HOW MUCH OF THE INSTRUCTIONS HERE ARE STILL RELEVANT!</strong></p>
+<p>To begin, create a new CodeReview wiki page. To do this go to the ticket for function to be reviewed. Modify ticket the description by adding: <strong>[wiki:ticket/[ticketnumber]/CodeReview CodeReview]</strong></p>
+<p>In the ticket description there should now be a ‘CodeReview?’ link. Click on this and from a drop down menu of templates choose CodeReview. Save any changes, the page has now been created.  <a class="reference external" href="http://fcm1/projects/ciid/wiki/ticket/43/CodeReviewDewpoint43">Example Code Review wiki</a></p>
+<p>Test and review the code, for guidance, see Test and review the code, for guidance, see <a class="reference external" href="http://www-nwp/~appsci/QA/code/guidance.shtml">http://www-nwp/~appsci/QA/code/guidance.shtml</a></p>
+<p>Also bear in mind that ideally all functions will:</p>
+<ul class="simple">
+<li>Compatible with Python 2 and 3 (you can use a tool like <a class="reference external" href="https://docs.python.org/2/library/2to3.html">2to3</a> to check this.)</li>
+<li>Follow <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">pep8</a> type style guidelines</li>
 <li>Include a docstring that follows either <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">numpy or google</a> docstring style.</li>
+<li>Include a doctest.</li>
 </ul>
-</dd>
-</dl>
 <p>Go back and forth with the code writer until you are both happy with the function</p>
-<div class="section" id="some-good-git-best-practices">
-<h2>Some good Git best practices<a class="headerlink" href="#some-good-git-best-practices" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
-<li>Commit related changes</li>
-<li>Commit often</li>
-<li>Don’t commit unfinished work</li>
-<li>Test before you commit</li>
-<li>Write useful commit messages</li>
-<li>Use branches</li>
-</ul>
-</div></blockquote>
-<p>For more details see Git Commit Best Practices <a class="reference external" href="https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices">Page</a></p>
 </div>
 </div>
 
@@ -252,11 +211,11 @@ e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
 <li><a class="reference internal" href="#add-your-function-to-the-branch">Add your function to the branch</a></li>
 <li><a class="reference internal" href="#pushing-your-changes-to-the-remote-repository">Pushing your changes to the remote repository</a></li>
 <li><a class="reference internal" href="#passing-the-function-to-the-reviewer">Passing the function to the reviewer</a></li>
-<li><a class="reference internal" href="#check-out-the-branch-to-be-reviewed">Check out the branch to be reviewed</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#qa-instructions-for-the-reviewer">QA instructions for the reviewer</a><ul>
-<li><a class="reference internal" href="#some-good-git-best-practices">Some good Git best practices</a></li>
+<li><a class="reference internal" href="#check-out-the-function-to-be-reviewed">Check out the function to be reviewed</a></li>
+<li><a class="reference internal" href="#carry-out-a-code-review">Carry out a code review</a></li>
 </ul>
 </li>
 </ul>
@@ -266,7 +225,7 @@ e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
                         title="previous chapter">The CATNIP library</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="tools.html"
-                        title="next chapter">analysis module</a></p>
+                        title="next chapter">Dew point temperature calculation</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -300,7 +259,7 @@ e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tools.html" title="analysis module"
+          <a href="tools.html" title="Dew point temperature calculation"
              >next</a> |</li>
         <li class="right" >
           <a href="index.html" title="The CATNIP library"

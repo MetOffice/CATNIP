@@ -20,7 +20,7 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
 #sys.path.insert(0,"/home/h05/gredmond/ciid_tools/lib/ciid_tools")
-sys.path.insert(0,"../lib/catnip")
+sys.path.insert(0,"/net/home/h04/ssadri/git-repos/CATNIP/scripts")
 
 # -- General configuration ------------------------------------------------
 
@@ -201,7 +201,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'catnip.tex', u'catnip\\_tools Documentation',
+  ('index', 'catnip.tex', u'ciid\\_tools Documentation',
    u'gredmond', 'manual'),
 ]
 
