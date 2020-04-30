@@ -151,7 +151,6 @@ def linear_regress(xi, yi):
     ypts: the min and max of the y solutions to line of best fit for plotting
 
     A simple example:
-
     >>> x = np.array([1, 4, 2, 7, 0, 6, 3, 3, 1, 9])
     >>> y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 6])
     >>> grad, intcp, xp, yp, sum_res = linear_regress(x, y)
