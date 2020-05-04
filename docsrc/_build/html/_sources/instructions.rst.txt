@@ -91,9 +91,6 @@ Open a ticket on https://github.com/MetOffice/CATNIP/issues and describe the fun
 Create a branch
 ^^^^^^^^^^^^^^^
 
-In Git, creating a branch is a way to start a separate line of development. This is usually done when a developer
-needs to fix a bug or add new features without affecting the current working code.
-
 To create a branch off the CATNIP trunk::
 
     git branch [branch name]
@@ -127,61 +124,40 @@ Pushing your changes to the remote repository
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 you can push your branch to the remote github repository using this command::
 
-    git push -u origin [branch name]
+    git push --set-upstream origin [branch name]
 
 
 Passing the function to the reviewer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To tell others about the changes that you have pushed to a branch you make a pull request. This would allow for your
-changes be discussed by the collaborators and any further changes be discussed. More details here:
-https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request
 
-Check out the branch to be reviewed
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Sometimes to do a review you need to actually work from someone else's branch. To do this we need to first checkout the
-remote branch. First we need to fetch the remote branches so that we have access to them locally.
-
-We do this by running the following command::
-
-    git fetch origin
-
-Next we checkout the branch we want::
-
-    git checkout -b [remote_branch_name] origin/[remote_branch_name]
-
-
-In later versions of git is simpler::
-
-    git fetch
-    gti checkout [remote_branch_name]
-
+**NEW GITHUB RELEVANT INSTRUCTIONS TO BE ADDED**
+e.g. how to make a pull request
 
 QA instructions for the reviewer
 ================================
-Things to consider:
-    - Can I run the code without error
-    - Are the associated tests, e.g. docstring tests pass successfully (run the script with -v option to see result of the doctest)
-    - Are you satisfied the change set fulfils the requirement set out in the ticket?
-    - Are you happy that the change does not cause any undesirable side effects?
-    - Is the documentation for this change sufficient, accurate, and understandable?
-    - Are there impacts on existing functionality?
+
+
+Check out the function to be reviewed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**NEW GITHUB RELEVANT INSTRUCTIONS TO BE ADDED**
+
+e.g. how to respond to a pull-request
+
+Carry out a code review
+^^^^^^^^^^^^^^^^^^^^^^^
+**NEED TO DECIDE HOW MUCH OF THE INSTRUCTIONS HERE ARE STILL RELEVANT!**
+
+To begin, create a new CodeReview wiki page. To do this go to the ticket for function to be reviewed. Modify ticket the description by adding: **[wiki:ticket/[ticketnumber]/CodeReview CodeReview]**
+
+In the ticket description there should now be a 'CodeReview?' link. Click on this and from a drop down menu of templates choose CodeReview. Save any changes, the page has now been created.  `Example Code Review wiki <http://fcm1/projects/ciid/wiki/ticket/43/CodeReviewDewpoint43>`_
+
+Test and review the code, for guidance, see Test and review the code, for guidance, see `http://www-nwp/~appsci/QA/code/guidance.shtml <http://www-nwp/~appsci/QA/code/guidance.shtml>`_
 
 Also bear in mind that ideally all functions will:
-    - Compatible with Python 2 and 3 (you can use `2to3 <https://docs.python.org/2/library/2to3.html>`_
-    - Follow the `pylint <https://docs.pylint.org/en/1.6.0/features.html>`_
-    - Include a docstring that follows either `numpy or google <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ docstring style.
+
+* Compatible with Python 2 and 3 (you can use a tool like `2to3 <https://docs.python.org/2/library/2to3.html>`_ to check this.)
+* Follow `pep8 <https://www.python.org/dev/peps/pep-0008/>`_ type style guidelines 
+* Include a docstring that follows either `numpy or google <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ docstring style. 
+* Include a doctest.
 
 Go back and forth with the code writer until you are both happy with the function
-
-Some good Git best practices
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    - Commit related changes
-    - Commit often
-    - Don't commit unfinished work
-    - Test before you commit
-    - Write useful commit messages
-    - Use branches
-
-For more details see Git Commit Best Practices `Page <https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices>`_
-
-

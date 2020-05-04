@@ -6,10 +6,10 @@ Authors: Grace Redmond, Saeed Sadri, Hamish Steptoe
 import iris
 import iris.analysis
 import numpy as np
-from six import string_types
+from six import string_types, integer_types
 import iris.coord_categorisation as iccat
-from ascend import shape
-
+import os.path
+import config
 
 def add_aux_unrotated_coords(cube):
     """
@@ -27,14 +27,11 @@ def add_aux_unrotated_coords(cube):
     cube: input cube with auxilliary coordinates of unrotated
     latitude and longitude
 
-    Notes
-    -----
 
     See below for an example that should be run with python3:
 
-
-    >>> import iris
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+    >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> cube = iris.load_cube(file)
     >>> print([coord.name() for coord in cube.coords()])
     ['time', 'grid_latitude', 'grid_longitude']
     >>> add_aux_unrotated_coords(cube)
@@ -130,7 +127,9 @@ def add_bounds(cube, coord_names, bound_position=0.5):
 
         An example:
 
-        >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc')
+
+        >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+        >>> cube = iris.load_cube(file)
         >>> add_bounds(cube, 'time')
         time coordinate already has bounds, none will be added
         >>> add_bounds(cube, 'grid_latitude')
@@ -170,7 +169,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
 
 
 def add_coord_system(cube):
-    """
+    '''
     A cube must have a coordinate system in order to be regridded.
 
     This function checks whether a cube has a coordinate system. If
@@ -186,14 +185,13 @@ def add_coord_system(cube):
 
     Returns
     -------
-    cube: The input cube with coordinate system added, if the cube didn't have one already.
+    cube: The input cube with coordinate system added, if the
+          cube didn't have one already.
 
-    Notes
-    -----
 
     A simple example:
 
-    >>> file='/project/ciid/obs_datasets/asia/APHRODITE/gtopo30_025deg.nc'
+    >>> file = os.path.join(config.DATA_DIR, 'gtopo30_025deg.nc')
     >>> cube = iris.load_cube(file)
     >>> print(cube.coord('latitude').coord_system)
     None
@@ -202,7 +200,7 @@ def add_coord_system(cube):
     <iris 'Cube' of height / (1) (latitude: 281; longitude: 361)>
     >>> print(cube.coord('latitude').coord_system)
     GeogCS(6371229.0)
-    """
+    '''
 
     # Note: wgs84 is the World Geodetic System, and a standard coord
     # system in iris. In GeogCS(6371229.0), 6371229 is the Earth's
@@ -235,7 +233,7 @@ def add_coord_system(cube):
 
 
 def add_time_coord_cats(cube):
-    """
+    '''
     This function takes in an iris cube, and adds a range of
     numeric co-ordinate categorisations to it. Depending
     on the data, not all of the coords added will be relevant.
@@ -248,14 +246,10 @@ def add_time_coord_cats(cube):
     -------
     Cube: cube that has new time categorisation coords added
 
-    Notes
-    -----
-    test
-
     A simple example:
 
-    >>> cube_file = '/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc'
-    >>> cube = iris.load_cube(cube_file)
+    >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> cube = iris.load_cube(file)
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude
@@ -282,8 +276,7 @@ def add_time_coord_cats(cube):
     [0 0 1 2 2 3 3 0]
     year
     [2000 2000 2000 2000 2000 2000 2000 2000]
-
-    """
+    '''
 
     # most errors pop up when you try to add a coord that has
     # previously been added, or the cube doesn't contain the
@@ -335,54 +328,6 @@ def add_time_coord_cats(cube):
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
 
 
-def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
-    """
-    Function etracts the specific region from the cube.
-
-    args
-    ----
-    cube: cube on rotated coord system, used as reference grid for transformation.
-
-    Returns
-    -------
-    min_lat: The minimum latitude point of the desired extracted cube.
-    min_lon: The minimum longitude point of the desired extracted cube.
-    max_lat: The maximum latitude point of the desired extracted cube.
-    max_lon: The maximum longitude point of the desired extracted cube.
-
-    Notes
-    -----
-
-    An example:
-
-    >>> cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp', 'air_temperature')
-    >>> min_lat = 50
-    >>> min_lon = -10
-    >>> max_lat = 60
-    >>> max_lon = 0
-    >>> extracted_cube = extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon)
-    >>> print(np.max(extracted_cube.coord('latitude').points))
-    61.47165097005264
-    >>> print(np.min(extracted_cube.coord('latitude').points))
-    48.213032844268646
-    >>> print(np.max(extracted_cube.coord('longitude').points))
-    3.642576550089792
-    >>> print(np.min(extracted_cube.coord('longitude').points))
-    -16.385571344717235
-    """
-    # adding unrotated coords to the cube
-    add_aux_unrotated_coords(cube)
-
-    # use ASCEND package to cut the area out
-    corners = [(min_lon, min_lat), (min_lon, max_lat),
-               (max_lon, max_lat), (max_lon, min_lat)]
-    rectangle = shape.create(corners, {'shape': 'rectangle'}, 'Polygon')
-    extracted_cube = rectangle.extract_subcube(cube)
-
-
-    return extracted_cube
-
-
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
 
@@ -394,13 +339,12 @@ def remove_forecast_coordinates(iris_cube):
     -------
     iris_cube: iris cube without the forecast_period and forecast_reference_time coordinates
 
-    Notes
-    -----
 
     See below for examples:
 
     >>> cube_list_fcr = iris.cube.CubeList()
-    >>> cube_list = iris.load('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp')
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube_list = iris.load(file)
     >>> for cube in cube_list:
     ...     cube_fcr = remove_forecast_coordinates(cube)
     ...     cube_list_fcr.append(cube_fcr)
@@ -461,13 +405,12 @@ def rim_remove(cube, rim_width):
     -------
     rrcube: rim removed cube
 
-    Notes
-    -----
 
     See below for examples:
 
     >>> cube_list_rr = iris.cube.CubeList()
-    >>> cube_list = iris.load('/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp')
+    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube_list = iris.load(file)
     >>> for cube in cube_list:
     ...     cube_rr = rim_remove(cube, 8)
     ...     cube_list_rr.append(cube_rr)

@@ -12,6 +12,8 @@ import sys
 import re
 from six import string_types
 from datetime import datetime, timedelta
+import os.path
+import config
 
 # when all scitools versions with netcdftime are retired we can remove this
 # try - except
@@ -29,7 +31,9 @@ def common_timeperiod(cube1, cube2):
     period between them. This period is then extracted
     from both cubes. Cubes with common time period are returned,
     along with strings of the start end end times of the
-    common time period (format DD/MM/YYYY).
+    common time period (format DD/MM/YYYY.) The input
+    cubes must have a coordinate called 'time' which
+    must have bounds.
 
     args
     ----
@@ -43,17 +47,13 @@ def common_timeperiod(cube1, cube2):
     cube1_common: cube1 with the common time period between cube1 and cube2 extracted.
     cube2_common: cube2 with the common time period between cube1 and cube2 extracted.
 
-    Notes
-    -----
-    The input cubes must have a coordinate called 'time' which must have bounds.
 
     An example:
 
-    >>> dir = "/project/ciid/projects/ciid_tools/stock_cubes/"
-    >>> file_ = dir + "daily.19990801_19990823.pp"
-    >>> cube1=iris.load_cube(file_)
-    >>> file_ = dir + "daily.19990808_19990830.pp"
-    >>> cube2=iris.load_cube(file_)
+    >>> file1 = os.path.join(config.DATA_DIR, 'daily.19990801_19990823.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'daily.19990808_19990830.pp')
+    >>> cube1=iris.load_cube(file1)
+    >>> cube2=iris.load_cube(file2)
     >>> st, et, c1, c2 = common_timeperiod(cube1, cube2)
     Common time period:
     ('8/8/1999', '23/8/1999')
@@ -133,15 +133,12 @@ def compare_coords(c1, c2):
     c1: iris coordinate from a cube
     c2: iris coordinate from a cube
 
-    Notes
-    -----
-
     An example:
 
-    >>> import iris
-    >>> data_dir = '/project/ciid/projects/ciid_tools/stock_cubes'
-    >>> cube1 = iris.load_cube(data_dir + '/gcm_monthly.pp', 'air_temperature')
-    >>> cube2 = iris.load_cube(data_dir + '/FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> cube1 = iris.load_cube(file1, 'air_temperature')
+    >>> cube2 = iris.load_cube(file2)
     >>>
     >>> compare_coords(cube1.coord('latitude'), cube2.coord('latitude'))
     long_name values differ: None and latitude
@@ -197,15 +194,12 @@ def compare_cubes(cube1, cube2):
     cube1: iris cube
     cube2: iris cube
 
-    Notes
-    -----
-
     An example:
 
-    >>> import iris
-    >>> data_dir = '/project/ciid/projects/ciid_tools/stock_cubes'
-    >>> cube1 = iris.load_cube(data_dir + '/gcm_monthly.pp', 'x_wind')
-    >>> cube2 = iris.load_cube(data_dir + '/FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> cube1 = iris.load_cube(file1, 'x_wind')
+    >>> cube2 = iris.load_cube(file2)
     >>> compare_cubes(cube1, cube2) # doctest: +NORMALIZE_WHITESPACE
     ~~~~~ Cube name and data checks ~~~~~
     long_name values differ: None and Eastward Wind
@@ -217,12 +211,6 @@ def compare_cubes(cube1, cube2):
     ~~~~~ Coordinate checks ~~~~~
     WARNING - Dimensions coords differ on the following coord(s): ['time']
     Checking matching dim coords
-    -- longitude vs longitude --
-    long_name values differ: None and longitude
-    var_name values differ: None and lon
-    Point values are different
-    Point dtypes differ: float32 and float64
-    One has bounds, the other doesn't
     -- latitude vs latitude --
     long_name values differ: None and latitude
     var_name values differ: None and lat
@@ -230,10 +218,15 @@ def compare_cubes(cube1, cube2):
     Point values are different
     Point dtypes differ: float32 and float64
     One has bounds, the other doesn't
-    WARNING - Dimensions coords differ on the following coord(s):
-        ['air_pressure', 'forecast_period', 'forecast_reference_time',
-        'height', 'month_number', 'time', 'year']
+    -- longitude vs longitude --
+    long_name values differ: None and longitude
+    var_name values differ: None and lon
+    Point values are different
+    Point dtypes differ: float32 and float64
+    One has bounds, the other doesn't
+    WARNING - Dimensions coords differ on the following coord(s): ['air_pressure', 'forecast_period', 'forecast_reference_time', 'height', 'month_number', 'time', 'year']
     Cubes have no matching aux coords
+
     """
 
     print("~~~~~ Cube name and data checks ~~~~~")
@@ -303,28 +296,23 @@ def compare_cubes(cube1, cube2):
 
 
 def date_chunks(startdate, enddate, yearchunk, indatefmt='%Y/%m/%d', outdatefmt='%Y/%m/%d'):
-    """
-    Make date chunks from min and max date range. Make contiguous pairs of date intervals to aid chunking
-    of MASS retrievals. Where the date interval is not a multiple of `yearchunk`, intervals of less than `yearchunk`
-    may be returned.
+    '''Make date chunks from min and max date range
 
+    Make contiguous pairs of date intervals to aid chunking
+    of MASS retrievals. Where the date interval is not a multiple
+    of `yearchunk`, intervals of less than `yearchunk` may be returned.
+    See ``Examples`` for useage.
 
-    args
-    ----
+    Arguments:
         startdate (string): Starting date (min date)
         enddate (string): Ending date (max date)
         yearchunk (int): Year chunks to split the date interval into
         indatefmt (string, optional): String format for input dates. Defaults to yyyy/mm/dd
         outdatefmt (string, optional): String format for ouput dates. Defaults to yyyy/mm/dd
 
-    Returns
-    -------
-    list: List of strings of date intervals
+    Returns:
+          list: List of strings of date intervals
 
-    Notes
-    -----
-    This function is only compatible with python 3.
-    
     Raises:
         ValueError: If `enddate` (ie. max date) is less than or equal to `startdate` (ie. min date)
         Excpetion: If `yearchunk` is not an integer
@@ -336,8 +324,10 @@ def date_chunks(startdate, enddate, yearchunk, indatefmt='%Y/%m/%d', outdatefmt=
           >>> date_chunks('1890/1/1', '1942/12/31', 25)
           [('1890/01/01', '1914/12/27'), ('1914/12/27', '1939/12/21'), ('1939/12/21', '1942/12/31')]
 
-
-    """
+    Note:
+        This function is only compatible with python 3.
+        Author: Hamish Steptoe
+    '''
     # Check python version
     if sys.version_info[0] < 3:
         raise Exception("Only compatible with Python 3")
@@ -375,15 +365,15 @@ def get_date_range(cube):
     -------
     start_date_str: string of the first time in the cube as a dd/mm/yyyy date
     end_date_str: string of the last time in the cube as a dd/mm/yyyy date
-    date_range: iris constraint that spans the range between the first and last date
+    date_range: iris constraint that spans the range between the
+                first and last date
 
-    Notes
-    -----
-    
+
+
     See below for an example, this is from a CMIP5 abrupt4xC02 run:
 
-    >>> cube_file='/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc'
-    >>> cube = iris.load_cube(cube_file)
+    >>> file = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> cube = iris.load_cube(file)
     >>> start_str, end_str, dr_constraint = get_date_range(cube)
     0490-11-01 00:00:00
     0747-12-01 00:00:00
@@ -425,11 +415,9 @@ def sort_cube(cube, coord):
     -------
     cube: a new cube sorted by the coord
 
-    Notes
-    -----
-    See below for examples
 
-    >>> import iris
+    e.g.
+
     >>> cube = iris.cube.Cube([0, 1, 2, 3])
     >>> cube.add_aux_coord(iris.coords.AuxCoord([2, 1, 0, 3], long_name='test'), 0)
     >>> print(cube.data)
@@ -454,8 +442,9 @@ def sort_cube(cube, coord):
 
 
 def convertFromUMStamp(datestamp, fmt):
-    """
-    Convert UM date stamp to normal python date.
+    ''' Convert UM date stamp to normal python date.
+    DOES NOT SUPPORT 3 monthly seasons e.g. JJA as described in the manual
+    http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119
 
     args
     ----
@@ -465,16 +454,11 @@ def convertFromUMStamp(datestamp, fmt):
     returns
     -------
     dt: datetime object of the input datestamp
-    
-    Notes
-    -----
-    Does not support 3 monthly seasons e.g. JJA as described in the Precis technical manual, page 119.
-
 
     >>> print (convertFromUMStamp('k5bu0', 'YYMDH'))
     2005-11-30 00:00:00
 
-    """
+    '''
     # Check input
     if (len(datestamp) != 5) or (fmt not in ('YYMMM', 'YYMDH')):
         raise ValueError('Problem with input arguments {} {}'.format(datestamp,
@@ -499,8 +483,9 @@ def convertFromUMStamp(datestamp, fmt):
     return dt
 
 
+
 def convertToUMStamp(dt, fmt):
-    """
+    '''
     Convert python datetime object or netcdf datetime object
     into UM date stamp.
     http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119
@@ -514,10 +499,6 @@ def convertToUMStamp(dt, fmt):
     returns
     -------
     UMstr: string with UMdatestamp
-    
-    Notes
-    -----
-    See below for examples
 
     >>> dt = datetime(1981, 11, 2)
     >>> print (dt, convertToUMStamp(dt, 'YYMMM'))
@@ -529,7 +510,7 @@ def convertToUMStamp(dt, fmt):
     1981-02-30 00:00:00 i1feb
     >>> print (dt, convertToUMStamp(dt, 'YYMDH'))
     1981-02-30 00:00:00 i12u0
-    """
+    '''
 
     if not isinstance(dt, datetime)  and not isinstance(dt, cdatetime):
         raise ValueError('Datetime format incorrect: {}'.format(type(dt)))
@@ -555,8 +536,9 @@ def convertToUMStamp(dt, fmt):
     return UMstr
 
 
+
 def precisYY(y):
-    """
+    '''
     Convert year (int) into 2 character UM year
 
     args
@@ -567,28 +549,24 @@ def precisYY(y):
     returns
     -------
     YY: string 2 letter UM year character
-    
-    Notes
-    -----
-    See below for an example
 
 
     >>> print (precisYY(1973))
     h3
 
-    """
+    '''
 
     # use // operator to round down (integer division)
     decades = y // 10
     onedigityrs = y - (decades * 10)
     decades = precisD2(decades - 180)
     YY = '{}{}'.format(decades, onedigityrs)
-    
     return YY
 
 
+
 def precisD2(c):
-    """ Convert characters according to PRECIS table D2
+    ''' Convert characters according to PRECIS table D2
     http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119
 
     args
@@ -596,14 +574,6 @@ def precisD2(c):
     c: character or number to convert
     Supply a character to convert from left to right in the table
     Supply an int to convert from right to left in the table
-    
-    returns
-    -------
-    conv: converted value: int if input is string, string if input is int
-    
-    Notes
-    -----
-    See below for examples
 
     >>> print (precisD2('1'))
     1
@@ -618,9 +588,13 @@ def precisD2(c):
     >>> print (precisD2(12))
     c
     >>> print (precisD2(28))
-    s   
+    s
 
-    """
+    returns
+    -------
+    conv: converted value: int if input is string, string if input is int
+
+    '''
     if isinstance(c, string_types):
         # Throw error if non alpha numeric string supplied
         if not c.isalnum():
@@ -648,9 +622,9 @@ def precisD2(c):
     return conv
 
 
+
 def UMFileList(runid, startd, endd, freq):
-    """
-    Give a (thoretical) list of UM date format files between 2 dates.
+    ''' Give a (thoretical) list of UM date format files between 2 dates.
     Assuming no missing dates.
 
     args
@@ -671,10 +645,6 @@ def UMFileList(runid, startd, endd, freq):
     returns
     -------
     filelist: list of strings giving the filenames
-    
-    Notes
-    -----
-    See below for examples
 
     >>> runid = 'akwss'
     >>> startd = datetime(1980, 9, 1)
@@ -690,7 +660,7 @@ def UMFileList(runid, startd, endd, freq):
     ['akwssa.pmi0sep.pp', 'akwssa.pmi0oct.pp',
      'akwssa.pmi0nov.pp', 'akwssa.pmi0dec.pp']
 
-    """
+    '''
 
      # list to store the output
     filelist = []
@@ -734,81 +704,80 @@ def UMFileList(runid, startd, endd, freq):
 
 
 def umstash_2_pystash(stash):
-    """
-    Function to take um style stash codes e.g. 24, 05216 and convert them into 'python' stash codes e.g.m01s00i024, m01s05i216
+	"""
+	Function to take um style stash codes e.g. 24, 05216
+	and convert them into 'python' stash codes e.g.m01s00i024, m01s05i216
 
-    args
-    ----
-    stash: a tuple, list or string of stash codes
+	args
+	----
+	stash: a tuple, list or string of stash codes
 
-    Returns
-    -------
-    stash_list: a list of python stash codes
+	Returns
+	-------
+	stash_list: a list of python stash codes
 
-    Notes
-    -----
-    
-    Some basic examples:
 
-    >>> sc = '24'
-    >>> umstash_2_pystash(sc)
-    ['m01s00i024']
-    >>> sc = '24','16222','3236'
-    >>> umstash_2_pystash(sc)
-    ['m01s00i024', 'm01s16i222', 'm01s03i236']
-    >>> sc = ['1','15201']
-    >>> umstash_2_pystash(sc)
-    ['m01s00i001', 'm01s15i201']
+	Some basic examples:
 
-    Now test that it fails when appropriate:
+	>>> sc = '24'
+	>>> umstash_2_pystash(sc)
+	['m01s00i024']
+	>>> sc = '24','16222','3236'
+	>>> umstash_2_pystash(sc)
+	['m01s00i024', 'm01s16i222', 'm01s03i236']
+	>>> sc = ['1','15201']
+	>>> umstash_2_pystash(sc)
+	['m01s00i001', 'm01s15i201']
 
-    >>> sc = '-24'
-    >>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
-    Traceback (most recent call last):
-    ...
-    AttributeError: stash item -24 contains non-numerical characters. Numbers only
-    >>> sc = '1234567'
-    >>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
-    Traceback (most recent call last):
-    ...
-    IndexError: stash item is 1234567. Stash items must be no longer than 5 characters
-    >>> sc = 'aaa'
-    >>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
-    Traceback (most recent call last):
-    ...
-    AttributeError: stash item aaa contains non-numerical characters. Numbers only
-    >>> sc = '24a'
-    >>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
-    Traceback (most recent call last):
-    ...
-    AttributeError: stash item 24a contains non-numerical characters. Numbers only
-    >>> sc = 24, 25
-    >>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
-    Traceback (most recent call last):
-    ...
-    TypeError: 24 must be a string
-    """
+	Now test that it fails when appropriate:
 
-    stash_list = []
-    # if stash is only one variable, it will be considered a string
-    # and split, this statement checks for that case and puts
-    # stash into a tuple to prevent splitting.
-    if isinstance(stash, string_types):
-        stash = tuple([stash])
-    for scode in stash:
-        if not isinstance(scode, string_types):
-            raise TypeError('{} must be a string'.format(scode))
-        if len(scode) > 5:
-            raise IndexError("stash item is {}. Stash items must be no longer than 5 characters".format(scode))
-        if not scode.isdigit():
-            raise AttributeError('stash item {} contains non-numerical characters. Numbers only'.format(scode))
+	>>> sc = '-24'
+	>>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
+	Traceback (most recent call last):
+	...
+	AttributeError: stash item -24 contains non-numerical characters. Numbers only
+	>>> sc = '1234567'
+	>>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
+	Traceback (most recent call last):
+	...
+	IndexError: stash item is 1234567. Stash items must be no longer than 5 characters
+	>>> sc = 'aaa'
+	>>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
+	Traceback (most recent call last):
+	...
+	AttributeError: stash item aaa contains non-numerical characters. Numbers only
+	>>> sc = '24a'
+	>>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
+	Traceback (most recent call last):
+	...
+	AttributeError: stash item 24a contains non-numerical characters. Numbers only
+	>>> sc = 24, 25
+	>>> umstash_2_pystash(sc) # doctest: +ELLIPSIS
+	Traceback (most recent call last):
+	...
+	TypeError: 24 must be a string
+	"""
 
-        # to split 3223 in to sec=3 and item=223
-        sec, item = re.match('(\d{2})(\d{3})', scode.zfill(5)).groups()
-        # to create a string m01s02i223   (if sec=03, and item=223)
-        stash_list.append('m01s{}i{}'.format(sec, item))
+	stash_list = []
+	# if stash is only one variable, it will be considered a string
+	# and split, this statement checks for that case and puts
+	# stash into a tuple to prevent splitting.
+	if isinstance(stash, string_types):
+		stash = tuple([stash])
+	for scode in stash:
+		if not isinstance(scode, string_types):
+			raise TypeError('{} must be a string'.format(scode))
+		if len(scode) > 5:
+			raise IndexError("stash item is {}. Stash items must be no longer than 5 characters".format(scode))
+		if not scode.isdigit():
+			raise AttributeError('stash item {} contains non-numerical characters. Numbers only'.format(scode))
 
-    return stash_list
+		# to split 3223 in to sec=3 and item=223
+		sec, item = re.match('(\d{2})(\d{3})', scode.zfill(5)).groups()
+		# to create a string m01s02i223   (if sec=03, and item=223)
+		stash_list.append('m01s{}i{}'.format(sec, item))
+
+	return stash_list
 
 
 
