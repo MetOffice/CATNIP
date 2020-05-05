@@ -11,9 +11,7 @@ import iris
 from catnip.analysis import linear_regress, ci_interval
 
 
-
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
-
     """
     A plotting function to produce a quick wind
     vector plot. Output is a plot with windspeed
@@ -70,13 +68,12 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
               u_cube.data[::npts,::npts], v_cube.data[::npts,::npts])
     #OTHER OPTIONS FOR QUIVER: scale = 1, headwidth = 3, width = 0.0015)
     ax.coastlines()
-    ax.set_extent([x.points[0],x.points[-1],y.points[0],y.points[-1]],transform)
+    ax.set_extent([x.points[0], x.points[-1], y.points[0], y.points[-1]], transform)
     plt.title(title)
     print("plot {} created".format(title))
 
 
 def plot_regress(x, y, best_fit=True, CI_region=True, CI_slope=False, alpha=0.05, num_plot=111, title='', xlabel='', ylabel=''):
-
     """
     Produces an x and y scatter plot and calculates the correlation
     coefficient, as a default it will also plot the line of best fit
