@@ -500,7 +500,7 @@ def convertFromUMStamp(datestamp, fmt):
 
 
 def convertToUMStamp(dt, fmt):
-    '''
+    """
     Convert python datetime object or netcdf datetime object
     into UM date stamp.
     http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119
@@ -557,7 +557,7 @@ def convertToUMStamp(dt, fmt):
 
 
 def precisYY(y):
-    '''
+    """
     Convert year (int) into 2 character UM year
 
     args
@@ -577,7 +577,7 @@ def precisYY(y):
     >>> print (precisYY(1973))
     h3
 
-    '''
+    """
 
     # use // operator to round down (integer division)
     decades = y // 10
@@ -652,7 +652,8 @@ def precisD2(c):
 
 
 def UMFileList(runid, startd, endd, freq):
-    ''' Give a (thoretical) list of UM date format files between 2 dates.
+    """
+    Give a (thoretical) list of UM date format files between 2 dates.
     Assuming no missing dates.
 
     args

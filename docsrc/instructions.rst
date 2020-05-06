@@ -103,27 +103,18 @@ First make sure you are in the master branch and run::
 
 Then create your branch by running this command::
 
-    git branch -b [branch name]
+    git branch [branch name]
 
 
-The above command will create the new branch and sets it as your working branch.
-
-To list your local branches and show which one you are in run::
+The above command will create the new branch and sets it as your working branch noted by a '*' next to it. You can check this by using this command::
 
     git branch
 
-your current active branch will be noted by a '*' next to it. e.g.::
+output::
 
       master
     * [branch name]
 
-To list the remote branches run::
-
-    git branch -r
-
-Or to list all branches run::
-
-    git branch -a
 
 Add your function to the branch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -190,12 +181,12 @@ Go back and forth with the code writer until you are both happy with the functio
 
 Some good Git best practices
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    - Always create new functions/features in a branch
     - Commit related changes
     - Commit often
     - Don't commit unfinished work
     - Test before you commit
     - Write useful commit messages
+    - Use branches
 
 For more details see Git Commit Best Practices `Page <https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices>`_
 

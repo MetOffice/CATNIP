@@ -8,7 +8,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import iris.quickplot as qplt
 import iris
-from catnip.analysis import linear_regress, ci_interval
+from analysis import linear_regress, ci_interval
 
 
 

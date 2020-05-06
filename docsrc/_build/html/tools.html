@@ -89,9 +89,8 @@ Constants:</p>
 <p>This test compares dewpoint calculated by the
 calculate_dewpoint function, to dewpoint directly
 output from the UM i.e. uses the fortran routine</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt1.pp&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/dewpointtest_pt2.pp&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;dewpointtest_pt1.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;dewpointtest_pt2.pp&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">P</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;surface_air_pressure&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">T</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Q</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;specific_humidity&#39;</span><span class="p">)</span>
@@ -241,8 +240,10 @@ For full info, see <a class="reference external" href="https://scitools.org.uk/i
 <p>areaweighted is VERY picky, it will not allow you to regrid using this method if the two input cubes are not on the
 same coordinate system, and both input grids must also contain monotonic, bounded, 1D spatial coordinates.</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tgrid</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;gcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgrid</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cube_reg</span> <span class="o">=</span> <span class="n">regrid_to_target</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">tgrid</span><span class="p">)</span>
 <span class="go">regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">tgrid</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -282,9 +283,10 @@ Longitude can be either 0-360 or -180-180 degree.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span> <span class="o">=</span> <span class="mf">6.5</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span> <span class="o">=</span> <span class="mf">6.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">lon</span> <span class="o">=</span> <span class="mi">289</span> <span class="c1"># on 0-360 degree</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lon</span><span class="p">,</span> <span class="n">rot_lat</span> <span class="o">=</span> <span class="n">regular_point_to_rotated</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rot_lon</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rot_lat</span><span class="p">))</span>
 <span class="go">-84.330 3.336</span>
@@ -326,7 +328,8 @@ Longitude output in -180-180 degree format.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lat</span> <span class="o">=</span> <span class="mf">3.34</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">rot_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mf">84.33</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">reg_lon</span><span class="p">,</span> <span class="n">reg_lat</span> <span class="o">=</span> <span class="n">rotated_point_to_regular</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">rot_lon</span><span class="p">,</span> <span class="n">rot_lat</span><span class="p">)</span>
@@ -379,8 +382,10 @@ that meet the season criteria. For calculation
 where continuous seasons are important
 iris.aggregated_by is better.</p>
 <p>See an example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># load a rcm cube</span>
-<span class="gp">... </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># load a rcm cube</span>
+<span class="gp">... </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seas_min_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="p">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2000</span><span class="p">])</span>
 <span class="go">Calculating min for 2000-2000 mam</span>
 <span class="go">Calculating min for 2000-2000 jja</span>
@@ -393,7 +398,7 @@ iris.aggregated_by is better.</p>
 <span class="go">Calculating mean for 2000-2001 jjas</span>
 <span class="go">Calculating mean for 2000-2001 on</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># now load a gcm cube</span>
-<span class="gp">... </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">... </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seas_pc_cubelist</span> <span class="o">=</span> <span class="n">seas_time_stat</span><span class="p">(</span><span class="n">cube2</span><span class="p">,</span> <span class="n">seas_mons</span><span class="o">=</span><span class="p">[[</span><span class="mi">11</span><span class="p">]],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;percentile&#39;</span><span class="p">,</span> <span class="n">pc</span><span class="o">=</span><span class="mi">95</span><span class="p">,</span> <span class="n">ext_area</span><span class="o">=</span><span class="p">[</span><span class="mi">340</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
 <span class="go">Calculating percentile for 490-747 n</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># print an example of the output</span>
@@ -457,10 +462,12 @@ and both input grids must also contain monotonic, bounded, 1D spatial coordinate
 <p class="rubric">Notes</p>
 <p>See <a class="reference external" href="https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html">https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html</a> for more information</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tgrid</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;gcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgrid</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regridder</span> <span class="o">=</span> <span class="n">set_regridder</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">tgrid</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud_area_fraction&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;cloud_area_fraction&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 <span class="go">(145, 192)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">regridder</span><span class="p">(</span><span class="n">cube2</span><span class="p">)</span>
@@ -510,8 +517,9 @@ and navigate to the relevant UM version and stash code:</p>
 </tbody>
 </table>
 <p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span> <span class="o">=</span> <span class="n">wind_direction</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">)</span>
 <span class="go">data is on rotated coord system, un-rotating . . .</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">angle</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span>
@@ -555,8 +563,9 @@ and navigate to the relevant UM version and stash code:</p>
 </tbody>
 </table>
 <p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;gcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;y_wind&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span> <span class="o">=</span> <span class="n">windspeed</span><span class="p">(</span><span class="n">u_cube</span><span class="p">,</span> <span class="n">v_cube</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ws</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;formula&#39;</span><span class="p">]</span>
 <span class="go">&#39;sqrt(u**2, v**2)&#39;</span>
@@ -598,8 +607,8 @@ values.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>See below for an example that should be run with python3:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()])</span>
 <span class="go">[&#39;time&#39;, &#39;grid_latitude&#39;, &#39;grid_longitude&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_aux_unrotated_coords</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
@@ -660,7 +669,8 @@ to add bounds to the data, e.g. if data
 are instantaneous, time bounds are not
 appropriate.</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">)</span>
 <span class="go">time coordinate already has bounds, none will be added</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">add_bounds</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="s1">&#39;grid_latitude&#39;</span><span class="p">)</span>
@@ -695,7 +705,7 @@ coordinate system.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span><span class="o">=</span><span class="s1">&#39;/project/ciid/obs_datasets/asia/APHRODITE/gtopo30_025deg.nc&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;gtopo30_025deg.nc&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">coord_system</span><span class="p">)</span>
 <span class="go">None</span>
@@ -729,8 +739,8 @@ on the data, not all of the coords added will be relevant.</p>
 <p class="rubric">Notes</p>
 <p>test</p>
 <p>A simple example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_file</span> <span class="o">=</span> <span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/mslp.daily.rcm.viet.nc&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">cube_file</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;mslp.daily.rcm.viet.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coord_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="n">cube</span><span class="o">.</span><span class="n">coords</span><span class="p">()]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">((</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">coord_names</span><span class="p">)))</span>
 <span class="go">time, grid_latitude, grid_longitude</span>
@@ -762,46 +772,6 @@ on the data, not all of the coords added will be relevant.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="preparation.extract_rot_cube">
-<code class="descclassname">preparation.</code><code class="descname">extract_rot_cube</code><span class="sig-paren">(</span><em>cube</em>, <em>min_lat</em>, <em>min_lon</em>, <em>max_lat</em>, <em>max_lon</em><span class="sig-paren">)</span><a class="headerlink" href="#preparation.extract_rot_cube" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function etracts the specific region from the cube.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cube</strong> (<em>cube on rotated coord system</em><em>, </em><em>used as reference grid for transformation.</em>) – </td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><ul class="simple">
-<li><strong>min_lat</strong> (<em>The minimum latitude point of the desired extracted cube.</em>)</li>
-<li><strong>min_lon</strong> (<em>The minimum longitude point of the desired extracted cube.</em>)</li>
-<li><strong>max_lat</strong> (<em>The maximum latitude point of the desired extracted cube.</em>)</li>
-<li><strong>max_lon</strong> (<em>The maximum longitude point of the desired extracted cube.</em>)</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">min_lat</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">min_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_lat</span> <span class="o">=</span> <span class="mi">60</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">max_lon</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">extracted_cube</span> <span class="o">=</span> <span class="n">extract_rot_cube</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">61.47165097005264</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">48.213032844268646</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">3.642576550089792</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">extracted_cube</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;longitude&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">points</span><span class="p">))</span>
-<span class="go">-16.385571344717235</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
 <dt id="preparation.remove_forecast_coordinates">
 <code class="descclassname">preparation.</code><code class="descname">remove_forecast_coordinates</code><span class="sig-paren">(</span><em>iris_cube</em><span class="sig-paren">)</span><a class="headerlink" href="#preparation.remove_forecast_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files</p>
@@ -820,7 +790,8 @@ on the data, not all of the coords added will be relevant.</p>
 <p class="rubric">Notes</p>
 <p>See below for examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_fcr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">cube_fcr</span> <span class="o">=</span> <span class="n">remove_forecast_coordinates</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cube_list_fcr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_fcr</span><span class="p">)</span>
@@ -882,7 +853,8 @@ on the data, not all of the coords added will be relevant.</p>
 <p class="rubric">Notes</p>
 <p>See below for examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list_rr</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">CubeList</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;rcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube_list</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">cube</span> <span class="ow">in</span> <span class="n">cube_list</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">cube_list_rr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cube_rr</span><span class="p">)</span>
@@ -893,7 +865,7 @@ on the data, not all of the coords added will be relevant.</p>
 <span class="go">Removed 8 size rim from specific_humidity</span>
 <span class="go">Removed 8 size rim from x_wind</span>
 <span class="go">Removed 8 size rim from y_wind</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/rcm_mslp_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mslp_cube_rr</span> <span class="o">=</span> <span class="n">rim_remove</span><span class="p">(</span><span class="n">mslp_cube</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="go">Removed 8 size rim from air_pressure_at_sea_level</span>
@@ -1107,11 +1079,10 @@ common time period (format DD/MM/YYYY).</p>
 <p class="rubric">Notes</p>
 <p>The input cubes must have a coordinate called ‘time’ which must have bounds.</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">dir</span> <span class="o">=</span> <span class="s2">&quot;/project/ciid/projects/ciid_tools/stock_cubes/&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file_</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;daily.19990801_19990823.pp&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">file_</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">+</span> <span class="s2">&quot;daily.19990808_19990830.pp&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file_</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;daily.19990801_19990823.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;daily.19990808_19990830.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">st</span><span class="p">,</span> <span class="n">et</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">common_timeperiod</span><span class="p">(</span><span class="n">cube1</span><span class="p">,</span> <span class="n">cube2</span><span class="p">)</span>
 <span class="go">Common time period:</span>
 <span class="go">(&#39;8/8/1999&#39;, &#39;23/8/1999&#39;)</span>
@@ -1146,10 +1117,10 @@ point values, bounds and coordinate system.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;gcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
 <span class="go">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">compare_coords</span><span class="p">(</span><span class="n">cube1</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">),</span> <span class="n">cube2</span><span class="o">.</span><span class="n">coord</span><span class="p">(</span><span class="s1">&#39;latitude&#39;</span><span class="p">))</span>
 <span class="go">long_name values differ: None and latitude</span>
@@ -1180,10 +1151,10 @@ Results are printed to the screen</p>
 </table>
 <p class="rubric">Notes</p>
 <p>An example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/gcm_monthly.pp&#39;</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">data_dir</span> <span class="o">+</span> <span class="s1">&#39;/FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file1</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;gcm_monthly.pp&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube1</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="s1">&#39;x_wind&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube2</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file2</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">compare_cubes</span><span class="p">(</span><span class="n">cube1</span><span class="p">,</span> <span class="n">cube2</span><span class="p">)</span> <span class="c1"># doctest: +NORMALIZE_WHITESPACE</span>
 <span class="go">~~~~~ Cube name and data checks ~~~~~</span>
 <span class="go">long_name values differ: None and Eastward Wind</span>
@@ -1195,12 +1166,6 @@ Results are printed to the screen</p>
 <span class="go">~~~~~ Coordinate checks ~~~~~</span>
 <span class="go">WARNING - Dimensions coords differ on the following coord(s): [&#39;time&#39;]</span>
 <span class="go">Checking matching dim coords</span>
-<span class="go">-- longitude vs longitude --</span>
-<span class="go">long_name values differ: None and longitude</span>
-<span class="go">var_name values differ: None and lon</span>
-<span class="go">Point values are different</span>
-<span class="go">Point dtypes differ: float32 and float64</span>
-<span class="go">One has bounds, the other doesn&#39;t</span>
 <span class="go">-- latitude vs latitude --</span>
 <span class="go">long_name values differ: None and latitude</span>
 <span class="go">var_name values differ: None and lat</span>
@@ -1208,9 +1173,13 @@ Results are printed to the screen</p>
 <span class="go">Point values are different</span>
 <span class="go">Point dtypes differ: float32 and float64</span>
 <span class="go">One has bounds, the other doesn&#39;t</span>
-<span class="go">WARNING - Dimensions coords differ on the following coord(s):</span>
-<span class="go">    [&#39;air_pressure&#39;, &#39;forecast_period&#39;, &#39;forecast_reference_time&#39;,</span>
-<span class="go">    &#39;height&#39;, &#39;month_number&#39;, &#39;time&#39;, &#39;year&#39;]</span>
+<span class="go">-- longitude vs longitude --</span>
+<span class="go">long_name values differ: None and longitude</span>
+<span class="go">var_name values differ: None and lon</span>
+<span class="go">Point values are different</span>
+<span class="go">Point dtypes differ: float32 and float64</span>
+<span class="go">One has bounds, the other doesn&#39;t</span>
+<span class="go">WARNING - Dimensions coords differ on the following coord(s): [&#39;air_pressure&#39;, &#39;forecast_period&#39;, &#39;forecast_reference_time&#39;, &#39;height&#39;, &#39;month_number&#39;, &#39;time&#39;, &#39;year&#39;]</span>
 <span class="go">Cubes have no matching aux coords</span>
 </pre></div>
 </div>
@@ -1360,8 +1329,8 @@ constraint that spans the time period of the cube.</p>
 </table>
 <p class="rubric">Notes</p>
 <p>See below for an example, this is from a CMIP5 abrupt4xC02 run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube_file</span><span class="o">=</span><span class="s1">&#39;/project/ciid/projects/ciid_tools/stock_cubes/FGOALS-g2_ua@925_nov.nc&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">cube_file</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="s1">&#39;FGOALS-g2_ua@925_nov.nc&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">load_cube</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">start_str</span><span class="p">,</span> <span class="n">end_str</span><span class="p">,</span> <span class="n">dr_constraint</span> <span class="o">=</span> <span class="n">get_date_range</span><span class="p">(</span><span class="n">cube</span><span class="p">)</span>
 <span class="go">0490-11-01 00:00:00</span>
 <span class="go">0747-12-01 00:00:00</span>
@@ -1465,8 +1434,7 @@ s</p>
 </table>
 <p class="rubric">Notes</p>
 <p>See below for examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">iris</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">cube</span><span class="o">.</span><span class="n">Cube</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span><span class="o">.</span><span class="n">add_aux_coord</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">coords</span><span class="o">.</span><span class="n">AuxCoord</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">long_name</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cube</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="go">[0 1 2 3]</span>

@@ -433,7 +433,7 @@ def rim_remove(cube, rim_width):
     Removed 8 size rim from specific_humidity
     Removed 8 size rim from x_wind
     Removed 8 size rim from y_wind
-    >>> mslp_cube = iris.load_cube('/project/ciid/projects/ciid_tools/stock_cubes/rcm_mslp_monthly.pp')
+    >>> mslp_cube = iris.load_cube(file)
     >>>
     >>> mslp_cube_rr = rim_remove(mslp_cube, 8)
     Removed 8 size rim from air_pressure_at_sea_level
