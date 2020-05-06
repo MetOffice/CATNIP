@@ -27,6 +27,8 @@ def add_aux_unrotated_coords(cube):
     cube: input cube with auxilliary coordinates of unrotated
     latitude and longitude
 
+    Notes
+    -----
 
     See below for an example that should be run with python3:
 
@@ -169,7 +171,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
 
 
 def add_coord_system(cube):
-    '''
+    """
     A cube must have a coordinate system in order to be regridded.
 
     This function checks whether a cube has a coordinate system. If
@@ -185,9 +187,10 @@ def add_coord_system(cube):
 
     Returns
     -------
-    cube: The input cube with coordinate system added, if the
-          cube didn't have one already.
+    cube: The input cube with coordinate system added, if the cube didn't have one already.
 
+    Notes
+    -----
 
     A simple example:
 
@@ -200,7 +203,7 @@ def add_coord_system(cube):
     <iris 'Cube' of height / (1) (latitude: 281; longitude: 361)>
     >>> print(cube.coord('latitude').coord_system)
     GeogCS(6371229.0)
-    '''
+    """
 
     # Note: wgs84 is the World Geodetic System, and a standard coord
     # system in iris. In GeogCS(6371229.0), 6371229 is the Earth's
@@ -233,7 +236,7 @@ def add_coord_system(cube):
 
 
 def add_time_coord_cats(cube):
-    '''
+    """
     This function takes in an iris cube, and adds a range of
     numeric co-ordinate categorisations to it. Depending
     on the data, not all of the coords added will be relevant.
@@ -245,6 +248,10 @@ def add_time_coord_cats(cube):
     Returns
     -------
     Cube: cube that has new time categorisation coords added
+
+    Notes
+    -----
+    test
 
     A simple example:
 
@@ -276,7 +283,8 @@ def add_time_coord_cats(cube):
     [0 0 1 2 2 3 3 0]
     year
     [2000 2000 2000 2000 2000 2000 2000 2000]
-    '''
+
+    """
 
     # most errors pop up when you try to add a coord that has
     # previously been added, or the cube doesn't contain the
@@ -339,6 +347,8 @@ def remove_forecast_coordinates(iris_cube):
     -------
     iris_cube: iris cube without the forecast_period and forecast_reference_time coordinates
 
+    Notes
+    -----
 
     See below for examples:
 
@@ -405,6 +415,8 @@ def rim_remove(cube, rim_width):
     -------
     rrcube: rim removed cube
 
+    Notes
+    -----
 
     See below for examples:
 
