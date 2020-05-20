@@ -8,14 +8,15 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import iris.quickplot as qplt
 import iris
-from catnip.analysis import linear_regress, ci_interval
+from analysis import linear_regress, ci_interval
+
 
 
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
     """
-    A plotting function to produce a quick wind
+    A plotting function to produce a quick wind 
     vector plot. Output is a plot with windspeed
-    contours and wind vectors. Optionally the
+    contours and wind vectors. Optionally the 
     u and v components can be unrotated.
 
     Note: If you are unsure whether your winds need to be
@@ -68,7 +69,7 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
               u_cube.data[::npts,::npts], v_cube.data[::npts,::npts])
     #OTHER OPTIONS FOR QUIVER: scale = 1, headwidth = 3, width = 0.0015)
     ax.coastlines()
-    ax.set_extent([x.points[0], x.points[-1], y.points[0], y.points[-1]], transform)
+    ax.set_extent([x.points[0],x.points[-1],y.points[0],y.points[-1]],transform)
     plt.title(title)
     print("plot {} created".format(title))
 
