@@ -452,7 +452,7 @@ def sort_cube(cube, coord):
     return cube[tuple(index)]
 
 
-def convertFromUMStamp(datestamp, fmt):
+def convert_from_um_stamp(datestamp, fmt):
     """
     Convert UM date stamp to normal python date.
 
@@ -470,7 +470,7 @@ def convertFromUMStamp(datestamp, fmt):
     Does not support 3 monthly seasons e.g. JJA as described in the Precis technical manual, page 119.
 
 
-    >>> print (convertFromUMStamp('k5bu0', 'YYMDH'))
+    >>> print (convert_from_um_stamp('k5bu0', 'YYMDH'))
     2005-11-30 00:00:00
 
     """
@@ -480,7 +480,7 @@ def convertFromUMStamp(datestamp, fmt):
                                                                      fmt))
 
     # First calculate decades since 1800
-    d = precisD2(datestamp[0])
+    d = precis_d2(datestamp[0])
     # calculate year
     yr = 1800 + (d * 10) + int(datestamp[1])
 
@@ -490,16 +490,16 @@ def convertFromUMStamp(datestamp, fmt):
         dt = datetime(year=yr, month=mon, day=1)
     else:
         # This is a YYMDH so need to convert day and hour as well
-        mon = precisD2(datestamp[2])
-        d = precisD2(datestamp[3])
-        hr = precisD2(datestamp[4])
+        mon = precis_d2(datestamp[2])
+        d = precis_d2(datestamp[3])
+        hr = precis_d2(datestamp[4])
         dt = datetime(year=yr, month=mon, day=d, hour=hr)
 
     return dt
 
 
 
-def convertToUMStamp(dt, fmt):
+def convert_to_um_stamp(dt, fmt):
     """
     Convert python datetime object or netcdf datetime object
     into UM date stamp.
@@ -520,14 +520,14 @@ def convertToUMStamp(dt, fmt):
     See below for examples
 
     >>> dt = datetime(1981, 11, 2)
-    >>> print (dt, convertToUMStamp(dt, 'YYMMM'))
+    >>> print (dt, convert_to_um_stamp(dt, 'YYMMM'))
     1981-11-02 00:00:00 i1nov
-    >>> print (dt, convertToUMStamp(dt, 'YYMDH'))
+    >>> print (dt, convert_to_um_stamp(dt, 'YYMDH'))
     1981-11-02 00:00:00 i1b20
     >>> dt = cdatetime(1981, 2, 30)
-    >>> print (dt, convertToUMStamp(dt, 'YYMMM'))
+    >>> print (dt, convert_to_um_stamp(dt, 'YYMMM'))
     1981-02-30 00:00:00 i1feb
-    >>> print (dt, convertToUMStamp(dt, 'YYMDH'))
+    >>> print (dt, convert_to_um_stamp(dt, 'YYMDH'))
     1981-02-30 00:00:00 i12u0
     """
 
@@ -538,16 +538,16 @@ def convertToUMStamp(dt, fmt):
         raise ValueError('Problem with format type {}'.format(fmt))
 
     # First convert years
-    YY = precisYY(dt.year)
+    YY = precis_yy(dt.year)
 
     if fmt == 'YYMMM':
         # just need to format the month as 3 character string
         mon = dt.strftime('%b').lower()
         UMstr = '{}{}'.format(YY, mon)
     else:
-        mon = precisD2(dt.month)
-        d = precisD2(dt.day)
-        hr = precisD2(dt.hour)
+        mon = precis_d2(dt.month)
+        d = precis_d2(dt.day)
+        hr = precis_d2(dt.hour)
         UMstr = '{}{}{}{}'.format(YY, mon, d, hr)
 
     assert len(UMstr) == 5, 'UMstr {} wrong length\ndt = {}'.format(
@@ -556,7 +556,7 @@ def convertToUMStamp(dt, fmt):
 
 
 
-def precisYY(y):
+def precis_yy(y):
     """
     Convert year (int) into 2 character UM year
 
@@ -574,7 +574,7 @@ def precisYY(y):
     See below for an example
 
 
-    >>> print (precisYY(1973))
+    >>> print (precis_yy(1973))
     h3
 
     """
@@ -582,14 +582,14 @@ def precisYY(y):
     # use // operator to round down (integer division)
     decades = y // 10
     onedigityrs = y - (decades * 10)
-    decades = precisD2(decades - 180)
+    decades = precis_d2(decades - 180)
     YY = '{}{}'.format(decades, onedigityrs)
     
     return YY
 
 
 
-def precisD2(c):
+def precis_d2(c):
     """ Convert characters according to PRECIS table D2
     http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119
 
@@ -607,19 +607,19 @@ def precisD2(c):
     -----
     See below for examples
 
-    >>> print (precisD2('1'))
+    >>> print (precis_d2('1'))
     1
-    >>> print (precisD2('c'))
+    >>> print (precis_d2('c'))
     12
-    >>> print (precisD2('s'))
+    >>> print (precis_d2('s'))
     28
 
     Also does the reverse conversions:
-    >>> print (precisD2(1))
+    >>> print (precis_d2(1))
     1
-    >>> print (precisD2(12))
+    >>> print (precis_d2(12))
     c
-    >>> print (precisD2(28))
+    >>> print (precis_d2(28))
     s
 
     """
@@ -651,7 +651,7 @@ def precisD2(c):
 
 
 
-def UMFileList(runid, startd, endd, freq):
+def um_file_list(runid, startd, endd, freq):
     """
     Give a (thoretical) list of UM date format files between 2 dates.
     Assuming no missing dates.
@@ -683,13 +683,13 @@ def UMFileList(runid, startd, endd, freq):
     >>> startd = datetime(1980, 9, 1)
     >>> endd = datetime(1980, 9, 3)
     >>> freq = 'pa'
-    >>> print (UMFileList(runid, startd, endd, freq)) # doctest: +NORMALIZE_WHITESPACE
+    >>> print (um_file_list(runid, startd, endd, freq)) # doctest: +NORMALIZE_WHITESPACE
     ['akwssa.pai0910.pp', 'akwssa.pai0920.pp', 'akwssa.pai0930.pp']
 
     >>> startd = datetime(1980, 9, 1)
     >>> endd = datetime(1980, 12, 31)
     >>> freq = 'pm'
-    >>> print (UMFileList(runid, startd, endd, freq)) # doctest: +NORMALIZE_WHITESPACE
+    >>> print (um_file_list(runid, startd, endd, freq)) # doctest: +NORMALIZE_WHITESPACE
     ['akwssa.pmi0sep.pp', 'akwssa.pmi0oct.pp',
      'akwssa.pmi0nov.pp', 'akwssa.pmi0dec.pp']
 
@@ -703,7 +703,7 @@ def UMFileList(runid, startd, endd, freq):
         # Monthly frequency
         if freq == 'pm':
             fname = '{}a.pm{}.pp'.format(runid,
-                                         convertToUMStamp(dt, 'YYMMM'))
+                                         convert_to_um_stamp(dt, 'YYMMM'))
             # Add a month to the date
             if dt.month == 12:
                 dt = dt.replace(year = dt.year + 1, month = 1)
@@ -714,7 +714,7 @@ def UMFileList(runid, startd, endd, freq):
         elif freq == 'pa':
             # build file name string
             fname = '{}a.pa{}.pp'.format(runid,
-                                         convertToUMStamp(dt, 'YYMDH'))
+                                         convert_to_um_stamp(dt, 'YYMDH'))
             # add a day to the date
             dt = dt + timedelta(days=1)
 
@@ -722,7 +722,7 @@ def UMFileList(runid, startd, endd, freq):
         elif freq == 'pj':
             # build file name string
             fname = '{}a.pj{}.pp'.format(runid,
-                                         convertToUMStamp(dt, 'YYMDH'))
+                                         convert_to_um_stamp(dt, 'YYMDH'))
             # add a day to the date
             dt = dt + timedelta(days=1)
 
