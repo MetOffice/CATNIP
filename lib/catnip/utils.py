@@ -513,7 +513,7 @@ def convert_to_um_stamp(dt, fmt):
 
     returns
     -------
-    UMstr: string with UMdatestamp
+    um_str: string with UMdatestamp
     
     Notes
     -----
@@ -538,21 +538,21 @@ def convert_to_um_stamp(dt, fmt):
         raise ValueError('Problem with format type {}'.format(fmt))
 
     # First convert years
-    YY = precis_yy(dt.year)
+    yy = precis_yy(dt.year)
 
     if fmt == 'YYMMM':
         # just need to format the month as 3 character string
         mon = dt.strftime('%b').lower()
-        UMstr = '{}{}'.format(YY, mon)
+        um_str = '{}{}'.format(yy, mon)
     else:
         mon = precis_d2(dt.month)
         d = precis_d2(dt.day)
         hr = precis_d2(dt.hour)
-        UMstr = '{}{}{}{}'.format(YY, mon, d, hr)
+        um_str = '{}{}{}{}'.format(yy, mon, d, hr)
 
-    assert len(UMstr) == 5, 'UMstr {} wrong length\ndt = {}'.format(
-                                UMstr, dt.strftime('%Y%m%d'))
-    return UMstr
+    assert len(um_str) == 5, 'um_str {} wrong length\ndt = {}'.format(
+                                um_str, dt.strftime('%Y%m%d'))
+    return um_str
 
 
 
@@ -583,10 +583,9 @@ def precis_yy(y):
     decades = y // 10
     onedigityrs = y - (decades * 10)
     decades = precis_d2(decades - 180)
-    YY = '{}{}'.format(decades, onedigityrs)
+    yy = '{}{}'.format(decades, onedigityrs)
     
-    return YY
-
+    return yy
 
 
 def precis_d2(c):
