@@ -8,8 +8,9 @@ import iris.analysis
 import numpy as np
 from six import string_types, integer_types
 import iris.coord_categorisation as iccat
+import doctest
 import os.path
-import config
+import catnip.config as conf 
 
 def add_aux_unrotated_coords(cube):
     """
@@ -32,7 +33,7 @@ def add_aux_unrotated_coords(cube):
 
     See below for an example that should be run with python3:
 
-    >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
     >>> cube = iris.load_cube(file)
     >>> print([coord.name() for coord in cube.coords()])
     ['time', 'grid_latitude', 'grid_longitude']
@@ -130,7 +131,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         An example:
 
 
-        >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+        >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
         >>> cube = iris.load_cube(file)
         >>> add_bounds(cube, 'time')
         time coordinate already has bounds, none will be added
@@ -194,7 +195,7 @@ def add_coord_system(cube):
 
     A simple example:
 
-    >>> file = os.path.join(config.DATA_DIR, 'gtopo30_025deg.nc')
+    >>> file = os.path.join(conf.DATA_DIR, 'gtopo30_025deg.nc')
     >>> cube = iris.load_cube(file)
     >>> print(cube.coord('latitude').coord_system)
     None
@@ -255,7 +256,7 @@ def add_time_coord_cats(cube):
 
     A simple example:
 
-    >>> file = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
     >>> cube = iris.load_cube(file)
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
@@ -353,7 +354,7 @@ def remove_forecast_coordinates(iris_cube):
     See below for examples:
 
     >>> cube_list_fcr = iris.cube.CubeList()
-    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> cube_list = iris.load(file)
     >>> for cube in cube_list:
     ...     cube_fcr = remove_forecast_coordinates(cube)
@@ -421,7 +422,7 @@ def rim_remove(cube, rim_width):
     See below for examples:
 
     >>> cube_list_rr = iris.cube.CubeList()
-    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> cube_list = iris.load(file)
     >>> for cube in cube_list:
     ...     cube_rr = rim_remove(cube, 8)
@@ -433,6 +434,7 @@ def rim_remove(cube, rim_width):
     Removed 8 size rim from specific_humidity
     Removed 8 size rim from x_wind
     Removed 8 size rim from y_wind
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_mslp_monthly.pp')
     >>> mslp_cube = iris.load_cube(file)
     >>>
     >>> mslp_cube_rr = rim_remove(mslp_cube, 8)
@@ -507,5 +509,4 @@ def rim_remove(cube, rim_width):
 
 
 if __name__ == "__main__":
-    import doctest
     doctest.testmod()

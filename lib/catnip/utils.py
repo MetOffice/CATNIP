@@ -7,13 +7,14 @@ from __future__ import (absolute_import, division, print_function, unicode_liter
 import iris
 import numpy as np
 import datetime as dt
+import doctest
 import itertools
 import sys
 import re
 from six import string_types
 from datetime import datetime, timedelta
 import os.path
-import config
+import catnip.config as conf
 
 # when all scitools versions with netcdftime are retired we can remove this
 # try - except
@@ -51,8 +52,8 @@ def common_timeperiod(cube1, cube2):
 
     An example:
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'daily.19990801_19990823.pp')
-    >>> file2 = os.path.join(config.DATA_DIR, 'daily.19990808_19990830.pp')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'daily.19990801_19990823.pp')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'daily.19990808_19990830.pp')
     >>> cube1=iris.load_cube(file1)
     >>> cube2=iris.load_cube(file2)
     >>> st, et, c1, c2 = common_timeperiod(cube1, cube2)
@@ -139,8 +140,8 @@ def compare_coords(c1, c2):
 
     An example:
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
-    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
     >>> cube1 = iris.load_cube(file1, 'air_temperature')
     >>> cube2 = iris.load_cube(file2)
     >>>
@@ -203,8 +204,8 @@ def compare_cubes(cube1, cube2):
 
     An example:
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
-    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
     >>> cube1 = iris.load_cube(file1, 'x_wind')
     >>> cube2 = iris.load_cube(file2)
     >>> compare_cubes(cube1, cube2) # doctest: +NORMALIZE_WHITESPACE
@@ -382,7 +383,7 @@ def get_date_range(cube):
     
     See below for an example, this is from a CMIP5 abrupt4xC02 run:
 
-    >>> file = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> file = os.path.join(conf.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
     >>> cube = iris.load_cube(file)
     >>> start_str, end_str, dr_constraint = get_date_range(cube)
     0490-11-01 00:00:00
@@ -815,6 +816,4 @@ def umstash_2_pystash(stash):
 
 
 if __name__ == "__main__":
-
-    import doctest
     doctest.testmod()
