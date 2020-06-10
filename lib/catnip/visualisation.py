@@ -7,9 +7,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import iris.quickplot as qplt
+import doctest
 import iris
-from analysis import linear_regress, ci_interval
-
+from catnip.analysis import linear_regress, ci_interval
+import catnip.config as conf
 
 
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
@@ -132,6 +133,4 @@ def plot_regress(x, y, best_fit=True, CI_region=True, CI_slope=False, alpha=0.05
 
 
 if __name__ == "__main__":
-
-    import doctest
     doctest.testmod()
