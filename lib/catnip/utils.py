@@ -351,6 +351,8 @@ def date_chunks(startdate, enddate, yearchunk, indatefmt='%Y/%m/%d', outdatefmt=
     # Check dates
     if maxdate <= mindate:
         raise ValueError('Max date ({}) is <= min date ({})'.format(maxdate, mindate))
+    if yearchunk < 0:
+        raise ValueError('yearchunk must be an integer >= zero')
     # Find date steps
     dates = [mindate + dt.timedelta(days=x) for x in range(0, (maxdate - mindate).days, yearchunk * 365)]
     dates = [dt.datetime.strftime(d, outdatefmt) for d in dates]
