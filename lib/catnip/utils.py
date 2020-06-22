@@ -70,13 +70,27 @@ def common_timeperiod(cube1, cube2):
     """
 
     # Get time info for both cubes
-    time_info1 = cube1.coord('time')
-    start_time1 = time_info1.units.num2date(time_info1.bounds[0][0])
-    end_time1 = time_info1.units.num2date(time_info1.bounds[-1][1])
+    try:
+        time_info1 = cube1.coord('time')
+    except KeyError:
+       raise KeyError("Cube1 does not contain time coordinate")
 
-    time_info2 = cube2.coord('time')
-    start_time2 = time_info2.units.num2date(time_info2.bounds[0][0])
-    end_time2 = time_info2.units.num2date(time_info2.bounds[-1][1])
+    try:
+        start_time1 = time_info1.units.num2date(time_info1.bounds[0][0])
+        end_time1 = time_info1.units.num2date(time_info1.bounds[-1][1])
+    except TypeError:
+        raise TypeError("Cube1 does not contain time bounds")
+
+    try:
+        time_info2 = cube2.coord('time')
+    except KeyError:
+        raise KeyError("Cube2 does not contain time coordinate")
+
+    try:
+        start_time2 = time_info2.units.num2date(time_info2.bounds[0][0])
+        end_time2 = time_info2.units.num2date(time_info2.bounds[-1][1])
+    except TypeError:
+        raise TypeError("Cube2 does not contain time bounds")
 
     start_time = max([start_time1, start_time2])
     end_time = min([end_time1, end_time2])
@@ -90,8 +104,8 @@ def common_timeperiod(cube1, cube2):
     et_list = [str(end_time.day), str(end_time.month), str(end_time.year)]
     end_date_str = "/".join(et_list)
 
-    print("Common time period:")
-    print((start_date_str, end_date_str))
+    #print("Common time period:")
+    #print((start_date_str, end_date_str))
 
     # create a constraint that covers the date range
     date_range = iris.Constraint(time=lambda cell: start_time <= cell.point <= end_time)
@@ -325,7 +339,7 @@ def date_chunks(startdate, enddate, yearchunk, indatefmt='%Y/%m/%d', outdatefmt=
     Notes
     -----
     This function is only compatible with python 3.
-    
+
     Raises:
         ValueError: If `enddate` (ie. max date) is less than or equal to `startdate` (ie. min date)
         Excpetion: If `yearchunk` is not an integer
@@ -380,7 +394,7 @@ def get_date_range(cube):
 
     Notes
     -----
-    
+
     See below for an example, this is from a CMIP5 abrupt4xC02 run:
 
     >>> file = os.path.join(conf.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
@@ -429,7 +443,7 @@ def sort_cube(cube, coord):
     Notes
     -----
     See below for examples
-   
+
     >>> cube = iris.cube.Cube([0, 1, 2, 3])
     >>> cube.add_aux_coord(iris.coords.AuxCoord([2, 1, 0, 3], long_name='test'), 0)
     >>> print(cube.data)
@@ -465,7 +479,7 @@ def convert_from_um_stamp(datestamp, fmt):
     returns
     -------
     dt: datetime object of the input datestamp
-    
+
     Notes
     -----
     Does not support 3 monthly seasons e.g. JJA as described in the Precis technical manual, page 119.
@@ -515,7 +529,7 @@ def convert_to_um_stamp(dt, fmt):
     returns
     -------
     um_str: string with UMdatestamp
-    
+
     Notes
     -----
     See below for examples
@@ -569,7 +583,7 @@ def precis_yy(y):
     returns
     -------
     YY: string 2 letter UM year character
-    
+
     Notes
     -----
     See below for an example
@@ -585,7 +599,7 @@ def precis_yy(y):
     onedigityrs = y - (decades * 10)
     decades = precis_d2(decades - 180)
     yy = '{}{}'.format(decades, onedigityrs)
-    
+
     return yy
 
 
@@ -598,11 +612,11 @@ def precis_d2(c):
     c: character or number to convert
     Supply a character to convert from left to right in the table
     Supply an int to convert from right to left in the table
-    
+
     returns
     -------
     conv: converted value: int if input is string, string if input is int
-    
+
     Notes
     -----
     See below for examples
@@ -674,7 +688,7 @@ def um_file_list(runid, startd, endd, freq):
     returns
     -------
     filelist: list of strings giving the filenames
-    
+
     Notes
     -----
     See below for examples
@@ -750,7 +764,7 @@ def umstash_2_pystash(stash):
 
     Notes
     -----
-    
+
     Some basic examples:
 
     >>> sc = '24'
