@@ -68,11 +68,55 @@ class TestUtils(unittest.TestCase):
         """Test three"""
         pass
 
-
-    @unittest.skip("TO DO")
     def test_date_chunks(self):
-        """Test four"""
-        pass
+        """
+        Generate a series of random numbers to cover the number of years between the start and end date
+        and pass it as a parameter to the data_chunks() function and assert the results
+
+        """
+
+        start_date = '2000/01/01'
+        int_start_year = int(start_date.split("/")[0])
+        end_date = '2020/12/31'
+        int_end_year = int(end_date.split("/")[0])
+        expected_year_span = int_end_year - int_start_year
+
+        for i in range(2, expected_year_span):  # divmod(expected_year_span, 2)[0] + 1):
+
+            year_chunk = i  # random.randint(2, divmod(expected_year_span, 2)[0])
+            expected_result = date_chunks(start_date, end_date, year_chunk)
+
+            # check the whole of output string
+            self.assertEqual(expected_result, expected_result)
+
+            # check that the first and last element of date list match the input
+            self.assertEqual(start_date, expected_result[0][0])
+            self.assertEqual(end_date, expected_result[-1][-1])
+
+            # check that the year span is as expected as set by start/end dates
+            output_year_span = int(expected_result[-1][-1].split("/")[0]) - int(expected_result[0][0].split("/")[0])
+            self.assertEqual(expected_year_span, output_year_span)
+
+            # check that the year difference between the chunked years is <= year_chunk value
+            for years_pair in expected_result:
+                start_year = int(years_pair[0].split("/")[0])
+                end_year = int(years_pair[1].split("/")[0])
+                year_diff = end_year - start_year
+                self.assertLessEqual(year_diff, year_chunk)
+
+        # Negative tests
+
+        # check for wrong date format
+        with self.assertRaises(ValueError):
+            bad_date_format = "01/01/2005"
+            date_chunks(bad_date_format, end_date, 3)
+        # check for exception using zero chunk year value
+        with self.assertRaises(ValueError):
+            date_chunks(start_date, end_date, 0)
+
+        # check for exception using negative chunk year value
+        with self.assertRaises(ValueError):
+            date_chunks(start_date, end_date, -5)
 
 
     @unittest.skip("TO DO")
