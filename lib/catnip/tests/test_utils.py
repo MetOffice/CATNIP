@@ -35,10 +35,27 @@ class TestUtils(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skip("TO DO")
     def test_common_timeperiod(self):
-        """Test one"""
-        pass
+
+        st, et, c1, c2 = common_timeperiod(self.daily_01_08_cube, self.daily_08_30_cube)
+        self.assertEqual(c1.coord('time')[0],c2.coord('time')[0])
+        self.assertEqual(c1.coord('time')[-1],c2.coord('time')[-1])
+        self.assertEqual(c1.shape,c2.shape)
+
+        # passing a cube with no time coordinate
+        daily_01_08_cube_notimedim = self.daily_01_08_cube.copy()
+        time_coord = daily_01_08_cube_notimedim.coord('time')
+        daily_01_08_cube_notimedim.remove_coord(time_coord)
+
+        self.assertRaises(KeyError, common_timeperiod, daily_01_08_cube_notimedim, self.daily_08_30_cube)
+        self.assertRaises(KeyError, common_timeperiod, self.daily_08_30_cube, daily_01_08_cube_notimedim)
+
+        # passing a cube with no time bound
+        daily_01_08_cube_nobound = self.daily_01_08_cube.copy()
+        daily_01_08_cube_nobound.coord('time').bounds = None
+
+        self.assertRaises(TypeError, common_timeperiod, daily_01_08_cube_nobound, self.daily_08_30_cube)
+        self.assertRaises(TypeError, common_timeperiod, self.daily_08_30_cube, daily_01_08_cube_nobound)
 
     @unittest.skip("TO DO")
     def test_compare_coords(self):
