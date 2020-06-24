@@ -57,8 +57,6 @@ def common_timeperiod(cube1, cube2):
     >>> cube1=iris.load_cube(file1)
     >>> cube2=iris.load_cube(file2)
     >>> st, et, c1, c2 = common_timeperiod(cube1, cube2)
-    Common time period:
-    ('8/8/1999', '23/8/1999')
     >>> print(c1.coord('time')[0])
     DimCoord([1999-08-08 12:00:00], bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], standard_name='time', calendar='360_day')
     >>> print(c2.coord('time')[0])
@@ -73,7 +71,7 @@ def common_timeperiod(cube1, cube2):
     try:
         time_info1 = cube1.coord('time')
     except KeyError:
-       raise KeyError("Cube1 does not contain time coordinate")
+        raise KeyError("Cube1 does not contain time coordinate")
 
     try:
         start_time1 = time_info1.units.num2date(time_info1.bounds[0][0])
@@ -103,9 +101,6 @@ def common_timeperiod(cube1, cube2):
     start_date_str = "/".join(st_list)
     et_list = [str(end_time.day), str(end_time.month), str(end_time.year)]
     end_date_str = "/".join(et_list)
-
-    #print("Common time period:")
-    #print((start_date_str, end_date_str))
 
     # create a constraint that covers the date range
     date_range = iris.Constraint(time=lambda cell: start_time <= cell.point <= end_time)
