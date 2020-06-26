@@ -83,6 +83,12 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(start_str, '1/11/490')
         self.assertEqual(end_str, '1/12/747')
 
+        d1 = datetime.strptime('0490-11-01', '%Y-%m-%d')
+        d2 = datetime.strptime('0747-12-01', '%Y-%m-%d')
+        test_con = iris.Constraint(time=lambda cell: d1 <= cell.point <= d2)
+        print (dr_constraint)
+        self.assertEqual(dr_constraint, test_con)
+
         # File 2 x_wind from GCM
         start_str, end_str, dr_constraint = get_date_range(self.gcm_u_cube)
         self.assertEqual(start_str, '1/9/1960')
