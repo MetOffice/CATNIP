@@ -395,8 +395,6 @@ def get_date_range(cube):
     >>> file = os.path.join(conf.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
     >>> cube = iris.load_cube(file)
     >>> start_str, end_str, dr_constraint = get_date_range(cube)
-    0490-11-01 00:00:00
-    0747-12-01 00:00:00
     >>> print(start_str)
     1/11/490
     >>> print(end_str)
@@ -413,8 +411,6 @@ def get_date_range(cube):
     start_date_str = "/".join(st_list)
     et_list = [str(end_time.day), str(end_time.month), str(end_time.year)]
     end_date_str = "/".join(et_list)
-    print(start_time)
-    print(end_time)
 
     # create a constraint that covers the date range
     date_range = iris.Constraint(time=lambda cell: start_time <= cell.point <= end_time)
