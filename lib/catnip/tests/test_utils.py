@@ -119,10 +119,13 @@ class TestUtils(unittest.TestCase):
             date_chunks(start_date, end_date, -5)
 
 
-    @unittest.skip("TO DO")
     def test_get_date_range(self):
-        """Test five"""
-        pass
+        """Tests for get_date_range function"""
+
+        # First file - ua
+        start_str, end_str, dr_constraint = get_date_range(self.ua_cube)
+        self.assertEqual(start_str, '1/11/490')
+        self.assertEqual(end_str, '1/12/747')
 
 
     def test_sort_cube(self):
