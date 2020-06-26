@@ -19,8 +19,8 @@ class TestUtils(unittest.TestCase):
         file4 = os.path.join(conf.DATA_DIR, 'daily.19990808_19990830.pp')
 
         self.ua_cube = iris.load_cube(file1)
-        self.gcm_t_cube = iris.load(file2,'air_temperature')
-        self.gcm_u_cube = iris.load(file2,'x_wind')
+        self.gcm_t_cube = iris.load_cube(file2,'air_temperature')
+        self.gcm_u_cube = iris.load_cube(file2,'x_wind')
         self.daily_01_08_cube = iris.load_cube(file3)
         self.daily_08_30_cube = iris.load_cube(file4)
 
@@ -75,10 +75,28 @@ class TestUtils(unittest.TestCase):
         pass
 
 
-    @unittest.skip("TO DO")
     def test_get_date_range(self):
-        """Test five"""
-        pass
+        """Tests for get_date_range function"""
+
+        # First file - ua
+        start_str, end_str, dr_constraint = get_date_range(self.ua_cube)
+        self.assertEqual(start_str, '1/11/490')
+        self.assertEqual(end_str, '1/12/747')
+
+        # File 2 x_wind from GCM
+        start_str, end_str, dr_constraint = get_date_range(self.gcm_u_cube)
+        self.assertEqual(start_str, '1/9/1960')
+        self.assertEqual(end_str, '1/10/1960')
+
+        # File 3
+        start_str, end_str, dr_constraint = get_date_range(self.daily_01_08_cube)
+        self.assertEqual(start_str, '1/8/1999')
+        self.assertEqual(end_str, '23/8/1999')
+
+        # File 4
+        start_str, end_str, dr_constraint = get_date_range(self.daily_08_30_cube)
+        self.assertEqual(start_str, '8/8/1999')
+        self.assertEqual(end_str, '30/8/1999')
 
 
     @unittest.skip("TO DO")
