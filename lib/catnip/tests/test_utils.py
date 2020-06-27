@@ -24,6 +24,11 @@ class TestUtils(unittest.TestCase):
         self.daily_01_08_cube = iris.load_cube(file3)
         self.daily_08_30_cube = iris.load_cube(file4)
 
+        # a cube with no time coordinate
+        self.daily_01_08_cube_notimedim = self.daily_01_08_cube.copy()
+        time_coord = self.daily_01_08_cube_notimedim.coord('time')
+        self.daily_01_08_cube_notimedim.remove_coord(time_coord)
+
     @classmethod
     def tearDownClass(cls):
         pass
@@ -42,13 +47,11 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(c1.coord('time')[-1],c2.coord('time')[-1])
         self.assertEqual(c1.shape,c2.shape)
 
-        # passing a cube with no time coordinate
-        daily_01_08_cube_notimedim = self.daily_01_08_cube.copy()
-        time_coord = daily_01_08_cube_notimedim.coord('time')
-        daily_01_08_cube_notimedim.remove_coord(time_coord)
-
-        self.assertRaises(KeyError, common_timeperiod, daily_01_08_cube_notimedim, self.daily_08_30_cube)
-        self.assertRaises(KeyError, common_timeperiod, self.daily_08_30_cube, daily_01_08_cube_notimedim)
+        # passing a cube with no time dimension
+        self.assertRaises(KeyError, common_timeperiod,
+                          self.daily_01_08_cube_notimedim, self.daily_08_30_cube)
+        self.assertRaises(KeyError, common_timeperiod,
+                          self.daily_08_30_cube, self.daily_01_08_cube_notimedim)
 
         # passing a cube with no time bound
         daily_01_08_cube_nobound = self.daily_01_08_cube.copy()
@@ -101,6 +104,13 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(start_str, '8/8/1999')
         self.assertEqual(end_str, '30/8/1999')
         self.assertIsInstance(dr_constraint, iris.Constraint)
+
+        # pass a cube with no time dimension
+        self.assertRaises(iris.exceptions.CoordinateNotFoundError,
+                          get_date_range, self.daily_01_08_cube_notimedim)
+
+        # Pass an integer
+        self.assertRaises(AttributeError, get_date_range, 1)
 
 
     @unittest.skip("TO DO")
