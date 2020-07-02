@@ -125,10 +125,30 @@ class TestUtils(unittest.TestCase):
         pass
 
 
-    @unittest.skip("TO DO")
     def test_sort_cube(self):
-        """Test six"""
-        pass
+        """
+        add and sort integer and char values to an iris cube coordinate and assert the results
+        """
+       # test for some integer values
+        int_values = [-1, 2, 3, 0, 4, 5, 6, 50, -5]
+        expected_results = [-5, -1, 0, 2, 3, 4, 5, 6, 50]
+
+        cube = iris.cube.Cube(int_values)
+        cube.add_aux_coord(iris.coords.AuxCoord(int_values, long_name='test_ints'), 0)
+        cube = sort_cube(cube, 'test_ints')
+
+        self.assertListEqual(cube.coord('test_ints').points.tolist(), expected_results)
+
+        # test for char values
+        char_values = ['a', 'z', 'b', 'e']
+        expected_results = ['a', 'b', 'e', 'z']
+
+        cube = iris.cube.Cube(char_values)
+        cube.add_aux_coord(iris.coords.AuxCoord(char_values, long_name='test_chars'), 0)
+        cube = sort_cube(cube, 'test_chars')
+
+        self.assertListEqual(cube.coord('test_chars').points.tolist(), expected_results)
+
 
 
     def test_convert_from_um_stamp(self):
