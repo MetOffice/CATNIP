@@ -493,6 +493,7 @@ def convert_from_um_stamp(datestamp, fmt):
 
     # First calculate decades since 1800
     d = precis_d2(datestamp[0])
+
     # calculate year
     yr = 1800 + (d * 10) + int(datestamp[1])
 
@@ -503,6 +504,8 @@ def convert_from_um_stamp(datestamp, fmt):
     else:
         # This is a YYMDH so need to convert day and hour as well
         mon = precis_d2(datestamp[2])
+        if mon > 12:
+            raise ValueError('Month is {}, must be in 1..12, try fmt == YYMMM '.format(mon))
         d = precis_d2(datestamp[3])
         hr = precis_d2(datestamp[4])
         dt = datetime(year=yr, month=mon, day=d, hour=hr)

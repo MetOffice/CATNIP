@@ -4,7 +4,7 @@ import numpy
 import iris
 from catnip.utils import *
 import catnip.config as conf
-
+import datetime as dt
 
 
 
@@ -130,10 +130,18 @@ class TestUtils(unittest.TestCase):
         """Test six"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_convert_from_um_stamp(self):
-        """Test seven"""
-        pass
+
+        fmt = ['YYMMM','YYMDH']
+        umdate = ['k5bu0','i1feb','i1nov']
+
+        self.assertEqual(convert_from_um_stamp(umdate[0], fmt[1]),dt.datetime(2005, 11, 30, 0, 0))
+        self.assertEqual(convert_from_um_stamp(umdate[1], fmt[0]),dt.datetime(1981, 2, 1, 0, 0))
+        self.assertEqual(convert_from_um_stamp(umdate[2], fmt[0]),dt.datetime(1981, 11, 1, 0, 0))
+
+        self.assertRaises(ValueError, convert_from_um_stamp,'k5bu00',fmt[1])
+        self.assertRaises(ValueError, convert_from_um_stamp,umdate[1],fmt[1])
 
     @unittest.skip("TO DO")
     def test_convert_to_um_stamp(self):
