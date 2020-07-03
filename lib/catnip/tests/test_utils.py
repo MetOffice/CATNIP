@@ -163,10 +163,23 @@ class TestUtils(unittest.TestCase):
         self.assertRaises(ValueError, convert_from_um_stamp,'k5bu00',fmt[1])
         self.assertRaises(ValueError, convert_from_um_stamp,umdate[1],fmt[1])
 
-    @unittest.skip("TO DO")
+
     def test_convert_to_um_stamp(self):
-        """Test eight"""
-        pass
+
+        fmt = ['YYMMM','YYMDH']
+        dt = datetime(1990, 5, 2)
+
+        self.assertEqual(convert_to_um_stamp(dt, fmt[0]),'j0may')
+        self.assertEqual(convert_to_um_stamp(dt, fmt[1]),'j0520')
+
+        dt = cdatetime(1995, 2, 30)
+
+        self.assertEqual(convert_to_um_stamp(dt, fmt[0]),'j5feb')
+        self.assertEqual(convert_to_um_stamp(dt, fmt[1]),'j52u0')
+
+        self.assertRaises(ValueError, convert_to_um_stamp,'19960101',fmt[1])
+        self.assertRaises(ValueError, convert_to_um_stamp,dt,'YMDH')
+
 
     @unittest.skip("TO DO")
     def test_precisYY(self):
