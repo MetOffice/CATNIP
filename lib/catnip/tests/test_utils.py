@@ -228,11 +228,21 @@ class TestUtils(unittest.TestCase):
         with self.assertRaises(ValueError):
             um_file_list(runid, datetime(1990, 12, 29), datetime(1981, 1, 1), freq1)
 
-    @unittest.skip("TO DO")
-    def test_umstash_2_pystash(self):
-        """Test twelve"""
-        pass
 
+    def test_umstash_2_pystash(self):
+
+        umstash = ['24','16222','3236','15201']
+
+        self.assertEqual(umstash_2_pystash(umstash[0]),['m01s00i024'])
+        self.assertEqual(umstash_2_pystash(umstash),['m01s00i024', 'm01s16i222', 'm01s03i236', 'm01s15i201'])
+
+        errstash = ['-16222','123456','xyz','123xyz', 15201]
+
+        self.assertRaises(IndexError, umstash_2_pystash,errstash[0])
+        self.assertRaises(IndexError, umstash_2_pystash,errstash[1])
+        self.assertRaises(AttributeError, umstash_2_pystash,errstash[2])
+        self.assertRaises(IndexError, umstash_2_pystash,errstash[3])
+        self.assertRaises(TypeError, umstash_2_pystash,errstash[4])
 
 
 if __name__ == "__main__":
