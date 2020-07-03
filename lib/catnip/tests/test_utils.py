@@ -178,10 +178,33 @@ class TestUtils(unittest.TestCase):
         """Test ten"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_um_file_list(self):
-        """Test eleven"""
-        pass
+
+        """
+        UMFileList() function currently only supports:
+        pa: Timeseries of daily data spanning 1 month (beginning 0z on the 1st day)
+        pj: Timeseries of hourly data spanning 1 day (0z - 24z)
+        pm: Monthly average data for 1 month
+        """
+
+        runid = 'akwss'
+        startd = datetime(1980, 12, 29)
+        endd = datetime(1981, 1, 1)
+        freq1 = 'pj'
+        freq2 = 'pa'
+        freq3 = 'pm'
+        expected_result_1 = ['akwssa.pji0ct0.pp', 'akwssa.pji0cu0.pp', 'akwssa.pji0cv0.pp', 'akwssa.pji1110.pp']
+        expected_result_2 = ['akwssa.pai0ct0.pp', 'akwssa.pai0cu0.pp', 'akwssa.pai0cv0.pp', 'akwssa.pai1110.pp']
+        expected_result_3 = ['akwssa.pmi0dec.pp']
+
+        self.assertListEqual(um_file_list(runid, startd, endd, freq1), expected_result_1)
+        self.assertListEqual(um_file_list(runid, startd, endd, freq2), expected_result_2)
+        self.assertListEqual(um_file_list(runid, startd, endd, freq3), expected_result_3)
+
+        # check for ValueError exception using start year > end year value
+        with self.assertRaises(ValueError):
+            um_file_list(runid, datetime(1990, 12, 29), datetime(1981, 1, 1), freq1)
 
     @unittest.skip("TO DO")
     def test_umstash_2_pystash(self):

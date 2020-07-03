@@ -713,6 +713,10 @@ def um_file_list(runid, startd, endd, freq):
     filelist = []
 
     dt = startd
+    # check if the value of the start year is <= end year
+    if dt.year > endd.year:
+        raise ValueError('Start date {} must be <= end year {}'.format(dt.year, endd.year))
+
     while dt <= endd:
         # Monthly frequency
         if freq == 'pm':
