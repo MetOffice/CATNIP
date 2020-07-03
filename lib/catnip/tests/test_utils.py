@@ -173,11 +173,16 @@ class TestUtils(unittest.TestCase):
         """Test nine"""
         pass
 
-    @unittest.skip("TO DO")
-    def test_precisD2(self):
-        """Test ten"""
-        pass
 
+    def test_precisD2(self):
+
+        self.assertEqual(precis_d2('s'),28)
+        self.assertEqual(precis_d2('x'),33)
+        self.assertEqual(precis_d2(28),'s')
+        self.assertEqual(precis_d2(33),'x')
+
+        self.assertRaises(ValueError, precis_d2,50)
+        self.assertRaises(ValueError, precis_d2,'%')
 
     def test_um_file_list(self):
 
