@@ -168,10 +168,14 @@ class TestUtils(unittest.TestCase):
         """Test eight"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_precisYY(self):
-        """Test nine"""
-        pass
+
+        self.assertEqual(precis_yy(2001),'k1')
+        self.assertEqual(precis_yy(1995),'j5')
+
+        self.assertRaises(TypeError, precis_yy,'1995')
+        self.assertRaises(ValueError, precis_yy,12345)
 
     @unittest.skip("TO DO")
     def test_precisD2(self):
