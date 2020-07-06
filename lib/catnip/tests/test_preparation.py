@@ -33,10 +33,18 @@ class TestPreparation(unittest.TestCase):
 
 
     def test_add_aux_unrotated_coords(self):
-        """for demo purpose only"""
-        cube = self.mslp_daily_cube
-        add_aux_unrotated_coords(cube)
-        self.assertEqual(cube.shape,(360, 136, 109))
+
+        add_aux_unrotated_coords(self.mslp_daily_cube)
+
+        self.assertEqual(self.mslp_daily_cube.shape,(360, 136, 109))
+
+        coords = [coord.name() for coord in self.mslp_daily_cube.coords()]
+        self.assertEqual(coords,['time', 'grid_latitude', 'grid_longitude', 'latitude', 'longitude'])
+
+        self.assertRaises(TypeError, add_aux_unrotated_coords, self.rcm_monthly_cube)
+        self.assertRaises(TypeError, add_aux_unrotated_coords, self.topo_cube)
+
+
 
     @unittest.skip("TO DO")
     def test_add_bounds(self):
