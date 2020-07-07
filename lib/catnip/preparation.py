@@ -10,7 +10,7 @@ from six import string_types, integer_types
 import iris.coord_categorisation as iccat
 import doctest
 import os.path
-import catnip.config as conf 
+import catnip.config as conf
 
 def add_aux_unrotated_coords(cube):
     """
@@ -63,8 +63,12 @@ def add_aux_unrotated_coords(cube):
 
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # get cube's coordinate system
     cs = cube.coord_system()
+
     if str(cs).find('Rotated') == -1:
         raise TypeError('The cube is not on a rotated pole, coord system is {}'.format(str(cs)))
 
