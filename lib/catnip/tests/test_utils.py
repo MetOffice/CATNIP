@@ -125,8 +125,6 @@ class TestUtils(unittest.TestCase):
     def test_get_date_range(self):
         """Tests for get_date_range function"""
 
-        """Tests for get_date_range function"""
-
         # First file - ua
         start_str, end_str, dr_constraint = get_date_range(self.ua_cube)
         self.assertEqual(start_str, '1/11/490')
@@ -152,11 +150,11 @@ class TestUtils(unittest.TestCase):
         self.assertIsInstance(dr_constraint, iris.Constraint)
 
         # pass a cube with no time dimension
-        self.assertRaises(iris.exceptions.CoordinateNotFoundError,
+        self.assertRaises(AttributeError,
                           get_date_range, self.daily_01_08_cube_notimedim)
 
         # Pass an integer
-        self.assertRaises(AttributeError, get_date_range, 1)
+        self.assertRaises(TypeError, get_date_range, 1)
 
 
     def test_sort_cube(self):
