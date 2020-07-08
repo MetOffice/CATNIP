@@ -45,11 +45,20 @@ class TestPreparation(unittest.TestCase):
         self.assertRaises(TypeError, add_aux_unrotated_coords, self.topo_cube)
 
 
-
-    @unittest.skip("TO DO")
     def test_add_bounds(self):
-        """small discription"""
-        pass
+
+       self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'),-1)
+       self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'))
+       self.assertIsNone(add_bounds(self.mslp_daily_cube, 'time'))
+       self.assertIsNone(add_bounds(self.mslp_daily_cube, ['grid_latitude','grid_longitude']))
+
+       self.assertRaises(AttributeError, add_bounds, self.mslp_daily_cube, 't')
+
+
+
+
+
+
 
     @unittest.skip("TO DO")
     def test_add_coord_system(self):

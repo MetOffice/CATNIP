@@ -156,7 +156,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
             coord_names = tuple([coord_names])
 
         for coord in coord_names:
-
+            
             # check if coord is a string
             if not isinstance(coord, string_types):
                 raise TypeError('Coordinate {} must be a string, it is currently a {}'.format(str(coord), type(coord)))
