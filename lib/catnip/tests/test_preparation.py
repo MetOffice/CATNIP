@@ -66,10 +66,42 @@ class TestPreparation(unittest.TestCase):
         """Testing testing"""
         pass
 
-    @unittest.skip("TO DO")
+    #@unittest.skip("TO DO")
     def test_rim_remove(self):
-        """testing rim remove"""
-        pass
+        """
+        Tests to check that the correct number of coordinate points are removed and that the exceptions for invalid
+        input values are caught.
+        """
+
+        for rim_width in range(8, 11):
+
+            lat_points = len(self.mslp_monthly_cube.coord('grid_latitude').points)
+            lon_points = len(self.mslp_monthly_cube.coord('grid_longitude').points)
+            expected_lat_points = lat_points - (2*rim_width)
+            expected_lon_points = lon_points - (2*rim_width)
+
+            rrc = rim_remove(self.mslp_monthly_cube, rim_width)
+            self.assertEqual(len(rrc.coord('grid_latitude').points), expected_lat_points)
+            self.assertEqual(len(rrc.coord('grid_longitude').points), expected_lon_points)
+
+        # check that TypeError exceptions are caught
+        with self.assertRaises(TypeError):
+
+            # not a cube instance
+            rim_remove(self.rcm_monthly_cube, 8)
+            # none integer values
+            rim_remove(self.mslp_monthly_cube, 8.2)
+            rim_remove(self.mslp_monthly_cube, 'a')
+
+        # check that IndexError exceptions are caught
+        with self.assertRaises(IndexError):
+
+            rim_remove(self.mslp_monthly_cube, -5)
+            rim_remove(self.mslp_monthly_cube, 400)
+            rim_remove(self.mslp_monthly_cube, 0)
+
+
+
 
 
 if __name__ == "__main__":

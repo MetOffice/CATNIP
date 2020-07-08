@@ -481,6 +481,10 @@ def rim_remove(cube, rim_width):
     ...
     TypeError: Please provide a positive integer for rim_width
     """
+    # check if the input is an Iris cube
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # check whether rim_width is an integer
     if not isinstance(rim_width, (integer_types)):
         raise TypeError('Please provide a positive integer for rim_width')
