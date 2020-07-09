@@ -4,6 +4,9 @@ import numpy
 import iris
 import catnip.config as conf
 from catnip.preparation import *
+import iris.analysis
+import iris.exceptions
+
 
 class TestPreparation(unittest.TestCase):
     """Unittest class for preparation module"""
@@ -53,12 +56,29 @@ class TestPreparation(unittest.TestCase):
         """blah blah"""
         pass
 
-    @unittest.skip("TO DO")
-    def test_remove_forecast_coordinates(self):
-        """Testing testing"""
-        pass
 
-    @unittest.skip("TO DO")
+    def test_remove_forecast_coordinates(self):
+        """
+        test that the forecast coordinates are removed and the
+        exceptions are caught when they don't exist
+        """
+
+        cubes = self.rcm_monthly_cube
+        self.assertEqual('forecast_period', cubes[0].coord('forecast_period').standard_name)
+        self.assertEqual('forecast_reference_time', cubes[0].coord('forecast_reference_time').standard_name)
+        frc = remove_forecast_coordinates(cubes[0])
+        self.assertIsInstance(frc, iris.cube.Cube)
+
+        with self.assertRaises(iris.exceptions.CoordinateNotFoundError):
+            print(cubes[0].coord('forecast_period').standard_name)
+            print(cubes[0].coord('forecast_reference_time').standard_name)
+
+
+
+        #remove_forecast_coordinates(fcr_cube)
+
+
+    #@unittest.skip("TO DO")
     def test_rim_remove(self):
         """testing rim remove"""
         pass

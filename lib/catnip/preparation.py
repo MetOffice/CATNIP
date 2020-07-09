@@ -11,7 +11,7 @@ import iris.coord_categorisation as iccat
 import doctest
 import os.path
 import catnip.config as conf 
-
+import iris.exceptions
 def add_aux_unrotated_coords(cube):
     """
     This function takes a cube that is on a rotated pole
