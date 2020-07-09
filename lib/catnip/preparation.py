@@ -146,6 +146,15 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         grid_longitude bounds added
         """
 
+
+        # check if the input is an Iris cube
+        if not isinstance(cube, iris.cube.Cube):
+            raise TypeError("Input is not a cube")
+
+        # check if the coordinate name input is a string
+        if not isinstance(coord_names, (string_types,list)):
+            raise TypeError("Input coordinate must be a string")
+
         # find names of dim coords
         c_names = [c.name() for c in cube.coords()]
 
@@ -155,8 +164,9 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         if isinstance(coord_names, string_types):
             coord_names = tuple([coord_names])
 
+
         for coord in coord_names:
-            
+
             # check if coord is a string
             if not isinstance(coord, string_types):
                 raise TypeError('Coordinate {} must be a string, it is currently a {}'.format(str(coord), type(coord)))

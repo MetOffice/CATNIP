@@ -47,17 +47,15 @@ class TestPreparation(unittest.TestCase):
 
     def test_add_bounds(self):
 
-       self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'),-1)
-       self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'))
-       self.assertIsNone(add_bounds(self.mslp_daily_cube, 'time'))
-       self.assertIsNone(add_bounds(self.mslp_daily_cube, ['grid_latitude','grid_longitude']))
+        self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'))
+        self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'))
+        self.assertIsNone(add_bounds(self.mslp_daily_cube, 'time'))
+        self.assertIsNone(add_bounds(self.mslp_daily_cube, ['grid_latitude','grid_longitude']))
 
-       self.assertRaises(AttributeError, add_bounds, self.mslp_daily_cube, 't')
-
-
-
-
-
+        self.assertRaises(AttributeError, add_bounds, self.mslp_daily_cube, 't')
+        self.assertRaises(TypeError, add_bounds, self.rcm_monthly_cube, 'time')
+        self.assertRaises(TypeError, add_bounds, self.mslp_daily_cube, [123,123])
+        self.assertRaises(TypeError, add_bounds, self.mslp_daily_cube, ['grid_latitude', 123])
 
 
     @unittest.skip("TO DO")
