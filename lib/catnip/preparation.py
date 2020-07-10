@@ -225,6 +225,10 @@ def add_coord_system(cube):
     # radius in m. See:
     # https://scitools.org.uk/iris/docs/v1.9.0/html/iris/iris/coord_systems.html
 
+    # check if the input is an Iris cube
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     coord_names = [coord.name() for coord in cube.coords(dim_coords=True)]
 
     if 'latitude' in coord_names:

@@ -14,11 +14,12 @@ class TestPreparation(unittest.TestCase):
         file2 = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
         file3 = os.path.join(conf.DATA_DIR, 'rcm_mslp_monthly.pp')
         file4 = os.path.join(conf.DATA_DIR, 'gtopo30_025deg.nc')
+        file5 = os.path.join(conf.DATA_DIR, 'gcm_monthly.pp')
         self.mslp_daily_cube = iris.load_cube(file1)
         self.rcm_monthly_cube = iris.load(file2)
         self.mslp_monthly_cube = iris.load_cube(file3)
         self.topo_cube = iris.load_cube(file4)
-
+        self.gcm_cube = iris.load(file5)
 
     @classmethod
     def tearDownClass(cls):
@@ -58,10 +59,14 @@ class TestPreparation(unittest.TestCase):
         self.assertRaises(TypeError, add_bounds, self.mslp_daily_cube, ['grid_latitude', 123])
 
 
-    @unittest.skip("TO DO")
     def test_add_coord_system(self):
-        """testing coordinates"""
-        pass
+
+        cscube = add_coord_system(self.topo_cube)
+        self.assertIsNotNone(cscube.coord('latitude').coord_system)
+        self.assertRaises(TypeError, add_coord_system, self.rcm_monthly_cube)
+
+        #TODO: ADD exception for rotated pole and test assertRaise
+
 
     @unittest.skip("TO DO")
     def test_add_time_coord_cats(self):
