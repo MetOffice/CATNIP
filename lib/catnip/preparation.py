@@ -10,8 +10,11 @@ from six import string_types, integer_types
 import iris.coord_categorisation as iccat
 import doctest
 import os.path
+
 import catnip.config as conf 
 import iris.exceptions
+
+
 def add_aux_unrotated_coords(cube):
     """
     This function takes a cube that is on a rotated pole
@@ -63,8 +66,12 @@ def add_aux_unrotated_coords(cube):
 
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # get cube's coordinate system
     cs = cube.coord_system()
+
     if str(cs).find('Rotated') == -1:
         raise TypeError('The cube is not on a rotated pole, coord system is {}'.format(str(cs)))
 
@@ -142,6 +149,15 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         grid_longitude bounds added
         """
 
+
+        # check if the input is an Iris cube
+        if not isinstance(cube, iris.cube.Cube):
+            raise TypeError("Input is not a cube")
+
+        # check if the coordinate name input is a string
+        if not isinstance(coord_names, (string_types,list)):
+            raise TypeError("Input coordinate must be a string")
+
         # find names of dim coords
         c_names = [c.name() for c in cube.coords()]
 
@@ -150,6 +166,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         # puts stash into a tuple to prevent splitting.
         if isinstance(coord_names, string_types):
             coord_names = tuple([coord_names])
+
 
         for coord in coord_names:
 
@@ -477,6 +494,10 @@ def rim_remove(cube, rim_width):
     ...
     TypeError: Please provide a positive integer for rim_width
     """
+    # check if the input is an Iris cube
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # check whether rim_width is an integer
     if not isinstance(rim_width, (integer_types)):
         raise TypeError('Please provide a positive integer for rim_width')
