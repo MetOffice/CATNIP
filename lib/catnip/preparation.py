@@ -10,7 +10,10 @@ from six import string_types, integer_types
 import iris.coord_categorisation as iccat
 import doctest
 import os.path
-import catnip.config as conf
+
+import catnip.config as conf 
+import iris.exceptions
+
 
 def add_aux_unrotated_coords(cube):
     """

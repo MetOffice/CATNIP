@@ -3,7 +3,10 @@ import unittest
 import numpy
 import iris
 import catnip.config as conf
+import iris.analysis
+import iris.exceptions
 from catnip.preparation import *
+
 
 class TestPreparation(unittest.TestCase):
     """Unittest class for preparation module"""
@@ -21,10 +24,10 @@ class TestPreparation(unittest.TestCase):
         self.topo_cube = iris.load_cube(file4)
         self.gcm_cube = iris.load(file5)
 
+
     @classmethod
     def tearDownClass(cls):
         pass
-
 
     def setUp(self):
         pass
@@ -32,11 +35,9 @@ class TestPreparation(unittest.TestCase):
     def tearDown(self):
         pass
 
-
     def test_add_aux_unrotated_coords(self):
 
         add_aux_unrotated_coords(self.mslp_daily_cube)
-
         self.assertEqual(self.mslp_daily_cube.shape,(360, 136, 109))
 
         coords = [coord.name() for coord in self.mslp_daily_cube.coords()]
@@ -73,12 +74,24 @@ class TestPreparation(unittest.TestCase):
         """blah blah"""
         pass
 
-    @unittest.skip("TO DO")
     def test_remove_forecast_coordinates(self):
-        """Testing testing"""
-        pass
 
-    #@unittest.skip("TO DO")
+        """
+        test that the forecast coordinates are removed and the
+        exceptions are caught when they don't exist
+        """
+
+        cubes = self.rcm_monthly_cube
+        self.assertEqual('forecast_period', cubes[0].coord('forecast_period').standard_name)
+        self.assertEqual('forecast_reference_time', cubes[0].coord('forecast_reference_time').standard_name)
+        frc = remove_forecast_coordinates(cubes[0])
+        self.assertIsInstance(frc, iris.cube.Cube)
+
+        with self.assertRaises(iris.exceptions.CoordinateNotFoundError):
+            print(cubes[0].coord('forecast_period').standard_name)
+            print(cubes[0].coord('forecast_reference_time').standard_name)
+
+
     def test_rim_remove(self):
         """
         Tests to check that the correct number of coordinate points are removed and that the exceptions for invalid
