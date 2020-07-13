@@ -3,9 +3,9 @@ import unittest
 import numpy
 import iris
 import catnip.config as conf
-from catnip.preparation import *
 import iris.analysis
 import iris.exceptions
+from catnip.preparation import *
 
 
 class TestPreparation(unittest.TestCase):
@@ -22,11 +22,9 @@ class TestPreparation(unittest.TestCase):
         self.mslp_monthly_cube = iris.load_cube(file3)
         self.topo_cube = iris.load_cube(file4)
 
-
     @classmethod
     def tearDownClass(cls):
         pass
-
 
     def setUp(self):
         pass
@@ -34,12 +32,11 @@ class TestPreparation(unittest.TestCase):
     def tearDown(self):
         pass
 
-
     def test_add_aux_unrotated_coords(self):
         """for demo purpose only"""
         cube = self.mslp_daily_cube
         add_aux_unrotated_coords(cube)
-        self.assertEqual(cube.shape,(360, 136, 109))
+        self.assertEqual(cube.shape, (360, 136, 109))
 
     @unittest.skip("TO DO")
     def test_add_bounds(self):
@@ -55,7 +52,6 @@ class TestPreparation(unittest.TestCase):
     def test_add_time_coord_cats(self):
         """blah blah"""
         pass
-
 
     def test_remove_forecast_coordinates(self):
         """
@@ -73,12 +69,7 @@ class TestPreparation(unittest.TestCase):
             print(cubes[0].coord('forecast_period').standard_name)
             print(cubes[0].coord('forecast_reference_time').standard_name)
 
-
-
-        #remove_forecast_coordinates(fcr_cube)
-
-
-    #@unittest.skip("TO DO")
+    # @unittest.skip("TO DO")
     def test_rim_remove(self):
         """testing rim remove"""
         pass
