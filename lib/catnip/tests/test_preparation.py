@@ -37,10 +37,10 @@ class TestPreparation(unittest.TestCase):
 
     def test_add_aux_unrotated_coords(self):
 
-        add_aux_unrotated_coords(self.mslp_daily_cube)
-        self.assertEqual(self.mslp_daily_cube.shape,(360, 136, 109))
+        cube = add_aux_unrotated_coords(self.mslp_daily_cube)
+        self.assertEqual(cube.shape,(360, 136, 109))
 
-        coords = [coord.name() for coord in self.mslp_daily_cube.coords()]
+        coords = [coord.name() for coord in cube.coords()]
         self.assertEqual(coords,['time', 'grid_latitude', 'grid_longitude', 'latitude', 'longitude'])
 
         self.assertRaises(TypeError, add_aux_unrotated_coords, self.rcm_monthly_cube)
