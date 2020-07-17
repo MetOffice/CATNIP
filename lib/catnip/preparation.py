@@ -282,7 +282,7 @@ def add_time_coord_cats(cube):
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude
-    >>> add_time_coord_cats(cube)
+    >>> cube = add_time_coord_cats(cube)
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year
@@ -357,7 +357,7 @@ def add_time_coord_cats(cube):
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
 
-
+    return cube
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
 
