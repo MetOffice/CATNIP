@@ -11,7 +11,7 @@ import iris.coord_categorisation as iccat
 import doctest
 import os.path
 
-import catnip.config as conf 
+import catnip.config as conf
 import iris.exceptions
 
 
@@ -140,11 +140,11 @@ def add_bounds(cube, coord_names, bound_position=0.5):
 
         >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
         >>> cube = iris.load_cube(file)
-        >>> add_bounds(cube, 'time')
+        >>> bcube = add_bounds(cube, 'time')
         time coordinate already has bounds, none will be added
-        >>> add_bounds(cube, 'grid_latitude')
+        >>> bcube = add_bounds(cube, 'grid_latitude')
         grid_latitude bounds added
-        >>> add_bounds(cube, ['grid_latitude','grid_longitude'])
+        >>> bcube = add_bounds(cube, ['grid_latitude','grid_longitude'])
         grid_latitude coordinate already has bounds, none will be added
         grid_longitude bounds added
         """
@@ -158,8 +158,10 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         if not isinstance(coord_names, (string_types,list)):
             raise TypeError("Input coordinate must be a string")
 
+        bcube = cube.copy()
+
         # find names of dim coords
-        c_names = [c.name() for c in cube.coords()]
+        c_names = [c.name() for c in bcube.coords()]
 
         # if coord_names is a single string, it will be split,
         # by the loop this statement checks for that case and
@@ -178,14 +180,18 @@ def add_bounds(cube, coord_names, bound_position=0.5):
             if coord not in c_names:
                 raise AttributeError('{} is not a coordinate, available coordinates are: {}'.format(coord, c_names))
 
+
             # check if the coord already has bounds
-            if cube.coord(coord).has_bounds():
+            if bcube.coord(coord).has_bounds():
                 print(('{} coordinate already has bounds, none will be added'.format(coord)))
 
             # add bounds to coord
             else:
-                cube.coord(coord).guess_bounds(bound_position=bound_position)
+                bcube.coord(coord).guess_bounds(bound_position=bound_position)
                 print(('{} bounds added'.format(coord)))
+
+        return bcube
+
 
 
 def add_coord_system(cube):

@@ -49,10 +49,18 @@ class TestPreparation(unittest.TestCase):
 
     def test_add_bounds(self):
 
-        self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'))
-        self.assertIsNone(add_bounds(self.mslp_daily_cube, 'grid_latitude'))
-        self.assertIsNone(add_bounds(self.mslp_daily_cube, 'time'))
-        self.assertIsNone(add_bounds(self.mslp_daily_cube, ['grid_latitude','grid_longitude']))
+        latcube = add_bounds(self.mslp_daily_cube, 'grid_latitude')
+        glat_coord = latcube.coord('grid_latitude')
+        self.assertTrue(glat_coord.has_bounds())
+
+        tcube = add_bounds(self.mslp_daily_cube, 'time')
+        t_coord = tcube.coord('time')
+        self.assertTrue(t_coord.has_bounds())
+
+        latloncube = add_bounds(self.mslp_daily_cube, ['grid_latitude','grid_longitude'])
+        for coord in ['grid_latitude','grid_longitude']:
+            latlon_coord = tcube.coord(coord)
+            self.assertTrue(t_coord.has_bounds())
 
         self.assertRaises(AttributeError, add_bounds, self.mslp_daily_cube, 't')
         self.assertRaises(TypeError, add_bounds, self.rcm_monthly_cube, 'time')
