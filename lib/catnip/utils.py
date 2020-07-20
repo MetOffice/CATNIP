@@ -495,7 +495,7 @@ def convert_from_um_stamp(datestamp, fmt):
                                                                      fmt))
 
     # First calculate decades since 1800
-    d = precis_d2(datestamp[0])
+    d = _precis_d2(datestamp[0])
 
     # calculate year
     yr = 1800 + (d * 10) + int(datestamp[1])
@@ -506,11 +506,11 @@ def convert_from_um_stamp(datestamp, fmt):
         dt = datetime(year=yr, month=mon, day=1)
     else:
         # This is a YYMDH so need to convert day and hour as well
-        mon = precis_d2(datestamp[2])
+        mon = _precis_d2(datestamp[2])
         if mon > 12:
             raise ValueError('Month is {}, must be in 1..12, try fmt == YYMMM '.format(mon))
-        d = precis_d2(datestamp[3])
-        hr = precis_d2(datestamp[4])
+        d = _precis_d2(datestamp[3])
+        hr = _precis_d2(datestamp[4])
         dt = datetime(year=yr, month=mon, day=d, hour=hr)
 
     return dt
@@ -556,16 +556,16 @@ def convert_to_um_stamp(dt, fmt):
         raise ValueError('Problem with format type {}'.format(fmt))
 
     # First convert years
-    yy = precis_yy(dt.year)
+    yy = _precis_yy(dt.year)
 
     if fmt == 'YYMMM':
         # just need to format the month as 3 character string
         mon = dt.strftime('%b').lower()
         um_str = '{}{}'.format(yy, mon)
     else:
-        mon = precis_d2(dt.month)
-        d = precis_d2(dt.day)
-        hr = precis_d2(dt.hour)
+        mon = _precis_d2(dt.month)
+        d = _precis_d2(dt.day)
+        hr = _precis_d2(dt.hour)
         um_str = '{}{}{}{}'.format(yy, mon, d, hr)
 
     assert len(um_str) == 5, 'um_str {} wrong length\ndt = {}'.format(
@@ -574,7 +574,7 @@ def convert_to_um_stamp(dt, fmt):
 
 
 
-def precis_yy(y):
+def _precis_yy(y):
     """
     Convert year (int) into 2 character UM year
 
@@ -592,7 +592,7 @@ def precis_yy(y):
     See below for an example
 
 
-    >>> print (precis_yy(1973))
+    >>> print (_precis_yy(1973))
     h3
 
     """
@@ -600,13 +600,13 @@ def precis_yy(y):
     # use // operator to round down (integer division)
     decades = y // 10
     onedigityrs = y - (decades * 10)
-    decades = precis_d2(decades - 180)
+    decades = _precis_d2(decades - 180)
     yy = '{}{}'.format(decades, onedigityrs)
 
     return yy
 
 
-def precis_d2(c):
+def _precis_d2(c):
     """ Convert characters according to PRECIS table D2
     http://www.metoffice.gov.uk/binaries/content/assets/mohippo/pdf/4/m/tech_man_v2.pdf#page=119
 
@@ -624,19 +624,19 @@ def precis_d2(c):
     -----
     See below for examples
 
-    >>> print (precis_d2('1'))
+    >>> print (_precis_d2('1'))
     1
-    >>> print (precis_d2('c'))
+    >>> print (_precis_d2('c'))
     12
-    >>> print (precis_d2('s'))
+    >>> print (_precis_d2('s'))
     28
 
     Also does the reverse conversions:
-    >>> print (precis_d2(1))
+    >>> print (_precis_d2(1))
     1
-    >>> print (precis_d2(12))
+    >>> print (_precis_d2(12))
     c
-    >>> print (precis_d2(28))
+    >>> print (_precis_d2(28))
     s
 
     """
