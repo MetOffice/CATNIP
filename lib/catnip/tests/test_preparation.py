@@ -67,7 +67,7 @@ class TestPreparation(unittest.TestCase):
 
         self.assertRaises(TypeError, add_coord_system, self.rcm_monthly_cube)
         self.assertRaises(TypeError, add_coord_system, self.mslp_daily_cube)
-        self.assertRaises(AttributeError, add_coord_system, self.gcm_cube[0])
+        
 
 
     @unittest.skip("TO DO")

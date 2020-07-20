@@ -239,8 +239,6 @@ def add_coord_system(cube):
             # rotated pole cube without knowing the
             # rotation. Give error message.
             raise TypeError('Error, no coordinate system for rotated pole cube')
-        else:
-            raise AttributeError('Coordinate system already exists')
 
     else:
         cscube = cube.copy()
