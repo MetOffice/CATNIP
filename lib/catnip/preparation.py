@@ -148,7 +148,7 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         >>> bcube = add_bounds(cube, 'grid_latitude')
         grid_latitude bounds added
         >>> bcube = add_bounds(cube, ['grid_latitude','grid_longitude'])
-        grid_latitude coordinate already has bounds, none will be added
+        grid_latitude bounds added
         grid_longitude bounds added
         """
 
@@ -288,11 +288,10 @@ def add_time_coord_cats(cube):
 
     >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
     >>> cube = iris.load_cube(file)
-    >>> ccube = cube.copy()
-    >>> coord_names = [coord.name() for coord in ccube.coords()]
+    >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude
-    >>> add_time_coord_cats(ccube)
+    >>> ccube = add_time_coord_cats(cube)
     >>> coord_names = [coord.name() for coord in ccube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year
@@ -322,52 +321,54 @@ def add_time_coord_cats(cube):
     # previously been added, or the cube doesn't contain the
     # necessary attribute.
 
+    ccube = cube.copy()
+
     # numeric
     try:
-        iccat.add_day_of_year(cube, 'time')
+        iccat.add_day_of_year(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     try:
-        iccat.add_day_of_month(cube, 'time')
+        iccat.add_day_of_month(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     try:
-        iccat.add_month_number(cube, 'time')
+        iccat.add_month_number(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     try:
-        iccat.add_season_number(cube, 'time')
+        iccat.add_season_number(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     try:
-        iccat.add_year(cube, 'time')
+        iccat.add_year(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     # strings
     try:
-        iccat.add_month(cube, 'time')
+        iccat.add_month(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     try:
-        iccat.add_season(cube, 'time')
+        iccat.add_season(ccube, 'time')
     except AttributeError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
 
-        return ccube
+    return ccube
 
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
