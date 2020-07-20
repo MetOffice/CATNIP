@@ -279,6 +279,7 @@ def add_time_coord_cats(cube):
 
     >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
     >>> cube = iris.load_cube(file)
+    >>> original_cube = cube.copy()
     >>> coord_names = [coord.name() for coord in cube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude
@@ -358,6 +359,7 @@ def add_time_coord_cats(cube):
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
 
     return cube
+
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
 
