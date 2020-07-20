@@ -40,10 +40,10 @@ def add_aux_unrotated_coords(cube):
     >>> cube = iris.load_cube(file)
     >>> print([coord.name() for coord in cube.coords()])
     ['time', 'grid_latitude', 'grid_longitude']
-    >>> add_aux_unrotated_coords(cube)
-    >>> print([coord.name() for coord in cube.coords()])
+    >>> auxcube = add_aux_unrotated_coords(cube)
+    >>> print([coord.name() for coord in auxcube.coords()])
     ['time', 'grid_latitude', 'grid_longitude', 'latitude', 'longitude']
-    >>> print(cube.coord('latitude'))
+    >>> print(auxcube.coord('latitude'))
     AuxCoord(array([[35.32243855, 35.33914928, 35.355619  , ..., 35.71848081,
             35.70883111, 35.69893388],
            [35.10317609, 35.11986604, 35.13631525, ..., 35.49871728,
@@ -57,11 +57,11 @@ def add_aux_unrotated_coords(cube):
              6.25488773,  6.24633011],
            [ 5.70060768,  5.71510098,  5.72938268, ...,  6.04338876,
              6.03505439,  6.02650532]]), standard_name=None, units=Unit('degrees'), long_name='latitude')
-    >>> print(cube.shape)
+    >>> print(auxcube.shape)
     (360, 136, 109)
-    >>> print(cube.coord('latitude').shape)
+    >>> print(auxcube.coord('latitude').shape)
     (136, 109)
-    >>> print(cube.coord('longitude').shape)
+    >>> print(auxcube.coord('longitude').shape)
     (136, 109)
 
     """
@@ -75,23 +75,24 @@ def add_aux_unrotated_coords(cube):
     if str(cs).find('Rotated') == -1:
         raise TypeError('The cube is not on a rotated pole, coord system is {}'.format(str(cs)))
 
+    auxcube = cube.copy()
     # get coord names
     # Longitude
-    xcoord = cube.coord(axis='X', dim_coords=True)
+    xcoord = auxcube.coord(axis='X', dim_coords=True)
     # Latitude
-    ycoord = cube.coord(axis='Y', dim_coords=True)
+    ycoord = auxcube.coord(axis='Y', dim_coords=True)
 
     # read in the grid lat/lon points from the cube
-    glat = cube.coord(ycoord).points
-    glon = cube.coord(xcoord).points
+    glat = auxcube.coord(ycoord).points
+    glon = auxcube.coord(xcoord).points
 
     # create a rectangular grid out of an array of
     # glon and glat values, shape will be len(glat)xlen(glon)
     x, y = np.meshgrid(glon, glat)
 
     # get the cube dimensions which corresponds to glon and glat
-    x_dim = cube.coord_dims(xcoord)[0]
-    y_dim = cube.coord_dims(ycoord)[0]
+    x_dim = auxcube.coord_dims(xcoord)[0]
+    y_dim = auxcube.coord_dims(ycoord)[0]
 
     # define two new variables to hold the unrotated coordinates
     rlongitude, rlatitude = iris.analysis.cartography.unrotate_pole(x, y, cs.grid_north_pole_longitude,
@@ -106,8 +107,10 @@ def add_aux_unrotated_coords(cube):
 
     # add two auxilary coordinates to the cube holding
     # regular(unrotated) lat/lon values
-    cube.add_aux_coord(reg_long, [y_dim, x_dim])
-    cube.add_aux_coord(reg_lat, [y_dim, x_dim])
+    auxcube.add_aux_coord(reg_long, [y_dim, x_dim])
+    auxcube.add_aux_coord(reg_lat, [y_dim, x_dim])
+
+    return auxcube
 
 
 def add_bounds(cube, coord_names, bound_position=0.5):
