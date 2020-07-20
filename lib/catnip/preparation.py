@@ -279,18 +279,18 @@ def add_time_coord_cats(cube):
 
     >>> file = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
     >>> cube = iris.load_cube(file)
-    >>> original_cube = cube.copy()
-    >>> coord_names = [coord.name() for coord in cube.coords()]
+    >>> ccube = cube.copy()
+    >>> coord_names = [coord.name() for coord in ccube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude
-    >>> cube = add_time_coord_cats(cube)
-    >>> coord_names = [coord.name() for coord in cube.coords()]
+    >>> add_time_coord_cats(ccube)
+    >>> coord_names = [coord.name() for coord in ccube.coords()]
     >>> print((', '.join(coord_names)))
     time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year
     >>> # print every 50th value of the added time cat coords
     ... for c in coord_names[3:]:
-    ...     print(cube.coord(c).long_name)
-    ...     print(cube.coord(c).points[::50])
+    ...     print(ccube.coord(c).long_name)
+    ...     print(ccube.coord(c).points[::50])
     ...
     day_of_month
     [ 1 21 11  1 21 11  1 21]
@@ -358,7 +358,7 @@ def add_time_coord_cats(cube):
     except ValueError as err:
         print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
 
-    return cube
+        return ccube
 
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
