@@ -205,7 +205,7 @@ def add_coord_system(cube):
 
     Returns
     -------
-    cube: The input cube with coordinate system added, if the cube didn't have one already.
+    cube: The copy of the input cube with coordinate system added, if the cube didn't have one already.
 
     Notes
     -----
