@@ -65,9 +65,12 @@ class TestPreparation(unittest.TestCase):
         cscube = add_coord_system(self.topo_cube)
         self.assertIsNotNone(cscube.coord('latitude').coord_system)
 
+        cscube = add_coord_system(self.gcm_cube[0])
+        self.assertEqual(cscube,self.gcm_cube[0])
+
         self.assertRaises(TypeError, add_coord_system, self.rcm_monthly_cube)
         self.assertRaises(TypeError, add_coord_system, self.mslp_daily_cube)
-        
+
 
 
     @unittest.skip("TO DO")

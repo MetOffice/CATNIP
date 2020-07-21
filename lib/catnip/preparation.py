@@ -231,7 +231,8 @@ def add_coord_system(cube):
     if not isinstance(cube, iris.cube.Cube):
         raise TypeError("Input is not a cube")
 
-    cs = cube.coord_system()
+    cscube = cube.copy()
+    cs = cscube.coord_system()
 
     if cs is not None:
         if str(cs).find('Rotated') == 0:
@@ -239,9 +240,7 @@ def add_coord_system(cube):
             # rotated pole cube without knowing the
             # rotation. Give error message.
             raise TypeError('Error, no coordinate system for rotated pole cube')
-
     else:
-        cscube = cube.copy()
         coord_names = [coord.name() for coord in cscube.coords(dim_coords=True)]
         wgs84_cs = iris.coord_systems.GeogCS(6371229.0)
         if 'latitude' in coord_names:
