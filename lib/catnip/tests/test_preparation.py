@@ -5,6 +5,7 @@ import iris
 import catnip.config as conf
 import iris.analysis
 import iris.exceptions
+import iris.coord_categorisation as iccat
 from catnip.preparation import *
 
 
@@ -23,6 +24,11 @@ class TestPreparation(unittest.TestCase):
         self.mslp_monthly_cube = iris.load_cube(file3)
         self.topo_cube = iris.load_cube(file4)
         self.gcm_cube = iris.load(file5)
+
+        # a cube with no time coordinate
+        self.daily_cube_notimedim = self.mslp_daily_cube.copy()
+        time_coord = self.daily_cube_notimedim.coord('time')
+        self.daily_cube_notimedim.remove_coord(time_coord)
 
 
     @classmethod
@@ -81,10 +87,18 @@ class TestPreparation(unittest.TestCase):
 
 
 
-    @unittest.skip("TO DO")
+
     def test_add_time_coord_cats(self):
-        """blah blah"""
-        pass
+        cube = self.mslp_daily_cube.copy()
+        cube = add_time_coord_cats(cube)
+        coord_names = [coord.name() for coord in cube.coords()]
+        self.assertIn('day_of_month',coord_names)
+        self.assertIn('month_number',coord_names)
+        self.assertIn('season_number',coord_names)
+
+        self.assertRaises(iris.exceptions.CoordinateNotFoundError, add_time_coord_cats,self.daily_cube_notimedim)
+
+
 
     def test_remove_forecast_coordinates(self):
 
