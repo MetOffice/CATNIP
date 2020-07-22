@@ -48,10 +48,18 @@ class TestPreparation(unittest.TestCase):
     def tearDown(self):
         pass
 
-    @unittest.skip("TO DO")
+
     def test_calculate_dewpoint(self):
-        """Test one"""
-        pass
+
+            td = calculate_dewpoint(self.p_cube, self.q_cube, self.t_cube)
+            self.assertEqual(td.units,'K')
+            self.assertEqual(td.standard_name,'dew_point_temperature')
+
+            self.assertRaises(TypeError, calculate_dewpoint, self.p_cube, self.q_cube, 't_cube')
+
+            self.t_cube.convert_units('celsius')
+            self.assertRaises(ValueError, calculate_dewpoint, self.p_cube, self.q_cube, self.t_cube)
+
 
     @unittest.skip("TO DO")
     def test_linear_regress(self):
