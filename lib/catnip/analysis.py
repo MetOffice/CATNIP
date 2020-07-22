@@ -135,7 +135,7 @@ def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
@@ -165,7 +165,10 @@ def linear_regress(xi, yi):
     intercept 3.07
     """
 
-    if np.ndim(xi) != 1 or np.ndim(yi) != 1:
+    if np.size(xi) != np.size(yi):
+        raise ValueError('Incompatible size, x and y should have same size')
+
+    elif np.ndim(xi) != 1 or np.ndim(yi) != 1:
         raise ValueError('xi and yi must have dinemsion 1, not xi \
             {} and yi {}'.format(str(np.ndim(xi)), str(np.ndim(yi))))
     else:
