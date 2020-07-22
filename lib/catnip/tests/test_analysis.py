@@ -53,10 +53,24 @@ class TestPreparation(unittest.TestCase):
         """Test one"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_linear_regress(self):
-        """Test two"""
-        pass
+        x = [2,4,6,8,10,12,14,16,17,18]
+        y = [1,2,3,4,5,6,7,8,9,10]
+
+        grad, intcp, xp, yp, sum_res = linear_regress(x, y)
+        self.assertEqual(grad,0.5367828229496657)
+        self.assertEqual(intcp,-0.2435762055614227)
+        self.assertEqual(xp,[2, 18])
+
+        self.assertRaises(ValueError,linear_regress,x, 1)
+        y = [2,4,6,8,10,12]
+        self.assertRaises(ValueError,linear_regress,x, y)
+
+
+
+
+
 
     @unittest.skip("TO DO")
     def test_ci_interval(self):
