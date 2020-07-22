@@ -172,7 +172,11 @@ def linear_regress(xi, yi):
     intercept 3.07
     """
 
-    if np.ndim(xi) != 1 or np.ndim(yi) != 1:
+    if np.shape(xi) != np.shape(yi):
+        raise ValueError('The input fields do not have the same shape, \
+            {} and {}'.format(str(np.shape(xi)), str(np.shape(yi))))
+
+    elif np.ndim(xi) != 1 or np.ndim(yi) != 1:
         raise ValueError('xi and yi must have dinemsion 1, not xi \
             {} and yi {}'.format(str(np.ndim(xi)), str(np.ndim(yi))))
     else:
