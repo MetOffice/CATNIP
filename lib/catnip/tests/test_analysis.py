@@ -55,8 +55,8 @@ class TestPreparation(unittest.TestCase):
 
 
     def test_linear_regress(self):
-        x = [2,4,6,8,10,12,14,16,17,18]
-        y = [1,2,3,4,5,6,7,8,9,10]
+        x = np.array([2,4,6,8,10,12,14,16,17,18])
+        y = np.array([1,2,3,4,5,6,7,8,9,10])
 
         grad, intcp, xp, yp, sum_res = linear_regress(x, y)
         self.assertEqual(grad,0.5367828229496657)
@@ -64,7 +64,7 @@ class TestPreparation(unittest.TestCase):
         self.assertEqual(xp,[2, 18])
 
         self.assertRaises(ValueError,linear_regress,x, 1)
-        y = [2,4,6,8,10,12]
+        y = np.array([2,4,6,8,10,12])
         self.assertRaises(ValueError,linear_regress,x, y)
 
 
