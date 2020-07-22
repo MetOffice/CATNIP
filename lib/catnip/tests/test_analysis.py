@@ -80,10 +80,20 @@ class TestPreparation(unittest.TestCase):
 
 
 
-    @unittest.skip("TO DO")
+
     def test_ci_interval(self):
-        """Test three"""
-        pass
+
+        x = np.array([1, 4, 2, 7, 0, 6, 3, 2, 1, 9])
+        y = np.array([5, 6, 2, 9, 1, 4, 7, 8, 2, 3])
+        slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, slope_hi_pts, \
+                xreg, y_conf_int_lo, y_conf_int_hi = ci_interval(x, y)
+
+        self.assertEqual(slope_conf_int,0.7257975101330552)
+        self.assertEqual(intcp_conf_int,3.253969685918782)
+
+        y = np.array([5, 6, 2, 9, 1, 4, 7])
+        self.assertRaises(ValueError,ci_interval,x, y)
+
 
     @unittest.skip("TO DO")
     def test_regrid_to_target(self):
