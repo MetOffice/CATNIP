@@ -82,6 +82,13 @@ def calculate_dewpoint(p, q, t):
     0.0058857435
     """
 
+    if not isinstance(p, iris.cube.Cube):
+        raise TypeError("First argument is not a cube")
+    if not isinstance(q, iris.cube.Cube):
+        raise TypeError("Second argument is not a cube")
+    if not isinstance(t, iris.cube.Cube):
+        raise TypeError("Third argument is not a cube")
+
     if not p.units == 'Pa':
         raise ValueError('P star must be in units of Pa not {}'.format(p.units))
     if not t.units == 'K':
@@ -135,7 +142,7 @@ def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
