@@ -801,6 +801,10 @@ def windspeed(u_cube, v_cube):
     'wind_speed'
     """
 
+    if not isinstance(u_cube, iris.cube.Cube) or not isinstance(v_cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+
     if u_cube.units != getattr(v_cube, 'units', u_cube.units):
         raise ValueError("units do not match, {} and {}".format(u_cube.units, v_cube.units))
 
