@@ -63,10 +63,19 @@ class TestPreparation(unittest.TestCase):
         """Test three"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_regrid_to_target(self):
-        """Test four"""
-        pass
+        cube_reg = regrid_to_target(self.gcm_t_cube, self.rcm_t_cube)
+        self.assertEqual(cube_reg.shape[-1],self.rcm_t_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],self.rcm_t_cube.shape[-2])
+
+        self.assertRaises(TypeError, regrid_to_target, self.gcm_t_cube, 'target_cube')
+        self.assertRaises(TypeError, regrid_to_target, 'cube', self.rcm_t_cube)
+        print(self.mslp_daily_cube.coord_system())
+        print(self.rcm_t_cube.coord_system())
+        
+        cube_reg = regrid_to_target(self.rcm_t_cube,self.mslp_daily_cube,'areaweighted')
+
 
     @unittest.skip("TO DO")
     def test_set_regridder(self):

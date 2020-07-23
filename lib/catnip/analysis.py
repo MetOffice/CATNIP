@@ -135,7 +135,7 @@ def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
@@ -335,6 +335,14 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
     >>> print(cube_reg.shape)
     (433, 444)
     """
+
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    if not isinstance(target_cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+
 
     target_cs = target_cube.coord(axis='x').coord_system
     orig_cs = cube.coord(axis='x').coord_system
