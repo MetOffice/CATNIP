@@ -703,11 +703,6 @@ def regular_point_to_rotated(cube, lon, lat):
     if not isinstance(cube, iris.cube.Cube):
         raise TypeError("Input is not a cube")
 
-    if lon < 0 or lon > 360:
-        raise ValueError("lon should between 0 to 360")
-
-    if lat < -90 or lat > 90:
-        raise ValueError("lat should between -90 to 90")
 
     # get name of y coord
     ycoord = cube.coord(axis='Y', dim_coords=True)

@@ -87,13 +87,15 @@ class TestPreparation(unittest.TestCase):
         self.assertEqual(float("%.2f" % rot_lon),-84.33)
         self.assertEqual(float("%.2f" % rot_lat),3.34)
 
-        self.assertRaises(TypeError, regular_point_to_rotated, 'cube', reg_lon, reg_lat)
-        reg_lon = 370
-        self.assertRaises(ValueError, regular_point_to_rotated,self.rcm_t_cube, reg_lon, reg_lat)
+        reg_lon = 3
+        reg_lat = -60
+        rot_lon, rot_lat = regular_point_to_rotated(self.rcm_t_cube, reg_lon, reg_lat)
+        self.assertEqual(float("%.2f" % rot_lon),-160.48)
+        self.assertEqual(float("%.2f" % rot_lat),-67.21)
 
-        reg_lon = 289
-        reg_lat = 95
-        self.assertRaises(ValueError, regular_point_to_rotated,self.rcm_t_cube, reg_lon, reg_lat)
+        self.assertRaises(TypeError, regular_point_to_rotated, 'cube', reg_lon, reg_lat)
+
+
 
     @unittest.skip("TO DO")
     def test_rotated_point_to_regular(self):
