@@ -83,10 +83,16 @@ class TestPreparation(unittest.TestCase):
         """Test seven"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_rotated_point_to_regular(self):
-        """Test eight"""
-        pass
+
+        rot_lat = 3.34
+        rot_lon = -84.33
+        reg_lon, reg_lat = rotated_point_to_regular(self.rcm_t_cube, rot_lon, rot_lat)
+        self.assertEqual(float("%.2f" % reg_lon),-71.00)
+        self.assertEqual(float("%.2f" % reg_lat),6.50)
+
+        self.assertRaises(TypeError, 'cube', rot_lon, rot_lat)
 
     @unittest.skip("TO DO")
     def test_windspeed(self):
