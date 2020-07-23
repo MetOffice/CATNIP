@@ -88,10 +88,20 @@ class TestPreparation(unittest.TestCase):
         """Test eight"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_windspeed(self):
-        """Test nine"""
-        pass
+
+        ws = windspeed(self.gcm_u_cube, self.gcm_v_cube)
+        self.assertEqual(ws.standard_name,'wind_speed')
+        self.assertEqual(ws.units,'m s-1')
+
+        self.assertRaises(TypeError, windspeed,'self.gcm_u_cube', self.gcm_v_cube)
+        self.assertRaises(TypeError, windspeed,self.gcm_u_cube, 'self.gcm_v_cube')
+
+        self.assertRaises(ValueError, windspeed,self.gcm_t_cube, self.gcm_v_cube)
+        self.assertRaises(ValueError, windspeed,self.gcm_u_cube, self.gcm_t_cube)
+
+
 
     @unittest.skip("TO DO")
     def test_wind_direction(self):

@@ -135,7 +135,7 @@ def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
@@ -789,6 +789,10 @@ def windspeed(u_cube, v_cube):
     >>> ws.standard_name
     'wind_speed'
     """
+
+    if not isinstance(u_cube, iris.cube.Cube) or not isinstance(v_cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
 
     if u_cube.units != getattr(v_cube, 'units', u_cube.units):
         raise ValueError("units do not match, {} and {}".format(u_cube.units, v_cube.units))
