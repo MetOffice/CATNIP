@@ -91,6 +91,9 @@ class TestPreparation(unittest.TestCase):
         reg_lon = 370
         self.assertRaises(ValueError, regular_point_to_rotated,self.rcm_t_cube, reg_lon, reg_lat)
 
+        reg_lon = 289
+        reg_lat = 95
+        self.assertRaises(ValueError, regular_point_to_rotated,self.rcm_t_cube, reg_lon, reg_lat)
 
     @unittest.skip("TO DO")
     def test_rotated_point_to_regular(self):
