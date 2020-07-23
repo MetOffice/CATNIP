@@ -135,7 +135,7 @@ def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
@@ -699,6 +699,12 @@ def regular_point_to_rotated(cube, lon, lat):
     >>> print("{:.3f}".format(rot_lon), "{:.3f}".format(rot_lat))
     -84.330 3.336
     """
+
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    if lon < 0 or lon > 360:
+        raise ValueError("lon should between 0 to 360")
 
     # get name of y coord
     ycoord = cube.coord(axis='Y', dim_coords=True)
