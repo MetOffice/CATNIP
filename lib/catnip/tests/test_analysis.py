@@ -110,10 +110,24 @@ class TestPreparation(unittest.TestCase):
         """Test six"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_regular_point_to_rotated(self):
-        """Test seven"""
-        pass
+
+        reg_lon = 289
+        reg_lat = 6.5
+        rot_lon, rot_lat = regular_point_to_rotated(self.rcm_t_cube, reg_lon, reg_lat)
+        self.assertEqual(float("%.3f" % rot_lon),-84.330)
+        self.assertEqual(float("%.3f" % rot_lat),3.336)
+
+        reg_lon = 3
+        reg_lat = -60
+        rot_lon, rot_lat = regular_point_to_rotated(self.rcm_t_cube, reg_lon, reg_lat)
+        self.assertEqual(float("%.3f" % rot_lon),-160.482)
+        self.assertEqual(float("%.3f" % rot_lat),-67.212)
+
+        self.assertRaises(TypeError, regular_point_to_rotated, 'cube', reg_lon, reg_lat)
+
+
 
     @unittest.skip("TO DO")
     def test_rotated_point_to_regular(self):

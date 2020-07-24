@@ -711,6 +711,10 @@ def regular_point_to_rotated(cube, lon, lat):
     -84.330 3.336
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+
     # get name of y coord
     ycoord = cube.coord(axis='Y', dim_coords=True)
     # cartopy.crs.RotatedGeodetic object
