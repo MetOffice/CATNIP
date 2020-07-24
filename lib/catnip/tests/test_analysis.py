@@ -89,8 +89,26 @@ class TestPreparation(unittest.TestCase):
         rot_lat = 3.34
         rot_lon = -84.33
         reg_lon, reg_lat = rotated_point_to_regular(self.rcm_t_cube, rot_lon, rot_lat)
-        self.assertEqual(float("%.2f" % reg_lon),-71.00)
-        self.assertEqual(float("%.2f" % reg_lat),6.50)
+        self.assertEqual(float("%.3f" % reg_lon),-71.003)
+        self.assertEqual(float("%.3f" % reg_lat),6.502)
+
+        rot_lat = self.rcm_t_cube.coord('grid_latitude').points.max()
+        rot_lon = self.rcm_t_cube.coord('grid_longitude').points.max()
+        reg_lon, reg_lat = rotated_point_to_regular(self.rcm_t_cube, rot_lon, rot_lat)
+        self.assertEqual(float("%.3f" % reg_lon), 68.722)
+        self.assertEqual(float("%.3f" % reg_lat), 66.977)
+
+        rot_lat = self.rcm_t_cube.coord('grid_latitude').points.min()
+        rot_lon = self.rcm_t_cube.coord('grid_longitude').points.min()
+        reg_lon, reg_lat = rotated_point_to_regular(self.rcm_t_cube, rot_lon, rot_lat)
+        self.assertEqual(float("%.3f" % reg_lon), -10.602)
+        self.assertEqual(float("%.3f" % reg_lat), 20.506)
+
+        rot_lat = -6
+        rot_lon = 10
+        reg_lon, reg_lat = rotated_point_to_regular(self.rcm_t_cube, rot_lon, rot_lat)
+        self.assertEqual(float("%.3f" % reg_lon), 31.847)
+        self.assertEqual(float("%.3f" % reg_lat), 43.814)
 
         self.assertRaises(TypeError, 'cube', rot_lon, rot_lat)
 
