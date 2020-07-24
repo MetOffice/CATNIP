@@ -84,14 +84,14 @@ class TestPreparation(unittest.TestCase):
         reg_lon = 289
         reg_lat = 6.5
         rot_lon, rot_lat = regular_point_to_rotated(self.rcm_t_cube, reg_lon, reg_lat)
-        self.assertEqual(float("%.2f" % rot_lon),-84.33)
-        self.assertEqual(float("%.2f" % rot_lat),3.34)
+        self.assertEqual(float("%.3f" % rot_lon),-84.330)
+        self.assertEqual(float("%.3f" % rot_lat),3.336)
 
         reg_lon = 3
         reg_lat = -60
         rot_lon, rot_lat = regular_point_to_rotated(self.rcm_t_cube, reg_lon, reg_lat)
-        self.assertEqual(float("%.2f" % rot_lon),-160.48)
-        self.assertEqual(float("%.2f" % rot_lat),-67.21)
+        self.assertEqual(float("%.3f" % rot_lon),-160.482)
+        self.assertEqual(float("%.3f" % rot_lat),-67.212)
 
         self.assertRaises(TypeError, regular_point_to_rotated, 'cube', reg_lon, reg_lat)
 
