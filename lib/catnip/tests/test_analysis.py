@@ -65,16 +65,41 @@ class TestPreparation(unittest.TestCase):
 
 
     def test_regrid_to_target(self):
+
+        # regridding from regular to rotated
         cube_reg = regrid_to_target(self.gcm_t_cube, self.rcm_t_cube)
         self.assertEqual(cube_reg.shape[-1],self.rcm_t_cube.shape[-1])
         self.assertEqual(cube_reg.shape[-2],self.rcm_t_cube.shape[-2])
 
+        # regridding from rotated to rotated
+        cube_reg = regrid_to_target(self.rcm_t_cube,self.mslp_daily_cube)
+        self.assertEqual(cube_reg.shape[-1],self.mslp_daily_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],self.mslp_daily_cube.shape[-2])
+
+        # regridding from rotated to regular
+        cube_reg = regrid_to_target(self.rcm_t_cube, self.gcm_t_cube)
+        self.assertEqual(cube_reg.shape[-1],self.gcm_t_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],self.gcm_t_cube.shape[-2])
+
+        # regridding from regular to regular
+        cube_reg = regrid_to_target(self.gcm_t_cube,self.gcm_u_cube)
+        self.assertEqual(cube_reg.shape[-1],self.gcm_u_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],self.gcm_u_cube.shape[-2])
+
+        # regridding from regular to regular using method nearest
+        cube_reg = regrid_to_target(self.gcm_t_cube,self.gcm_u_cube, 'nearest')
+        self.assertEqual(cube_reg.shape[-1],self.gcm_u_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],self.gcm_u_cube.shape[-2])
+
+        # regridding from regular to regular using method nearest
+        cube_reg = regrid_to_target(self.gcm_t_cube,self.gcm_u_cube, 'areaweighted')
+        self.assertEqual(cube_reg.shape[-1],self.gcm_u_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],self.gcm_u_cube.shape[-2])
+
+
         self.assertRaises(TypeError, regrid_to_target, self.gcm_t_cube, 'target_cube')
         self.assertRaises(TypeError, regrid_to_target, 'cube', self.rcm_t_cube)
-        print(self.mslp_daily_cube.coord_system())
-        print(self.rcm_t_cube.coord_system())
-        
-        cube_reg = regrid_to_target(self.rcm_t_cube,self.mslp_daily_cube,'areaweighted')
+        self.assertRaises(ValueError, regrid_to_target, self.rcm_t_cube, self.gcm_t_cube, 'areaweighted')
 
 
     @unittest.skip("TO DO")
