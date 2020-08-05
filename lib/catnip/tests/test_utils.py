@@ -1,4 +1,6 @@
 import os
+import sys
+import StringIO
 import unittest
 import numpy
 import iris
@@ -60,15 +62,68 @@ class TestUtils(unittest.TestCase):
         self.assertRaises(TypeError, common_timeperiod, daily_01_08_cube_nobound, self.daily_08_30_cube)
         self.assertRaises(TypeError, common_timeperiod, self.daily_08_30_cube, daily_01_08_cube_nobound)
 
-    @unittest.skip("TO DO")
     def test_compare_coords(self):
-        """Test two"""
+        # object to store console output
+        capturedOutput = StringIO.StringIO()
+        # redirect print statements
+        sys.stdout = capturedOutput
+        compare_coords(self.gcm_t_cube.coord('latitude'), self.ua_cube.coord('latitude'))
+        # reset the redirect
+        sys.stdout = sys.__stdout__
+        # get the output as a list
+        out_str = str(capturedOutput.getvalue()).splitlines()
+
+        # check the coords are captured correctly by the function
+        func_cube1_long_name = out_str[0].split()[3]
+        cube1_long_name = str(self.gcm_t_cube.coord('latitude').long_name)
+        self.assertEqual(func_cube1_long_name, cube1_long_name)
+        func_cube2_long_name = out_str[0].split()[5]
+        cube2_long_name = str(self.ua_cube.coord('latitude').long_name)
+        self.assertEqual(func_cube2_long_name, cube2_long_name)
+
+        func_cube1_points_dtype = out_str[2].split()[3]
+        cube1_points_dtype = str(self.gcm_t_cube.coord('latitude').points.dtype)
+        self.assertEqual(func_cube1_points_dtype, cube1_points_dtype)
+        func_cube2_points_dtype = out_str[2].split()[5]
+        cube2_points_dtype = str(self.ua_cube.coord('latitude').points.dtype)
+        self.assertEqual(func_cube2_points_dtype, cube2_points_dtype)
+
         pass
 
-
-    @unittest.skip("TO DO")
     def test_compare_cubes(self):
-        """Test three"""
+        # object to store console output
+        capturedOutput = StringIO.StringIO()
+        # redirect print statements
+        sys.stdout = capturedOutput
+        compare_cubes(self.gcm_u_cube, self.ua_cube)
+        # reset the redirect
+        sys.stdout = sys.__stdout__
+        # get the output as a list
+        out_str = str(capturedOutput.getvalue()).splitlines()
+
+        # check the cube meta data are captured correctly by the function
+        func_cube1_standard_name = out_str[2].split()[5]
+        cube1_standard_name = str(self.gcm_u_cube.standard_name)
+        self.assertEqual(func_cube1_standard_name, cube1_standard_name)
+        func_cube2_standard_name = out_str[2].split()[5]
+        cube2_standard_name = str(self.ua_cube.standard_name)
+        self.assertEqual(func_cube2_standard_name, cube2_standard_name)
+
+        func_cube1_ndim = out_str[4].split()[3]
+        cube1_ndim = str(self.gcm_u_cube.ndim)
+        self.assertEqual(func_cube1_ndim, cube1_ndim)
+        func_cube2_ndim = out_str[4].split()[5]
+        cube2_ndim = str(self.ua_cube.ndim)
+        self.assertEqual(func_cube2_ndim, cube2_ndim)
+
+        # check coord data captured correctly by the function
+        func_cube1_lat_shape = out_str[13].split()[4]
+        cube1_lat_shape = str(self.gcm_u_cube.coord('latitude').shape)
+        self.assertEqual(func_cube1_lat_shape, cube1_lat_shape)
+        func_cube2_lat_shape = out_str[13].split()[6]
+        cube2_lat_shape = str(self.ua_cube.coord('latitude').shape)
+        self.assertEqual(func_cube2_lat_shape, cube2_lat_shape)
+        
         pass
 
     def test_date_chunks(self):

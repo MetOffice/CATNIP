@@ -161,6 +161,8 @@ def compare_coords(c1, c2):
     One has bounds, the other doesn't
     """
 
+    output_string = []
+
     namelist = "long_name", "standard_name", "var_name"
     for aname in namelist:
         if getattr(c1, aname) != getattr(c2, aname):
@@ -226,7 +228,7 @@ def compare_cubes(cube1, cube2):
     Data dtypes differ: float32 and float64
     Data types differ: <class 'numpy.ndarray'> and <class 'numpy.ma.core.MaskedArray'>
     ~~~~~ Coordinate checks ~~~~~
-    WARNING - Dimensions coords differ on the following coord(s): ['time']
+    WARNING - Dimension coords differ on the following coord(s): ['time']
     Checking matching dim coords
     -- latitude vs latitude --
     long_name values differ: None and latitude
@@ -241,8 +243,8 @@ def compare_cubes(cube1, cube2):
     Point values are different
     Point dtypes differ: float32 and float64
     One has bounds, the other doesn't
-    WARNING - Dimensions coords differ on the following coord(s): ['air_pressure', 'forecast_period', 'forecast_reference_time', 'height', 'month_number', 'time', 'year']
-    Cubes have no matching aux coords
+    WARNING - Aux and/or Scalar coords differ on the following coord(s): ['air_pressure', 'forecast_period', 'forecast_reference_time', 'height', 'month_number', 'time', 'year']
+    Cubes have no matching aux or scalar coords
 
     """
 
@@ -280,7 +282,7 @@ def compare_cubes(cube1, cube2):
     # dim coords that are not present in both cubes
     diff_coords = dimcoords1.symmetric_difference(dimcoords2)
     if diff_coords:
-        print("WARNING - Dimensions coords differ on"
+        print("WARNING - Dimension coords differ on"
               " the following coord(s): {}".format(str(sorted(diff_coords))))
 
     if dim_coords:
@@ -300,16 +302,16 @@ def compare_cubes(cube1, cube2):
     # dim coords that are not present in both cubes
     diffa_coords = auxcoords1.symmetric_difference(auxcoords2)
     if diffa_coords:
-        print("WARNING - Dimensions coords differ on"
+        print("WARNING - Aux and/or Scalar coords differ on"
               " the following coord(s): {}".format(str(sorted(diffa_coords))))
 
     if aux_coords:
-        print("Checking matching aux coords")
+        print("Checking matching aux and scalar coords")
         for ca in aux_coords:
             print("-- {} vs {} -- ".format(ca, ca))
             compare_coords(cube1.coord(ca), cube2.coord(ca))
     else:
-        print("Cubes have no matching aux coords")
+        print("Cubes have no matching aux or scalar coords")
 
 
 def date_chunks(startdate, enddate, yearchunk, indatefmt='%Y/%m/%d', outdatefmt='%Y/%m/%d'):
