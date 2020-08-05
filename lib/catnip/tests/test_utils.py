@@ -1,6 +1,6 @@
 import os
 import sys
-import StringIO
+from io import StringIO
 import unittest
 import numpy
 import iris
@@ -64,7 +64,7 @@ class TestUtils(unittest.TestCase):
 
     def test_compare_coords(self):
         # object to store console output
-        capturedOutput = StringIO.StringIO()
+        capturedOutput = StringIO()
         # redirect print statements
         sys.stdout = capturedOutput
         compare_coords(self.gcm_t_cube.coord('latitude'), self.ua_cube.coord('latitude'))
@@ -92,7 +92,7 @@ class TestUtils(unittest.TestCase):
 
     def test_compare_cubes(self):
         # object to store console output
-        capturedOutput = StringIO.StringIO()
+        capturedOutput = StringIO()
         # redirect print statements
         sys.stdout = capturedOutput
         compare_cubes(self.gcm_u_cube, self.ua_cube)
@@ -102,7 +102,7 @@ class TestUtils(unittest.TestCase):
         out_str = str(capturedOutput.getvalue()).splitlines()
 
         # check the cube meta data are captured correctly by the function
-        func_cube1_standard_name = out_str[2].split()[5]
+        func_cube1_standard_name = out_str[2].split()[3]
         cube1_standard_name = str(self.gcm_u_cube.standard_name)
         self.assertEqual(func_cube1_standard_name, cube1_standard_name)
         func_cube2_standard_name = out_str[2].split()[5]
