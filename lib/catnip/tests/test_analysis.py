@@ -8,7 +8,7 @@ import catnip.config as conf
 
 
 
-class TestPreparation(unittest.TestCase):
+class TestAnalysis(unittest.TestCase):
     """Unittest class for analysis module"""
 
 
@@ -139,10 +139,34 @@ class TestPreparation(unittest.TestCase):
         """Test five"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_seas_time_stat(self):
-        """Test six"""
-        pass
+
+        seas_min_cubelist = seas_time_stat(self.mslp_daily_cube, metric='min', years=[2000,2002])
+        self.assertEqual(seas_min_cubelist[0].coord('season').points,['mam'])
+        self.assertEqual(seas_min_cubelist[1].coord('season').points,['jja'])
+        self.assertEqual(seas_min_cubelist[2].coord('season').points,['son'])
+        self.assertEqual(seas_min_cubelist[3].coord('season').points,['djf'])
+
+        seas_min_cubelist = seas_time_stat(self.ua_cube, seas_mons=[[11]], metric='percentile', pc=95, ext_area=[340, 350, 0,10])
+        self.assertEqual(seas_min_cubelist[0].coord('season').points,['n'])
+
+        notim_cube = self.mslp_daily_cube.copy()
+        time_coord = notim_cube.coord('time')
+        notim_cube.remove_coord(time_coord)
+
+        nolat_cube = self.mslp_daily_cube.copy()
+        lat_coord = notim_cube.coord('grid_latitude')
+        nolat_cube.remove_coord(lat_coord)
+
+
+        self.assertRaises(iris.exceptions.CoordinateNotFoundError, seas_time_stat,notim_cube)
+        self.assertRaises(TypeError, seas_time_stat, self.ua_cube, seas_mons=[[11]], metric='percentile', pc=95.5)
+        self.assertRaises(ValueError, seas_time_stat, self.ua_cube, seas_mons=[[11]], metric='percentile')
+        self.assertRaises(TypeError, seas_time_stat, 'self.ua_cube')
+        self.assertRaises(IndexError, seas_time_stat, self.ua_cube, ext_area=[350, 0,10])
+        self.assertRaises(IndexError, seas_time_stat, nolat_cube, ext_area=[340, 350, 0,10])
+
 
 
     def test_regular_point_to_rotated(self):

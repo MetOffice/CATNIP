@@ -572,10 +572,16 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
               mean: time
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # check the cube contains a coordinate called time
     coord_names = [coord.name() for coord in cube.coords(dim_coords=True)]
-    if 'time' in coord_names:
 
+    if 'time' not in coord_names:
+        raise iris.exceptions.CoordinateNotFoundError("No coordinate called 'time' in cube")
+
+    else:
         # if the start and end years are not defined by the user
         # default to using the whole time span of the cube
         if not years:
@@ -675,10 +681,9 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
             # add seasonal statistic of cube to cube list
             cube_list.append(cube_stat)
 
-        return cube_list
+    return cube_list
 
-    else:
-        raise Exception("No coordinate called 'time' in cube")
+
 
 
 def regular_point_to_rotated(cube, lon, lat):
