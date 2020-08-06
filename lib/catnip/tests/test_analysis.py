@@ -8,7 +8,7 @@ import catnip.config as conf
 
 
 
-class TestPreparation(unittest.TestCase):
+class TestAnalysis(unittest.TestCase):
     """Unittest class for analysis module"""
 
 
@@ -68,10 +68,21 @@ class TestPreparation(unittest.TestCase):
         """Test four"""
         pass
 
-    @unittest.skip("TO DO")
+
     def test_set_regridder(self):
-        """Test five"""
-        pass
+
+        regridder = set_regridder(self.gcm_t_cube, self.rcm_t_cube)
+        regridder(self.gcm_cfrac_cube)
+        self.assertEqual(self.gcm_cfrac_cube.shape,self.gcm_t_cube.shape)
+
+        regridder = set_regridder(self.gcm_t_cube, self.rcm_t_cube,'nearest')
+        regridder(self.gcm_cfrac_cube)
+        self.assertEqual(self.gcm_cfrac_cube.shape,self.gcm_t_cube.shape)
+
+        self.assertRaises(ValueError, set_regridder, self.gcm_t_cube, self.rcm_t_cube,'areaweighted')
+        self.assertRaises(TypeError, set_regridder, 'self.gcm_t_cube', self.rcm_t_cube)
+        self.assertRaises(TypeError, set_regridder, self.gcm_t_cube, 'self.rcm_t_cube')
+
 
     @unittest.skip("TO DO")
     def test_seas_time_stat(self):
