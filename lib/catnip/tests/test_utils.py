@@ -92,7 +92,7 @@ class TestUtils(unittest.TestCase):
         # first test for failure when one of the inputs is not a cube
         with self.assertRaises(TypeError):
             compare_cubes(self.gcm_u_cube, 'foo')
-            
+
         # object to store console output
         capturedOutput = StringIO()
         # redirect print statements
@@ -125,7 +125,7 @@ class TestUtils(unittest.TestCase):
         func_cube2_lat_shape = out_str[13].split()[6]
         cube2_lat_shape = str(self.ua_cube.coord('latitude').shape)
         self.assertEqual(func_cube2_lat_shape, cube2_lat_shape)
-        
+
 
     def test_date_chunks(self):
         """
