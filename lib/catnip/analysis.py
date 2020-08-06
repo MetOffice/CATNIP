@@ -12,28 +12,7 @@ import doctest
 import os.path
 import catnip.config as conf
 
-try:
-    from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
-except:
-    raise ImportError('No module named improver found. You must create a  '
-                      '~/.local/lib/python3.6/site-packages/improver.pth file '
-                      'containing the line /home/h05/gredmond/improver-master/lib '
-                      'and try again.')
 
-# Constants:
-#    -   LC       is the latent heat of condensation of water at 0 deg C.
-#    -   RL1      is the latent heat of evaporation
-#    -   TM       is the temperature at which fresh waster freezes
-#    -   EPSILON  is the ratio of molecular weights of water and dry air
-#    -   R        the gas constant for dry air (J/kg/K)
-#    -   RV       gas constant for moist air (J/kg/K)
-
-LC = 2.501E6
-RL1 = -2.73E3
-TM = 273.15
-EPSILON = 0.62198
-R = 287.05
-RV = R/EPSILON
 
 def calculate_dewpoint(p, q, t):
 
@@ -81,6 +60,29 @@ def calculate_dewpoint(p, q, t):
     >>> print(np.std(diff.data))
     0.0058857435
     """
+
+    try:
+        from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
+    except:
+        raise ImportError('No module named improver found. You must create a  '
+                          '~/.local/lib/python3.6/site-packages/improver.pth file '
+                          'containing the line /home/h05/gredmond/improver-master/lib '
+                          'and try again.')
+
+    # Constants:
+    #    -   LC       is the latent heat of condensation of water at 0 deg C.
+    #    -   RL1      is the latent heat of evaporation
+    #    -   TM       is the temperature at which fresh waster freezes
+    #    -   EPSILON  is the ratio of molecular weights of water and dry air
+    #    -   R        the gas constant for dry air (J/kg/K)
+    #    -   RV       gas constant for moist air (J/kg/K)
+
+    LC = 2.501E6
+    RL1 = -2.73E3
+    TM = 273.15
+    EPSILON = 0.62198
+    R = 287.05
+    RV = R/EPSILON
 
     if not p.units == 'Pa':
         raise ValueError('P star must be in units of Pa not {}'.format(p.units))
@@ -135,7 +137,7 @@ def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
@@ -336,7 +338,17 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
     (433, 444)
     """
 
+    print('++++++++++++++++++++++++')
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+    print('++++++++++++++++++++++++')
+    if not isinstance(target_cube, iris.cube.Cube):
+        raise TypeError("Target_cube is not of type cube ")
+
+
+    print('++++++++++++++++++++++++')
     target_cs = target_cube.coord(axis='x').coord_system
+    print('++++++++++++++++++++++++')
     orig_cs = cube.coord(axis='x').coord_system
 
     # get coord names for cube
@@ -433,6 +445,13 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
     <iris 'Cube' of cloud_area_fraction / (1) (grid_latitude: 433; grid_longitude: 444)>
     """
 
+
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    if not isinstance(target_cube, iris.cube.Cube):
+        raise TypeError("Target_cube is not of type cube ")
+        
     target_cs = target_cube.coord(axis='x').coord_system
     orig_cs = cube.coord(axis='x').coord_system
 
