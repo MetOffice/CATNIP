@@ -1,6 +1,6 @@
 import os
 import unittest
-import numpy
+import numpy as np
 import iris
 from catnip.analysis import *
 import catnip.config as conf
@@ -231,10 +231,25 @@ class TestAnalysis(unittest.TestCase):
 
 
 
-    @unittest.skip("TO DO")
+
     def test_wind_direction(self):
-        """Test ten"""
-        pass
+
+        """Unit test for wind_direction() function"""
+
+        wd = wind_direction(self.rcm_u_cube, self.rcm_v_cube)
+
+        self.assertEqual(wd.standard_name, 'wind_to_direction')
+        self.assertEqual(wd.long_name, 'wind vector direction')
+        self.assertEqual(wd.var_name, 'angle')
+        self.assertEqual(wd.units, 'degree')
+
+        self.assertEqual(float("%.3f" % np.min(wd.data)), 0.018)
+        self.assertEqual(float("%.3f" % np.max(wd.data)), 359.990)
+
+        self.rcm_u_cube.units = 'degree'
+
+        with self.assertRaises(ValueError):
+            wind_direction(self.rcm_u_cube, self.rcm_v_cube)
 
 
 if __name__ == "__main__":
