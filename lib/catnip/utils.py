@@ -248,6 +248,14 @@ def compare_cubes(cube1, cube2):
 
     """
 
+    # check inputs are both cubes
+    if not isinstance(cube1, iris.cube.Cube):
+        raise TypeError("Input cube1 is not a cube")
+
+    if not isinstance(cube2, iris.cube.Cube):
+        raise TypeError("Input cube2 is not a cube")
+
+
     print("~~~~~ Cube name and data checks ~~~~~")
     namelist = "long_name", "standard_name", "var_name"
     for aname in namelist:

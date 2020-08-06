@@ -88,9 +88,11 @@ class TestUtils(unittest.TestCase):
         cube2_points_dtype = str(self.ua_cube.coord('latitude').points.dtype)
         self.assertEqual(func_cube2_points_dtype, cube2_points_dtype)
 
-        pass
-
     def test_compare_cubes(self):
+        # first test for failure when one of the inputs is not a cube
+        with self.assertRaises(TypeError):
+            compare_cubes(self.gcm_u_cube, 'foo')
+            
         # object to store console output
         capturedOutput = StringIO()
         # redirect print statements
@@ -124,7 +126,6 @@ class TestUtils(unittest.TestCase):
         cube2_lat_shape = str(self.ua_cube.coord('latitude').shape)
         self.assertEqual(func_cube2_lat_shape, cube2_lat_shape)
         
-        pass
 
     def test_date_chunks(self):
         """
