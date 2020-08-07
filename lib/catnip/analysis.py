@@ -452,6 +452,12 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
     <iris 'Cube' of cloud_area_fraction / (1) (grid_latitude: 433; grid_longitude: 444)>
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    if not isinstance(target_cube, iris.cube.Cube):
+        raise TypeError("Target_cube is not of type cube")
+
     target_cs = target_cube.coord(axis='x').coord_system
     orig_cs = cube.coord(axis='x').coord_system
 
