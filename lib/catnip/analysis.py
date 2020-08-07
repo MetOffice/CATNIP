@@ -61,6 +61,7 @@ def calculate_dewpoint(p, q, t):
     0.0058857435
     """
 
+
     try:
         from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
     except:
@@ -83,6 +84,14 @@ def calculate_dewpoint(p, q, t):
     EPSILON = 0.62198
     R = 287.05
     RV = R/EPSILON
+
+    if not isinstance(p, iris.cube.Cube):
+        raise TypeError("First argument is not a cube")
+    if not isinstance(q, iris.cube.Cube):
+        raise TypeError("Second argument is not a cube")
+    if not isinstance(t, iris.cube.Cube):
+        raise TypeError("Third argument is not a cube")
+
 
     if not p.units == 'Pa':
         raise ValueError('P star must be in units of Pa not {}'.format(p.units))
@@ -167,7 +176,11 @@ def linear_regress(xi, yi):
     intercept 3.07
     """
 
-    if np.ndim(xi) != 1 or np.ndim(yi) != 1:
+    if np.shape(xi) != np.shape(yi):
+        raise ValueError('The input fields do not have the same shape, \
+            {} and {}'.format(str(np.shape(xi)), str(np.shape(yi))))
+
+    elif np.ndim(xi) != 1 or np.ndim(yi) != 1:
         raise ValueError('xi and yi must have dinemsion 1, not xi \
             {} and yi {}'.format(str(np.ndim(xi)), str(np.ndim(yi))))
     else:
@@ -338,15 +351,16 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
     (433, 444)
     """
 
-    print('++++++++++++++++++++++++')
+
     if not isinstance(cube, iris.cube.Cube):
         raise TypeError("Input is not a cube")
-    print('++++++++++++++++++++++++')
+
     if not isinstance(target_cube, iris.cube.Cube):
-        raise TypeError("Target_cube is not of type cube ")
+        raise TypeError("Input is not a cube")
 
 
-    print('++++++++++++++++++++++++')
+
+
     target_cs = target_cube.coord(axis='x').coord_system
     print('++++++++++++++++++++++++')
     orig_cs = cube.coord(axis='x').coord_system
@@ -572,10 +586,16 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
               mean: time
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # check the cube contains a coordinate called time
     coord_names = [coord.name() for coord in cube.coords(dim_coords=True)]
-    if 'time' in coord_names:
 
+    if 'time' not in coord_names:
+        raise iris.exceptions.CoordinateNotFoundError("No coordinate called 'time' in cube")
+
+    else:
         # if the start and end years are not defined by the user
         # default to using the whole time span of the cube
         if not years:
@@ -675,10 +695,9 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
             # add seasonal statistic of cube to cube list
             cube_list.append(cube_stat)
 
-        return cube_list
+    return cube_list
 
-    else:
-        raise Exception("No coordinate called 'time' in cube")
+
 
 
 def regular_point_to_rotated(cube, lon, lat):
@@ -718,6 +737,10 @@ def regular_point_to_rotated(cube, lon, lat):
     >>> print("{:.3f}".format(rot_lon), "{:.3f}".format(rot_lat))
     -84.330 3.336
     """
+
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
 
     # get name of y coord
     ycoord = cube.coord(axis='Y', dim_coords=True)
@@ -768,6 +791,9 @@ def rotated_point_to_regular(cube, rot_lon, rot_lat):
     116.741 82.265
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # get name of y coord
     ycoord = cube.coord(axis='Y', dim_coords=True)
     # cartopy.crs.RotatedGeodetic object
@@ -808,6 +834,10 @@ def windspeed(u_cube, v_cube):
     >>> ws.standard_name
     'wind_speed'
     """
+
+    if not isinstance(u_cube, iris.cube.Cube) or not isinstance(v_cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
 
     if u_cube.units != getattr(v_cube, 'units', u_cube.units):
         raise ValueError("units do not match, {} and {}".format(u_cube.units, v_cube.units))
