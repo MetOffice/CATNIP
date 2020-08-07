@@ -12,28 +12,7 @@ import doctest
 import os.path
 import catnip.config as conf
 
-try:
-    from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
-except:
-    raise ImportError('No module named improver found. You must create a  '
-                      '~/.local/lib/python3.6/site-packages/improver.pth file '
-                      'containing the line /home/h05/gredmond/improver-master/lib '
-                      'and try again.')
 
-# Constants:
-#    -   LC       is the latent heat of condensation of water at 0 deg C.
-#    -   RL1      is the latent heat of evaporation
-#    -   TM       is the temperature at which fresh waster freezes
-#    -   EPSILON  is the ratio of molecular weights of water and dry air
-#    -   R        the gas constant for dry air (J/kg/K)
-#    -   RV       gas constant for moist air (J/kg/K)
-
-LC = 2.501E6
-RL1 = -2.73E3
-TM = 273.15
-EPSILON = 0.62198
-R = 287.05
-RV = R/EPSILON
 
 def calculate_dewpoint(p, q, t):
 
@@ -81,11 +60,35 @@ def calculate_dewpoint(p, q, t):
     >>> print(np.std(diff.data))
     0.0058857435
     """
+    try:
+        from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
+    except:
+        raise ImportError('No module named improver found. You must create a  '
+                          '~/.local/lib/python3.6/site-packages/improver.pth file '
+                          'containing the line /home/h05/gredmond/improver-master/lib '
+                          'and try again.')
+
+    # Constants:
+    #    -   LC       is the latent heat of condensation of water at 0 deg C.
+    #    -   RL1      is the latent heat of evaporation
+    #    -   TM       is the temperature at which fresh waster freezes
+    #    -   EPSILON  is the ratio of molecular weights of water and dry air
+    #    -   R        the gas constant for dry air (J/kg/K)
+    #    -   RV       gas constant for moist air (J/kg/K)
+
+    LC = 2.501E6
+    RL1 = -2.73E3
+    TM = 273.15
+    EPSILON = 0.62198
+    R = 287.05
+    RV = R/EPSILON
 
     if not isinstance(p, iris.cube.Cube):
         raise TypeError("First argument is not a cube")
+
     if not isinstance(q, iris.cube.Cube):
         raise TypeError("Second argument is not a cube")
+
     if not isinstance(t, iris.cube.Cube):
         raise TypeError("Third argument is not a cube")
 
