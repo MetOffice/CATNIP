@@ -98,46 +98,59 @@ class TestAnalysis(unittest.TestCase):
 
     def test_regrid_to_target(self):
 
+        gcm_cube = self.gcm_t_cube.copy()
+        rcm_cube = self.gcm_t_cube.copy()
+
         # regridding from regular to rotated
-        cube_reg = regrid_to_target(self.gcm_t_cube, self.rcm_t_cube)
-        self.assertEqual(cube_reg.shape[-1],self.rcm_t_cube.shape[-1])
-        self.assertEqual(cube_reg.shape[-2],self.rcm_t_cube.shape[-2])
+        cube_reg = regrid_to_target(gcm_cube, rcm_cube)
+        self.assertEqual(cube_reg.shape[-1], rcm_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2], rcm_cube.shape[-2])
 
         # regridding from rotated to rotated
-        cube_reg = regrid_to_target(self.rcm_t_cube,self.mslp_daily_cube)
+        cube_reg = regrid_to_target(rcm_cube, self.mslp_daily_cube)
         self.assertEqual(cube_reg.shape[-1],self.mslp_daily_cube.shape[-1])
         self.assertEqual(cube_reg.shape[-2],self.mslp_daily_cube.shape[-2])
 
         # regridding from rotated to regular
-        cube_reg = regrid_to_target(self.rcm_t_cube, self.gcm_t_cube)
-        self.assertEqual(cube_reg.shape[-1],self.gcm_t_cube.shape[-1])
-        self.assertEqual(cube_reg.shape[-2],self.gcm_t_cube.shape[-2])
+        cube_reg = regrid_to_target(rcm_cube, gcm_cube)
+        self.assertEqual(cube_reg.shape[-1],gcm_cube.shape[-1])
+        self.assertEqual(cube_reg.shape[-2],gcm_cube.shape[-2])
 
         # regridding from regular to regular
-        cube_reg = regrid_to_target(self.gcm_t_cube,self.gcm_u_cube)
+        cube_reg = regrid_to_target(gcm_cube,self.gcm_u_cube)
         self.assertEqual(cube_reg.shape[-1],self.gcm_u_cube.shape[-1])
         self.assertEqual(cube_reg.shape[-2],self.gcm_u_cube.shape[-2])
 
         # regridding from regular to regular using method nearest
-        cube_reg = regrid_to_target(self.gcm_t_cube,self.gcm_u_cube, 'nearest')
+        cube_reg = regrid_to_target(gcm_cube, self.gcm_u_cube, 'nearest')
         self.assertEqual(cube_reg.shape[-1],self.gcm_u_cube.shape[-1])
         self.assertEqual(cube_reg.shape[-2],self.gcm_u_cube.shape[-2])
 
         # regridding from regular to regular using method nearest
-        cube_reg = regrid_to_target(self.gcm_t_cube,self.gcm_u_cube, 'areaweighted')
+        cube_reg = regrid_to_target(gcm_cube, self.gcm_u_cube, 'areaweighted')
         self.assertEqual(cube_reg.shape[-1],self.gcm_u_cube.shape[-1])
         self.assertEqual(cube_reg.shape[-2],self.gcm_u_cube.shape[-2])
 
 
-        self.assertRaises(TypeError, regrid_to_target, self.gcm_t_cube, 'target_cube')
-        self.assertRaises(TypeError, regrid_to_target, 'cube', self.rcm_t_cube)
-        self.assertRaises(ValueError, regrid_to_target, self.rcm_t_cube, self.gcm_t_cube, 'areaweighted')
+        self.assertRaises(TypeError, regrid_to_target, gcm_cube, 'target_cube')
+        self.assertRaises(TypeError, regrid_to_target, 'cube', rcm_cube)
 
 
-    @unittest.skip("TO DO")
     def test_set_regridder(self):
-        """Test five"""
-        pass
+
+        gcm_cube = self.gcm_t_cube.copy()
+        rcm_cube = self.gcm_t_cube.copy()
+
+        regridder = set_regridder(gcm_cube, rcm_cube)
+        regridder(self.gcm_cfrac_cube)
+        self.assertEqual(self.gcm_cfrac_cube.shape, gcm_cube.shape)
+
+        regridder = set_regridder(gcm_cube, rcm_cube,'nearest')
+        regridder(self.gcm_cfrac_cube)
+        self.assertEqual(self.gcm_cfrac_cube.shape, gcm_cube.shape)
+
+        self.assertRaises(TypeError, set_regridder, 'gcm_cube', rcm_cube)
+        self.assertRaises(TypeError, set_regridder, gcm_cube, 'rcm_cube')
 
 
     def test_seas_time_stat(self):
