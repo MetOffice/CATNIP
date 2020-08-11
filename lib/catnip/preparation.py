@@ -72,15 +72,17 @@ def add_aux_unrotated_coords(cube):
     # get cube's coordinate system
     cs = cube.coord_system()
 
-    if str(cs).find('Rotated') == -1:
-        raise TypeError('The cube is not on a rotated pole, coord system is {}'.format(str(cs)))
+    if str(cs).find("Rotated") == -1:
+        raise TypeError(
+            "The cube is not on a rotated pole, coord system is {}".format(str(cs))
+        )
 
     auxcube = cube.copy()
     # get coord names
     # Longitude
-    xcoord = auxcube.coord(axis='X', dim_coords=True)
+    xcoord = auxcube.coord(axis="X", dim_coords=True)
     # Latitude
-    ycoord = auxcube.coord(axis='Y', dim_coords=True)
+    ycoord = auxcube.coord(axis="Y", dim_coords=True)
 
     # read in the grid lat/lon points from the cube
     glat = auxcube.coord(ycoord).points
@@ -95,15 +97,14 @@ def add_aux_unrotated_coords(cube):
     y_dim = auxcube.coord_dims(ycoord)[0]
 
     # define two new variables to hold the unrotated coordinates
-    rlongitude, rlatitude = iris.analysis.cartography.unrotate_pole(x, y, cs.grid_north_pole_longitude,
-                                                                    cs.grid_north_pole_latitude)
+    rlongitude, rlatitude = iris.analysis.cartography.unrotate_pole(
+        x, y, cs.grid_north_pole_longitude, cs.grid_north_pole_latitude
+    )
 
     # create two new auxillary coordinates to hold
     # the values of the unrotated coordinates
-    reg_long = iris.coords.AuxCoord(rlongitude, long_name='longitude',
-                                    units='degrees')
-    reg_lat = iris.coords.AuxCoord(rlatitude, long_name='latitude',
-                                   units='degrees')
+    reg_long = iris.coords.AuxCoord(rlongitude, long_name="longitude", units="degrees")
+    reg_lat = iris.coords.AuxCoord(rlatitude, long_name="latitude", units="degrees")
 
     # add two auxilary coordinates to the cube holding
     # regular(unrotated) lat/lon values
@@ -114,7 +115,7 @@ def add_aux_unrotated_coords(cube):
 
 
 def add_bounds(cube, coord_names, bound_position=0.5):
-        """
+    """
         Simple function to check whether a
         coordinate in a cube has bounds, and
         add them if it doesn't.
@@ -152,49 +153,55 @@ def add_bounds(cube, coord_names, bound_position=0.5):
         grid_longitude bounds added
         """
 
+    # check if the input is an Iris cube
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
 
-        # check if the input is an Iris cube
-        if not isinstance(cube, iris.cube.Cube):
-            raise TypeError("Input is not a cube")
+    # check if the coordinate name input is a string
+    if not isinstance(coord_names, (string_types, list)):
+        raise TypeError("Input coordinate must be a string")
 
-        # check if the coordinate name input is a string
-        if not isinstance(coord_names, (string_types,list)):
-            raise TypeError("Input coordinate must be a string")
+    bcube = cube.copy()
 
-        bcube = cube.copy()
+    # find names of dim coords
+    c_names = [c.name() for c in bcube.coords()]
 
-        # find names of dim coords
-        c_names = [c.name() for c in bcube.coords()]
+    # if coord_names is a single string, it will be split,
+    # by the loop this statement checks for that case and
+    # puts stash into a tuple to prevent splitting.
+    if isinstance(coord_names, string_types):
+        coord_names = tuple([coord_names])
 
-        # if coord_names is a single string, it will be split,
-        # by the loop this statement checks for that case and
-        # puts stash into a tuple to prevent splitting.
-        if isinstance(coord_names, string_types):
-            coord_names = tuple([coord_names])
+    for coord in coord_names:
 
+        # check if coord is a string
+        if not isinstance(coord, string_types):
+            raise TypeError(
+                "Coordinate {} must be a string, it is currently a {}".format(
+                    str(coord), type(coord)
+                )
+            )
 
-        for coord in coord_names:
+        # check coord is a coordinate of the cube
+        if coord not in c_names:
+            raise AttributeError(
+                "{} is not a coordinate, available coordinates are: {}".format(
+                    coord, c_names
+                )
+            )
 
-            # check if coord is a string
-            if not isinstance(coord, string_types):
-                raise TypeError('Coordinate {} must be a string, it is currently a {}'.format(str(coord), type(coord)))
+        # check if the coord already has bounds
+        if bcube.coord(coord).has_bounds():
+            print(
+                ("{} coordinate already has bounds, none will be added".format(coord))
+            )
 
-            # check coord is a coordinate of the cube
-            if coord not in c_names:
-                raise AttributeError('{} is not a coordinate, available coordinates are: {}'.format(coord, c_names))
+        # add bounds to coord
+        else:
+            bcube.coord(coord).guess_bounds(bound_position=bound_position)
+            print(("{} bounds added".format(coord)))
 
-
-            # check if the coord already has bounds
-            if bcube.coord(coord).has_bounds():
-                print(('{} coordinate already has bounds, none will be added'.format(coord)))
-
-            # add bounds to coord
-            else:
-                bcube.coord(coord).guess_bounds(bound_position=bound_position)
-                print(('{} bounds added'.format(coord)))
-
-        return bcube
-
+    return bcube
 
 
 def add_coord_system(cube):
@@ -244,21 +251,22 @@ def add_coord_system(cube):
     cs = cscube.coord_system()
 
     if cs is not None:
-        if str(cs).find('Rotated') == 0:
+        if str(cs).find("Rotated") == 0:
             # not possible to add a coord system for
             # rotated pole cube without knowing the
             # rotation. Give error message.
-            raise TypeError('Error, no coordinate system for rotated pole cube')
+            raise TypeError("Error, no coordinate system for rotated pole cube")
     else:
         coord_names = [coord.name() for coord in cscube.coords(dim_coords=True)]
         wgs84_cs = iris.coord_systems.GeogCS(6371229.0)
-        if 'latitude' in coord_names:
-            cscube.coord('latitude').coord_system = wgs84_cs
-        if 'longitude' in coord_names:
-            cscube.coord('longitude').coord_system = wgs84_cs
-        print('Coordinate system  GeogCS(6371229.0) added to cube')
+        if "latitude" in coord_names:
+            cscube.coord("latitude").coord_system = wgs84_cs
+        if "longitude" in coord_names:
+            cscube.coord("longitude").coord_system = wgs84_cs
+        print("Coordinate system  GeogCS(6371229.0) added to cube")
 
     return cscube
+
 
 def add_time_coord_cats(cube):
     """
@@ -319,50 +327,51 @@ def add_time_coord_cats(cube):
 
     # numeric
     try:
-        iccat.add_day_of_year(ccube, 'time')
+        iccat.add_day_of_year(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     try:
-        iccat.add_day_of_month(ccube, 'time')
+        iccat.add_day_of_month(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     try:
-        iccat.add_month_number(ccube, 'time')
+        iccat.add_month_number(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     try:
-        iccat.add_season_number(ccube, 'time')
+        iccat.add_season_number(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     try:
-        iccat.add_year(ccube, 'time')
+        iccat.add_year(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     # strings
     try:
-        iccat.add_month(ccube, 'time')
+        iccat.add_month(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     try:
-        iccat.add_season(ccube, 'time')
+        iccat.add_season(ccube, "time")
     except AttributeError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
     except ValueError as err:
-        print(('add_time_coord_cats: {}, skipping . . . '.format(err)))
+        print(("add_time_coord_cats: {}, skipping . . . ".format(err)))
 
     return ccube
+
 
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
@@ -418,15 +427,27 @@ def remove_forecast_coordinates(iris_cube):
 """
 
     try:
-        iris_cube.remove_coord('forecast_period')
-        print(('Removed the forecast_period coordinate from {} cube'.format(iris_cube.name())))
+        iris_cube.remove_coord("forecast_period")
+        print(
+            (
+                "Removed the forecast_period coordinate from {} cube".format(
+                    iris_cube.name()
+                )
+            )
+        )
     except iris.exceptions.CoordinateNotFoundError as coord_not_found:
-        print('{}'.format(coord_not_found))
+        print("{}".format(coord_not_found))
     try:
-        iris_cube.remove_coord('forecast_reference_time')
-        print(('Removed the forecast_reference_time coordinate from {} cube'.format(iris_cube.name())))
+        iris_cube.remove_coord("forecast_reference_time")
+        print(
+            (
+                "Removed the forecast_reference_time coordinate from {} cube".format(
+                    iris_cube.name()
+                )
+            )
+        )
     except iris.exceptions.CoordinateNotFoundError as coord_not_found:
-        print('{}'.format(coord_not_found))
+        print("{}".format(coord_not_found))
 
     return iris_cube
 
@@ -510,31 +531,31 @@ def rim_remove(cube, rim_width):
 
     # check whether rim_width is an integer
     if not isinstance(rim_width, (integer_types)):
-        raise TypeError('Please provide a positive integer for rim_width')
+        raise TypeError("Please provide a positive integer for rim_width")
     if rim_width <= 0:
-        raise IndexError('Please provide a positive integer > 0 for rim_width')
+        raise IndexError("Please provide a positive integer > 0 for rim_width")
 
     # check whether this cube has already had it's rim removed
-    if 'rim_removed' in cube.attributes:
+    if "rim_removed" in cube.attributes:
         print("WARNING - This cube has already had it's rim removed")
 
     # Longitude
-    xcoord = cube.coord(axis='X', dim_coords=True)
+    xcoord = cube.coord(axis="X", dim_coords=True)
     # Latitude
-    ycoord = cube.coord(axis='Y', dim_coords=True)
+    ycoord = cube.coord(axis="Y", dim_coords=True)
 
     # make sure specified rim_width is going to work
     if len(xcoord.points) <= (rim_width * 2) or len(ycoord.points) <= (rim_width * 2):
         raise IndexError("length of lat or lon coord is < rim_width*2")
 
     # Remove rim from Longitude
-    rrcube = cube.subset(xcoord[rim_width:-1 * rim_width])
+    rrcube = cube.subset(xcoord[rim_width : -1 * rim_width])
     # Remove rim from Latitude
-    rrcube = rrcube.subset(ycoord[rim_width:-1 * rim_width])
+    rrcube = rrcube.subset(ycoord[rim_width : -1 * rim_width])
     # add meta data that rim has been removed
-    rrcube.attributes['rim_removed'] = '{} point rim removed'.format(rim_width)
+    rrcube.attributes["rim_removed"] = "{} point rim removed".format(rim_width)
 
-    print(('Removed {} size rim from {}'.format(rim_width, cube.name())))
+    print(("Removed {} size rim from {}".format(rim_width, cube.name())))
 
     return rrcube
 

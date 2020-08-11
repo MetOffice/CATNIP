@@ -9,7 +9,6 @@ import catnip.config as conf
 class TestPreparation(unittest.TestCase):
     """Unittest class for visualisation module"""
 
-
     @classmethod
     def setUpClass(self):
         pass
