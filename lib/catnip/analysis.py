@@ -8,28 +8,22 @@ import matplotlib.pyplot as plt
 import iris
 import iris.analysis as ia
 import cartopy.crs as ccrs
+import doctest
 import os.path
-import config
+import catnip.config as conf
 
-try:
-    from improver.psychrometric_calculations.psychrometric_calculations import WetBulbTemperature
-except:
-    raise ImportError('No module named improver found. You must create a  '
-                      '~/.local/lib/python3.6/site-packages/improver.pth file '
-                      'containing the line /home/h05/gredmond/improver-master/lib '
-                      'and try again.')
 
-def calculate_dewpoint(P, Q, T):
+def calculate_dewpoint(p, q, t):
 
     """ A function to calculate the dew point temperature, it
-    expects three iris cubes P, Q, T. Stash codes needed are
+    expects three iris cubes p, q, t. Stash codes needed are
     00001, 03237, 03236.
 
     args
     ----
-    T: 1.5m temperature cube
-    Q: 1.5m specific humidity cube
-    P: P star cube
+    p: P star cube
+    q: 1.5m specific humidity cube
+    t: 1.5m temperature cube
 
     Returns
     -------
@@ -39,30 +33,23 @@ def calculate_dewpoint(P, Q, T):
     -----
     Based on the UM routine /home/h04/precis/um/vn4.5/source/umpl/DEWPNT1A.dk
     which uses /home/h04/precis/um/vn4.5/source/umpl/QSAT2A.dk
-    Constants:
-        -   LC       is the latent heat of condensation of water at 0 deg C.
-        -   RL1      is the latent heat of evaporation
-        -   TM       is the temperature at which fresh waster freezes
-        -   EPSILON  is the ratio of molecular weights of water and dry air
-        -   R        the gas constant for dry air (J/kg/K)
-        -   RV       gas constant for moist air (J/kg/K)
 
     This test compares dewpoint calculated by the
     calculate_dewpoint function, to dewpoint directly
     output from the UM i.e. uses the fortran routine
 
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'dewpointtest_pt1.pp')
-    >>> file2 = os.path.join(config.DATA_DIR, 'dewpointtest_pt2.pp')
-    >>> P=iris.load_cube(file2, 'surface_air_pressure')
-    >>> T=iris.load_cube(file1, 'air_temperature')
-    >>> Q=iris.load_cube(file1, 'specific_humidity')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'dewpointtest_pt1.pp')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'dewpointtest_pt2.pp')
+    >>> p=iris.load_cube(file2, 'surface_air_pressure')
+    >>> t=iris.load_cube(file1, 'air_temperature')
+    >>> q=iris.load_cube(file1, 'specific_humidity')
     >>>
-    >>> DEWPOINT=iris.load_cube(file1, 'dew_point_temperature')
-    >>> TD = calculate_dewpoint(P, Q, T)
-    WARNING dewpoint temp. > air temp ---> setting TD = T
+    >>> dewpoint=iris.load_cube(file1, 'dew_point_temperature')
+    >>> td = calculate_dewpoint(p, q, t)
+    WARNING dewpoint temp. > air temp ---> setting td = t
     >>>
-    >>> diff = DEWPOINT - TD
+    >>> diff = dewpoint - td
     >>> print(np.max(diff.data))
     0.37731934
     >>> print(np.min(diff.data))
@@ -72,35 +59,66 @@ def calculate_dewpoint(P, Q, T):
     >>> print(np.std(diff.data))
     0.0058857435
     """
+    try:
+        from improver.psychrometric_calculations.psychrometric_calculations import (
+            WetBulbTemperature,
+        )
+    except:
+        raise ImportError(
+            "No module named improver found. You must create a  "
+            "~/.local/lib/python3.6/site-packages/improver.pth file "
+            "containing the line /home/h05/gredmond/improver-master/lib "
+            "and try again."
+        )
 
-    # Set constants
-    LC = 2.501E6
-    RL1 = -2.73E3
+    # Constants:
+    #    -   LC       is the latent heat of condensation of water at 0 deg C.
+    #    -   RL1      is the latent heat of evaporation
+    #    -   TM       is the temperature at which fresh waster freezes
+    #    -   EPSILON  is the ratio of molecular weights of water and dry air
+    #    -   R        the gas constant for dry air (J/kg/K)
+    #    -   RV       gas constant for moist air (J/kg/K)
+
+    LC = 2.501e6
+    RL1 = -2.73e3
     TM = 273.15
     EPSILON = 0.62198
     R = 287.05
-    RV = R/EPSILON
+    RV = R / EPSILON
 
-    if not P.units == 'Pa':
-        raise ValueError('P star must be in units of Pa not {}'.format(P.units))
-    if not T.units == 'K':
-        raise ValueError('1.5m temperature must be in units of K not {}'.format(T.units))
-    if not Q.units == '1':
-        raise ValueError('1.5m specific humidity must be in units of 1 not {}'.format(Q.units))
+    if not isinstance(p, iris.cube.Cube):
+        raise TypeError("First argument is not a cube")
+
+    if not isinstance(q, iris.cube.Cube):
+        raise TypeError("Second argument is not a cube")
+
+    if not isinstance(t, iris.cube.Cube):
+        raise TypeError("Third argument is not a cube")
+
+    if not p.units == "Pa":
+        raise ValueError("P star must be in units of Pa not {}".format(p.units))
+    if not t.units == "K":
+        raise ValueError(
+            "1.5m temperature must be in units of K not {}".format(t.units)
+        )
+    if not q.units == "1":
+        raise ValueError(
+            "1.5m specific humidity must be in units of 1 not {}".format(q.units)
+        )
 
     # Set up output cube for dewpoint data
-    TD = T.copy()
-    TD.rename('dew_point_temperature')
-    TD.attributes.pop('STASH', None)
+    td = t.copy()
+    td.rename("dew_point_temperature")
+    td.attributes.pop("STASH", None)
 
     # Convert pressure from Pa to hPa
-    P1 = P.data/100.00
+    p1 = p.data / 100.00
 
     # Calculate RL - The latent heat of evaporation.
-    RL = LC + RL1 * (T.data - TM)
+    rl = LC + RL1 * (t.data - TM)
 
     #  Calculate Vapour pressure
-    V_PRES = Q.data * P1 / (EPSILON + Q.data)
+    v_pres = q.data * p1 / (EPSILON + q.data)
 
     # Calculate saturation mixing ratio (Q0)
     # Uses the _calculate_mixing_ratio improver library function with ~gredmond's water/supercooled water
@@ -108,33 +126,35 @@ def calculate_dewpoint(P, Q, T):
     # See https://github.com/metoppv/improver/blob/master/lib/improver/psychrometric_calculations/psychrometric_calculations.py
     # Expects pressure in Pa, temperature in K
     cmr = WetBulbTemperature()  # Create an instance of class
-    Q0 = cmr._calculate_mixing_ratio(T, P)
+    q0 = cmr._calculate_mixing_ratio(t, p)
 
     # Calculate dew point
     # Make sure vapour pressure is positive before calculating
-    where_pos = np.where(V_PRES > 0)
-    ES0 = (Q0.data[where_pos] * P1[where_pos])/(EPSILON + Q0.data[where_pos])
-    RT = (1/T.data[where_pos]) - (RV * np.log(V_PRES[where_pos]/ES0))/RL[where_pos]
-    TD.data[where_pos] = 1.0/RT
-    where_td_gt_t = np.where(TD.data > T.data)
+    where_pos = np.where(v_pres > 0)
+    es0 = (q0.data[where_pos] * p1[where_pos]) / (EPSILON + q0.data[where_pos])
+    rt = (1 / t.data[where_pos]) - (RV * np.log(v_pres[where_pos] / es0)) / rl[
+        where_pos
+    ]
+    td.data[where_pos] = 1.0 / rt
+    where_td_gt_t = np.where(td.data > t.data)
     if where_td_gt_t[0].shape[0] > 0:
-        print('WARNING dewpoint temp. > air temp ---> setting TD = T')
-        TD.data[where_td_gt_t] = T.data[where_td_gt_t]
+        print("WARNING dewpoint temp. > air temp ---> setting td = t")
+        td.data[where_td_gt_t] = t.data[where_td_gt_t]
 
     # Check for any 0 or negative vaules of vapour pressure and set to NaN
-    where_neg = np.where(V_PRES <= 0)
+    where_neg = np.where(v_pres <= 0)
     if where_neg[0].shape[0] > 0:
-        print('WARNING. Neg or zero Q in dewpoint calc. ---> setting TD = NaN')
-        TD.data[where_neg] = float('nan')
+        print("WARNING. Neg or zero Q in dewpoint calc. ---> setting td = NaN")
+        td.data[where_neg] = float("nan")
 
-    return TD
+    return td
 
 
 def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
     least squares solution to a linear matrix
-    equation. Expects two numpy arrays of dimension 1.    
+    equation. Expects two numpy arrays of dimension 1.
 
     args
     ----
@@ -164,12 +184,26 @@ def linear_regress(xi, yi):
     intercept 3.07
     """
 
-    if np.ndim(xi) != 1 or np.ndim(yi) != 1:
-        raise ValueError('xi and yi must have dinemsion 1, not xi \
-            {} and yi {}'.format(str(np.ndim(xi)), str(np.ndim(yi))))
+    if np.shape(xi) != np.shape(yi):
+        raise ValueError(
+            "The input fields do not have the same shape, \
+            {} and {}".format(
+                str(np.shape(xi)), str(np.shape(yi))
+            )
+        )
+
+    elif np.ndim(xi) != 1 or np.ndim(yi) != 1:
+        raise ValueError(
+            "xi and yi must have dinemsion 1, not xi \
+            {} and yi {}".format(
+                str(np.ndim(xi)), str(np.ndim(yi))
+            )
+        )
     else:
         # Return the least-squares solution to a linear matrix equation
-        regression = np.linalg.lstsq(np.vstack([xi, np.ones(len(xi))]).T, yi,rcond=None)
+        regression = np.linalg.lstsq(
+            np.vstack([xi, np.ones(len(xi))]).T, yi, rcond=None
+        )
 
         # Get the slope and the intercept
         grad, intcp = regression[0]
@@ -179,7 +213,7 @@ def linear_regress(xi, yi):
 
         xmin, xmax = np.min(xi), np.max(xi)
         xpts = [xmin, xmax]
-        ypts = grad*np.array(xpts)+intcp
+        ypts = grad * np.array(xpts) + intcp
 
     return grad, intcp, xpts, ypts, sum_res
 
@@ -232,18 +266,21 @@ def ci_interval(xi, yi, alpha=0.05):
     """
 
     if xi.shape != yi.shape:
-        raise ValueError('The input fields do not have the same shape, \
-            {} and {}'.format(str(xi.shape), str(yi.shape)))
+        raise ValueError(
+            "The input fields do not have the same shape, \
+            {} and {}".format(
+                str(xi.shape), str(yi.shape)
+            )
+        )
 
-    print(('Calculating the {}% confidence interval'.format(str((1-alpha)*100))))
+    print(("Calculating the {}% confidence interval".format(str((1 - alpha) * 100))))
     # number of points
     n = len(xi)
     # degrees of freedom
-    dof = n - 2 # assuming 2 parameters
+    dof = n - 2  # assuming 2 parameters
     # student-t value for the dof and confidence level
     # Note, ppf - Percent point function (inverse of cdf - percentiles).
-    t_val = t.ppf(1.0-alpha/2., dof)
-
+    t_val = t.ppf(1.0 - alpha / 2.0, dof)
 
     # Return the least-squares solution to a linear matrix equation
     slope, intcp, xp, yp, sum_res = linear_regress(xi, yi)
@@ -252,12 +289,12 @@ def ci_interval(xi, yi, alpha=0.05):
     # Use this to calculate confidence intervals for plotting.
     if sum_res.shape == (1,):
         # standard error
-        sd_err = np.sqrt(sum_res/(dof))[0]
+        sd_err = np.sqrt(sum_res / (dof))[0]
         # calculate the sum of the squares of the difference
         # between each x and the mean x value
-        sxx = np.sum((xi-np.mean(xi))**2)
+        sxx = np.sum((xi - np.mean(xi)) ** 2)
         if sxx == 0.0:
-            raise ValueError('Sum of squares of difference is 0')
+            raise ValueError("Sum of squares of difference is 0")
 
         # CI of slope: Formulated from vonStorch & Zwiers Sect.8.3.7
         slope_conf_int = (t_val * sd_err) / np.sqrt(sxx)
@@ -268,32 +305,40 @@ def ci_interval(xi, yi, alpha=0.05):
         xmin, xmax = np.min(xi), np.max(xi)
         # for plotting CI slope you want
         xpts = xmin, xmax
-        slope_lo_pts = np.mean(yi) + slope_lo*([xmin, xmax] - np.mean(xi))
-        slope_hi_pts = np.mean(yi) + slope_hi*([xmin, xmax] - np.mean(xi))
+        slope_lo_pts = np.mean(yi) + slope_lo * ([xmin, xmax] - np.mean(xi))
+        slope_hi_pts = np.mean(yi) + slope_hi * ([xmin, xmax] - np.mean(xi))
 
         # get regularly spaced np array of x points
         xreg = np.linspace(xmin, xmax, 101)
         # Population yi CI: Formulated from vonStorch & Zwiers Sect.8.3.10
         # CI for the mean of the response variable
-        yfact = np.sqrt((1.0/n) + (((xreg-np.mean(xi))**2)/sxx))
+        yfact = np.sqrt((1.0 / n) + (((xreg - np.mean(xi)) ** 2) / sxx))
         # 95% CI
         ymean_conf_int = (t_val * sd_err) * yfact
         # get the lines for plotting ymean CI
-        y_conf_int_hi = (slope*xreg)+intcp+ymean_conf_int
-        y_conf_int_lo = (slope*xreg)+intcp-ymean_conf_int
+        y_conf_int_hi = (slope * xreg) + intcp + ymean_conf_int
+        y_conf_int_lo = (slope * xreg) + intcp - ymean_conf_int
 
         # Intercept CI, using population y CI at x=0
         # Note, this isn't meaningful if x=0 is not physically meaningful
-        yfact0 = np.sqrt((1.0/n) + ((np.mean(xi)**2)/sxx))
+        yfact0 = np.sqrt((1.0 / n) + ((np.mean(xi) ** 2) / sxx))
         intcp_conf_int = (t_val * sd_err) * yfact0
         intcp_lo = intcp - intcp_conf_int
         intcp_hi = intcp + intcp_conf_int
 
-        return slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, \
-                    slope_hi_pts, xreg, y_conf_int_lo, y_conf_int_hi
+        return (
+            slope_conf_int,
+            intcp_conf_int,
+            xpts,
+            slope_lo_pts,
+            slope_hi_pts,
+            xreg,
+            y_conf_int_lo,
+            y_conf_int_hi,
+        )
 
 
-def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
+def regrid_to_target(cube, target_cube, method="linear", extrap="mask", mdtol=0.5):
     """
     Takes in two cubes, and regrids one onto the grid
     of the other. Optional arguments include the method
@@ -323,8 +368,8 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
 
     An example:
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
-    >>> file2 = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> cube = iris.load_cube(file1, 'air_temperature')
     >>> tgrid = iris.load_cube(file2, 'air_temperature')
     >>> cube_reg = regrid_to_target(cube, tgrid)
@@ -335,29 +380,34 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
     (433, 444)
     """
 
-    target_cs = target_cube.coord(axis='x').coord_system
-    orig_cs = cube.coord(axis='x').coord_system
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    if not isinstance(target_cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    target_cs = target_cube.coord(axis="x").coord_system
+    orig_cs = cube.coord(axis="x").coord_system
 
     # get coord names for cube
     # Longitude
-    xcoord = cube.coord(axis='X', dim_coords=True)
+    xcoord = cube.coord(axis="X", dim_coords=True)
     # Latitude
-    ycoord = cube.coord(axis='Y', dim_coords=True)
+    ycoord = cube.coord(axis="Y", dim_coords=True)
     # get coord names for target_cube
     # Longitude
-    t_xcoord = target_cube.coord(axis='X', dim_coords=True)
+    t_xcoord = target_cube.coord(axis="X", dim_coords=True)
     # Latitude
-    t_ycoord = target_cube.coord(axis='Y', dim_coords=True)
+    t_ycoord = target_cube.coord(axis="Y", dim_coords=True)
 
-
-    if method == 'linear':
+    if method == "linear":
         scheme = iris.analysis.Linear(extrapolation_mode=extrap)
 
-    if method == 'nearest':
+    if method == "nearest":
         scheme = iris.analysis.Nearest(extrapolation_mode=extrap)
 
     # areaweighted is VERY picky and often can't be used.
-    if method == 'areaweighted':
+    if method == "areaweighted":
         if not cube.coord(xcoord).has_bounds():
             print("Input cube to be regrided does not have lon bounds, guessing . . . ")
             cube.coord(xcoord).guess_bounds()
@@ -376,14 +426,18 @@ def regrid_to_target(cube, target_cube, method='linear', extrap='mask', mdtol=0.
             raise ValueError("The input cubes must have the same coordinate system")
         scheme = iris.analysis.AreaWeighted(mdtol=mdtol)
 
-    print("regridding from {} to {} using method {}".format(str(orig_cs), str(target_cs), method))
+    print(
+        "regridding from {} to {} using method {}".format(
+            str(orig_cs), str(target_cs), method
+        )
+    )
 
     cube_reg = cube.regrid(target_cube, scheme)
 
     return cube_reg
 
 
-def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
+def set_regridder(cube, target_cube, method="linear", extrap="mask", mdtol=0.5):
     """
     Takes in two cubes, and sets up a regridder, mapping
     one cube to another. The most computationally expensive
@@ -420,8 +474,8 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
 
     An example:
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
-    >>> file2 = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'gcm_monthly.pp')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> cube = iris.load_cube(file1, 'air_temperature')
     >>> tgrid = iris.load_cube(file2, 'air_temperature')
     >>> regridder = set_regridder(cube, tgrid)
@@ -432,27 +486,37 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
     <iris 'Cube' of cloud_area_fraction / (1) (grid_latitude: 433; grid_longitude: 444)>
     """
 
-    target_cs = target_cube.coord(axis='x').coord_system
-    orig_cs = cube.coord(axis='x').coord_system
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
 
-        # get coord names for cube
+    if not isinstance(target_cube, iris.cube.Cube):
+        raise TypeError("Target_cube is not of type cube")
+
+    target_cs = target_cube.coord(axis="x").coord_system
+    orig_cs = cube.coord(axis="x").coord_system
+
+    # get coord names for cube
     # Longitude
-    xcoord = cube.coord(axis='X', dim_coords=True)
+    xcoord = cube.coord(axis="X", dim_coords=True)
     # Latitude
-    ycoord = cube.coord(axis='Y', dim_coords=True)
+    ycoord = cube.coord(axis="Y", dim_coords=True)
     # get coord names for target_cube
     # Longitude
-    t_xcoord = target_cube.coord(axis='X', dim_coords=True)
+    t_xcoord = target_cube.coord(axis="X", dim_coords=True)
     # Latitude
-    t_ycoord = target_cube.coord(axis='Y', dim_coords=True)
+    t_ycoord = target_cube.coord(axis="Y", dim_coords=True)
 
-    if method == 'linear':
-        regridder = iris.analysis.Linear(extrapolation_mode=extrap).regridder(cube, target_cube)
+    if method == "linear":
+        regridder = iris.analysis.Linear(extrapolation_mode=extrap).regridder(
+            cube, target_cube
+        )
 
-    if method == 'nearest':
-        regridder = iris.analysis.Nearest(extrapolation_mode=extrap).regridder(cube, target_cube)
+    if method == "nearest":
+        regridder = iris.analysis.Nearest(extrapolation_mode=extrap).regridder(
+            cube, target_cube
+        )
 
-    if method == 'areaweighted':
+    if method == "areaweighted":
         if not cube.coord(xcoord).has_bounds():
             print("Input cube to be regrided does not have lon bounds, guessing . . . ")
             cube.coord(xcoord).guess_bounds()
@@ -475,8 +539,14 @@ def set_regridder(cube, target_cube, method='linear', extrap='mask', mdtol=0.5):
     return regridder
 
 
-def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2]],
-                   metric='mean', pc=[], years=[], ext_area=[]):
+def seas_time_stat(
+    cube,
+    seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2]],
+    metric="mean",
+    pc=[],
+    years=[],
+    ext_area=[],
+):
     """
     Takes in a cube and calculates a seasonal metric. Defaults to
     mean of 'mam','jja','son' and 'djf' over the whole time span
@@ -514,8 +584,8 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
 
     See an example:
 
-    >>> file1 = os.path.join(config.DATA_DIR, 'mslp.daily.rcm.viet.nc')
-    >>> file2 = os.path.join(config.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
+    >>> file1 = os.path.join(conf.DATA_DIR, 'mslp.daily.rcm.viet.nc')
+    >>> file2 = os.path.join(conf.DATA_DIR, 'FGOALS-g2_ua@925_nov.nc')
     >>> # load a rcm cube
     ... cube = iris.load_cube(file1)
     >>> seas_min_cubelist = seas_time_stat(cube, metric='min', years=[2000,2000])
@@ -552,44 +622,90 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
               mean: time
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # check the cube contains a coordinate called time
     coord_names = [coord.name() for coord in cube.coords(dim_coords=True)]
-    if 'time' in coord_names:
 
+    if "time" not in coord_names:
+        raise iris.exceptions.CoordinateNotFoundError(
+            "No coordinate called 'time' in cube"
+        )
+
+    else:
         # if the start and end years are not defined by the user
         # default to using the whole time span of the cube
         if not years:
-            time_info = cube.coord('time')
-            if not cube.coord('time').has_bounds():
-                raise Exception("Coordinate 'time' does not have bounds. Add bounds using the add_bounds function.")
-            years = [time_info.units.num2date(time_info.bounds[0][0]).year,
-                     time_info.units.num2date(time_info.bounds[-1][1]).year]
+            time_info = cube.coord("time")
+            if not cube.coord("time").has_bounds():
+                raise Exception(
+                    "Coordinate 'time' does not have bounds. Add bounds using the add_bounds function."
+                )
+            years = [
+                time_info.units.num2date(time_info.bounds[0][0]).year,
+                time_info.units.num2date(time_info.bounds[-1][1]).year,
+            ]
 
         if ext_area:
             # check the coordinate system of the cube
             cs_str = str(cube.coord_system())
-            if cs_str.find('Rotated') != -1:
+            if cs_str.find("Rotated") != -1:
                 print(
-                    'WARNING - the cube is on a rotated pole, the area you extract might not be where you think it is! You can use regular_point_to_rotated to check your ext_area lat and lon')
+                    "WARNING - the cube is on a rotated pole, the area you extract might not be where you think it is! You can use regular_point_to_rotated to check your ext_area lat and lon"
+                )
             if len(ext_area) != 4:
                 raise IndexError(
-                    "area to extract must contain 4 values, currently contains {}".format(str(len(ext_area))))
+                    "area to extract must contain 4 values, currently contains {}".format(
+                        str(len(ext_area))
+                    )
+                )
             else:
-                if 'grid_latitude' in coord_names:
-                    cube = cube.intersection(grid_longitude=(ext_area[0], ext_area[1]),
-                                             grid_latitude=(ext_area[2], ext_area[3]))
-                elif 'latitude' in coord_names:
-                    cube = cube.intersection(longitude=(ext_area[0], ext_area[1]),
-                                             latitude=(ext_area[2], ext_area[3]))
+                if "grid_latitude" in coord_names:
+                    cube = cube.intersection(
+                        grid_longitude=(ext_area[0], ext_area[1]),
+                        grid_latitude=(ext_area[2], ext_area[3]),
+                    )
+                elif "latitude" in coord_names:
+                    cube = cube.intersection(
+                        longitude=(ext_area[0], ext_area[1]),
+                        latitude=(ext_area[2], ext_area[3]),
+                    )
                 else:
-                    raise IndexError("Neither latitude nor grid_latitude coordinates in cube, can't extract area")
+                    raise IndexError(
+                        "Neither latitude nor grid_latitude coordinates in cube, can't extract area"
+                    )
 
         # dictionary of month number to month letter, used to make strings
         # of season names e.g. 'jja'
-        month_dict = {1: 'j', 2: 'f', 3: 'm', 4: 'a', 5: 'm', 6: 'j',
-                      7: 'j', 8: 'a', 9: 's', 10: 'o', 11: 'n', 12: 'd'}
-        month_fullname_dict = {1: 'jan', 2: 'feb', 3: 'mar', 4: 'apr', 5: 'may', 6: 'jun',
-                               7: 'jul', 8: 'aug', 9: 'sep', 10: 'oct', 11: 'nov', 12: 'dec'}
+        month_dict = {
+            1: "j",
+            2: "f",
+            3: "m",
+            4: "a",
+            5: "m",
+            6: "j",
+            7: "j",
+            8: "a",
+            9: "s",
+            10: "o",
+            11: "n",
+            12: "d",
+        }
+        month_fullname_dict = {
+            1: "jan",
+            2: "feb",
+            3: "mar",
+            4: "apr",
+            5: "may",
+            6: "jun",
+            7: "jul",
+            8: "aug",
+            9: "sep",
+            10: "oct",
+            11: "nov",
+            12: "dec",
+        }
 
         cube_list = iris.cube.CubeList()
 
@@ -606,59 +722,73 @@ def seas_time_stat(cube, seas_mons=[[3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 1, 2
             season_string = "".join(seas_str)
             season_fullname_string = "".join(seas_fullname_str)
 
-            print(('Calculating {} for {}-{} {}'.format(metric, str(years[0]),
-                                                        str(years[1]), season_string)))
+            print(
+                (
+                    "Calculating {} for {}-{} {}".format(
+                        metric, str(years[0]), str(years[1]), season_string
+                    )
+                )
+            )
 
             # set up an iris constraint for the season
-            season_constraint = iris.Constraint(time=lambda cell: cell.point.month in season)
+            season_constraint = iris.Constraint(
+                time=lambda cell: cell.point.month in season
+            )
             # year constraint
-            year_constraint = iris.Constraint(time=lambda cell: years[0]
-                                                                <= cell.point.year <= years[1])
+            year_constraint = iris.Constraint(
+                time=lambda cell: years[0] <= cell.point.year <= years[1]
+            )
             # extract the data matching the season and year constraints
             season_cube = cube.extract(year_constraint & season_constraint)
 
             # make sure season_cube exists
             if season_cube is None:
-                raise Exception("Cube constriants of seas_mons and/or years do not match data in the input cube")
+                raise Exception(
+                    "Cube constriants of seas_mons and/or years do not match data in the input cube"
+                )
 
             # calculate a time mean
-            if metric == 'mean':
-                cube_stat = season_cube.collapsed('time', iris.analysis.MEAN)
+            if metric == "mean":
+                cube_stat = season_cube.collapsed("time", iris.analysis.MEAN)
             # calculate standard deviation (D.O.F=1)
-            if metric == 'std_dev':
-                cube_stat = season_cube.collapsed('time', iris.analysis.STD_DEV)
+            if metric == "std_dev":
+                cube_stat = season_cube.collapsed("time", iris.analysis.STD_DEV)
             # calculate minimum
-            if metric == 'min':
-                cube_stat = season_cube.collapsed('time', iris.analysis.MIN)
+            if metric == "min":
+                cube_stat = season_cube.collapsed("time", iris.analysis.MIN)
             # calculate maximum
-            if metric == 'max':
-                cube_stat = season_cube.collapsed('time', iris.analysis.MAX)
+            if metric == "max":
+                cube_stat = season_cube.collapsed("time", iris.analysis.MAX)
             # calculate percentile
-            if metric == 'percentile':
+            if metric == "percentile":
                 if not pc:
-                    raise ValueError('percentile to calculate, pc, is not set.')
+                    raise ValueError("percentile to calculate, pc, is not set.")
                 if isinstance(pc, int):
-                    cube_stat = season_cube.collapsed('time', iris.analysis.PERCENTILE,
-                                                      percent=pc)
+                    cube_stat = season_cube.collapsed(
+                        "time", iris.analysis.PERCENTILE, percent=pc
+                    )
                 else:
-                    raise TypeError(' pc must be an integer, it is currently {} of type {}'.format(pc, type(pc)))
+                    raise TypeError(
+                        " pc must be an integer, it is currently {} of type {}".format(
+                            pc, type(pc)
+                        )
+                    )
 
             # add a coord describing the season
-            aux_seas = iris.coords.AuxCoord(season_string, long_name='season',
-                                            units='no_unit')
+            aux_seas = iris.coords.AuxCoord(
+                season_string, long_name="season", units="no_unit"
+            )
             cube_stat.add_aux_coord(aux_seas)
 
-            aux_seas_fullname = iris.coords.AuxCoord(season_fullname_string, long_name='season_fullname',
-                                                     units='no_unit')
+            aux_seas_fullname = iris.coords.AuxCoord(
+                season_fullname_string, long_name="season_fullname", units="no_unit"
+            )
             cube_stat.add_aux_coord(aux_seas_fullname)
 
             # add seasonal statistic of cube to cube list
             cube_list.append(cube_stat)
 
-        return cube_list
-
-    else:
-        raise Exception("No coordinate called 'time' in cube")
+    return cube_list
 
 
 def regular_point_to_rotated(cube, lon, lat):
@@ -685,7 +815,7 @@ def regular_point_to_rotated(cube, lon, lat):
 
     An example:
 
-    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> lat = 6.5
     >>> lon = 289 # on 0-360 degree
     >>> cube = iris.load_cube(file, 'air_temperature')
@@ -699,8 +829,11 @@ def regular_point_to_rotated(cube, lon, lat):
     -84.330 3.336
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # get name of y coord
-    ycoord = cube.coord(axis='Y', dim_coords=True)
+    ycoord = cube.coord(axis="Y", dim_coords=True)
     # cartopy.crs.RotatedGeodetic object
     rot_pole = cube.coord(ycoord).coord_system.as_cartopy_crs()
     # "regular" lon/lat coord system
@@ -734,7 +867,7 @@ def rotated_point_to_regular(cube, rot_lon, rot_lat):
 
     An example:
 
-    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> cube = iris.load_cube(file, 'air_temperature')
     >>> rot_lat = 3.34
     >>> rot_lon = -84.33
@@ -748,8 +881,11 @@ def rotated_point_to_regular(cube, rot_lon, rot_lat):
     116.741 82.265
     """
 
+    if not isinstance(cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
     # get name of y coord
-    ycoord = cube.coord(axis='Y', dim_coords=True)
+    ycoord = cube.coord(axis="Y", dim_coords=True)
     # cartopy.crs.RotatedGeodetic object
     rot_pole = cube.coord(ycoord).coord_system.as_cartopy_crs()
     # "regular" lon/lat coord system
@@ -777,7 +913,7 @@ def windspeed(u_cube, v_cube):
 
     A simple example:
 
-    >>> file = os.path.join(config.DATA_DIR, 'gcm_monthly.pp')
+    >>> file = os.path.join(conf.DATA_DIR, 'gcm_monthly.pp')
     >>> u_cube = iris.load_cube(file, 'x_wind')
     >>> v_cube = iris.load_cube(file, 'y_wind')
     >>> ws = windspeed(u_cube, v_cube)
@@ -789,18 +925,23 @@ def windspeed(u_cube, v_cube):
     'wind_speed'
     """
 
-    if u_cube.units != getattr(v_cube, 'units', u_cube.units):
-        raise ValueError("units do not match, {} and {}".format(u_cube.units, v_cube.units))
+    if not isinstance(u_cube, iris.cube.Cube) or not isinstance(v_cube, iris.cube.Cube):
+        raise TypeError("Input is not a cube")
+
+    if u_cube.units != getattr(v_cube, "units", u_cube.units):
+        raise ValueError(
+            "units do not match, {} and {}".format(u_cube.units, v_cube.units)
+        )
 
     # cube to put the windspeed in
     windspeed_cube = u_cube.copy()
     # adjust meta data
     windspeed_cube.standard_name = "wind_speed"
-    if 'STASH' in windspeed_cube.attributes:
-        windspeed_cube.attributes.pop('STASH', None)
-    windspeed_cube.attributes['formula'] = "sqrt(u**2, v**2)"
+    if "STASH" in windspeed_cube.attributes:
+        windspeed_cube.attributes.pop("STASH", None)
+    windspeed_cube.attributes["formula"] = "sqrt(u**2, v**2)"
 
-    windspeed_cube.data = np.sqrt(u_cube.data**2 + v_cube.data**2)
+    windspeed_cube.data = np.sqrt(u_cube.data ** 2 + v_cube.data ** 2)
 
     return windspeed_cube
 
@@ -838,7 +979,7 @@ def wind_direction(u_cube, v_cube, unrotate=True):
 
     A simple example:
 
-    >>> file = os.path.join(config.DATA_DIR, 'rcm_monthly.pp')
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
     >>> u_cube = iris.load_cube(file, 'x_wind')
     >>> v_cube = iris.load_cube(file, 'y_wind')
     >>> angle = wind_direction(u_cube, v_cube)
@@ -859,16 +1000,20 @@ def wind_direction(u_cube, v_cube, unrotate=True):
      -25.78981  -25.70668  -25.623428 -25.539993]
     """
 
-    if u_cube.units != getattr(v_cube, 'units', u_cube.units):
-        raise ValueError("units do not match, {} and {}".format(u_cube.units, v_cube.units))
+    if u_cube.units != getattr(v_cube, "units", u_cube.units):
+        raise ValueError(
+            "units do not match, {} and {}".format(u_cube.units, v_cube.units)
+        )
 
     # check if data is on rotated pole, unrotate if necessary
     cs_str = str(u_cube.coord_system())
-    if cs_str.find('Rotated') != -1:
+    if cs_str.find("Rotated") != -1:
         if unrotate:
-            print('data is on rotated coord system, un-rotating . . .')
+            print("data is on rotated coord system, un-rotating . . .")
             target_cs = iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
-            u_cube, v_cube = iris.analysis.cartography.rotate_winds(u_cube, v_cube, target_cs)
+            u_cube, v_cube = iris.analysis.cartography.rotate_winds(
+                u_cube, v_cube, target_cs
+            )
 
     # create a cube for the output and adjust meta data
     angle_cube = u_cube.copy()
@@ -876,12 +1021,14 @@ def wind_direction(u_cube, v_cube, unrotate=True):
     angle_cube.standard_name = "wind_to_direction"
     angle_cube.long_name = "wind vector direction"
     angle_cube.var_name = "angle"
-    if 'STASH' in angle_cube.attributes:
-        angle_cube.attributes.pop('STASH', None)
-    angle_cube.attributes["direction"] = "Angle of wind vector measured clockwise from Northwards"
+    if "STASH" in angle_cube.attributes:
+        angle_cube.attributes.pop("STASH", None)
+    angle_cube.attributes[
+        "direction"
+    ] = "Angle of wind vector measured clockwise from Northwards"
     angle_cube.attributes["formula"] = "(-(arctan2(v, u)*180/pi)+90)%360"
 
-    angle_cube.data = np.arctan2(v_cube.data, u_cube.data) * 180.0/np.pi
+    angle_cube.data = np.arctan2(v_cube.data, u_cube.data) * 180.0 / np.pi
     # That gives the angle of the vector in degrees, anticlockwise from Eastwards.
     # (in the range -180 to +180)
     # But we want the bearing clockwise from Northwards (0,360), so:
@@ -891,5 +1038,4 @@ def wind_direction(u_cube, v_cube, unrotate=True):
 
 
 if __name__ == "__main__":
-    import doctest
     doctest.testmod()

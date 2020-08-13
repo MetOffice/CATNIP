@@ -4,12 +4,14 @@ Authors: Grace Redmond
 """
 
 import matplotlib
-matplotlib.use('Agg')
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import iris.quickplot as qplt
+import doctest
 import iris
-from analysis import linear_regress, ci_interval
-
+from catnip.analysis import linear_regress, ci_interval
+import catnip.config as conf
 
 
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
@@ -37,25 +39,28 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
 
     # x and y coords
     try:
-        x = u_cube.coord(axis='x')
+        x = u_cube.coord(axis="x")
     except iris.exceptions.CoordinateNotFoundError:
-        print('Error: more than one x coord found')
+        print("Error: more than one x coord found")
     try:
-        y = u_cube.coord(axis='y')
+        y = u_cube.coord(axis="y")
     except iris.exceptions.CoordinateNotFoundError:
-        print('Error: more than one y coord found')
+        print("Error: more than one y coord found")
 
     # if the wind vectors need to be unrotated
     # they are in the statement below
     if unrotate:
         cs_str = str(u_cube.coord_system())
-        if cs_str.find('Rotated') == -1:
-            raise Exception("Will not unrotate data not on a rotated pole, unrotate must be set to False")
+        if cs_str.find("Rotated") == -1:
+            raise Exception(
+                "Will not unrotate data not on a rotated pole, unrotate must be set to False"
+            )
         else:
-            print('unrotating wind vectors . . . ')
+            print("unrotating wind vectors . . . ")
             target_cs = iris.coord_systems.GeogCS(iris.fileformats.pp.EARTH_RADIUS)
-            u_cube, v_cube = iris.analysis.cartography.rotate_winds(u_cube, v_cube, target_cs)
-
+            u_cube, v_cube = iris.analysis.cartography.rotate_winds(
+                u_cube, v_cube, target_cs
+            )
 
     # Create a cube containing the wind speed
     windspeed_cube = (u_cube ** 2 + v_cube ** 2) ** 0.5
@@ -65,16 +70,31 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
     # use coord_system of input data to define plot projection
     ax = plt.subplot(num_plot, projection=transform)
     qplt.contourf(windspeed_cube, 20)
-    ax.quiver(u_cube.coord(x.standard_name).points[::npts], v_cube.coord(y.standard_name).points[::npts],
-              u_cube.data[::npts,::npts], v_cube.data[::npts,::npts])
-    #OTHER OPTIONS FOR QUIVER: scale = 1, headwidth = 3, width = 0.0015)
+    ax.quiver(
+        u_cube.coord(x.standard_name).points[::npts],
+        v_cube.coord(y.standard_name).points[::npts],
+        u_cube.data[::npts, ::npts],
+        v_cube.data[::npts, ::npts],
+    )
+    # OTHER OPTIONS FOR QUIVER: scale = 1, headwidth = 3, width = 0.0015)
     ax.coastlines()
-    ax.set_extent([x.points[0],x.points[-1],y.points[0],y.points[-1]],transform)
+    ax.set_extent([x.points[0], x.points[-1], y.points[0], y.points[-1]], transform)
     plt.title(title)
     print("plot {} created".format(title))
 
 
-def plot_regress(x, y, best_fit=True, CI_region=True, CI_slope=False, alpha=0.05, num_plot=111, title='', xlabel='', ylabel=''):
+def plot_regress(
+    x,
+    y,
+    best_fit=True,
+    CI_region=True,
+    CI_slope=False,
+    alpha=0.05,
+    num_plot=111,
+    title="",
+    xlabel="",
+    ylabel="",
+):
     """
     Produces an x and y scatter plot and calculates the correlation
     coefficient, as a default it will also plot the line of best fit
@@ -106,32 +126,52 @@ def plot_regress(x, y, best_fit=True, CI_region=True, CI_slope=False, alpha=0.05
     grad, intcp, xp, yp = linear_regress(x, y)
 
     # Calculate the confidence interval
-    slope_conf_int, intcp_conf_int, xpts, slope_lo_pts, slope_hi_pts, \
-        xreg, y_conf_int_lo, y_conf_int_hi = ci_interval(x, y, alpha)
+    (
+        slope_conf_int,
+        intcp_conf_int,
+        xpts,
+        slope_lo_pts,
+        slope_hi_pts,
+        xreg,
+        y_conf_int_lo,
+        y_conf_int_hi,
+    ) = ci_interval(x, y, alpha)
 
     # calculate the correlation coefficient for x and y
     corr = "{:.3f}".format(np.corrcoef(x, y)[0][1])
-    print(('Correlation coefficent for x and y: ' + corr))
+    print(("Correlation coefficent for x and y: " + corr))
 
-    print(('Plotting . . . ' + title))
+    print(("Plotting . . . " + title))
     plt.subplot(num_plot)
     plt.scatter(x, y)
     if best_fit:
-        plt.plot(xp, yp, color='k', linewidth=1.5, label='y=mx+c')
+        plt.plot(xp, yp, color="k", linewidth=1.5, label="y=mx+c")
     if CI_slope:
-        plt.plot(xpts, slope_lo_pts, xpts, slope_hi_pts, linestyle=':', color='g', linewidth=1.5)
+        plt.plot(
+            xpts,
+            slope_lo_pts,
+            xpts,
+            slope_hi_pts,
+            linestyle=":",
+            color="g",
+            linewidth=1.5,
+        )
     if CI_region:
-        plt.plot(xreg, y_conf_int_lo, linestyle='--', color='orange', linewidth=1.5,
-                 label='{}% confidence region'.format(str((1-alpha)*100)))
-        plt.plot(xreg, y_conf_int_hi, linestyle='--', color='orange', linewidth=1.5)
+        plt.plot(
+            xreg,
+            y_conf_int_lo,
+            linestyle="--",
+            color="orange",
+            linewidth=1.5,
+            label="{}% confidence region".format(str((1 - alpha) * 100)),
+        )
+        plt.plot(xreg, y_conf_int_hi, linestyle="--", color="orange", linewidth=1.5)
     plt.xlim(xpts)
-    plt.title(title + '\n Correlation coefficient: ' + corr)
+    plt.title(title + "\n Correlation coefficient: " + corr)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    plt.legend(loc='best', fontsize=10)
+    plt.legend(loc="best", fontsize=10)
 
 
 if __name__ == "__main__":
-
-    import doctest
     doctest.testmod()

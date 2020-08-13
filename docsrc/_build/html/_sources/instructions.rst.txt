@@ -1,7 +1,7 @@
 Useful commands
 ===============
 
-Below are some fcm commands and tips I have found useful.
+Below are some useful git commands and tips.
 
 Getting your own local copy of CATNIP
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,6 +113,7 @@ The above command will create the new branch and sets it as your working branch 
 output::
 
       master
+
     * [branch name]
 
 
@@ -161,7 +162,6 @@ In later versions of git is simpler::
     git fetch
     gti checkout [remote_branch_name]
 
-
 QA instructions for the reviewer
 ================================
 Things to consider:
@@ -173,20 +173,20 @@ Things to consider:
     - Are there impacts on existing functionality?
 
 Also bear in mind that ideally all functions will:
-    - Compatible with Python 2 and 3 (you can use `2to3 <https://docs.python.org/2/library/2to3.html>`_
-    - Follow the `pylint <https://docs.pylint.org/en/1.6.0/features.html>`_ type style guidelines.
+    - Compatible with Python 2 and 3 (you can use `2to3 <https://docs.python.org/2/library/2to3.html>`_.
+    - Follow the `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_ styling guidelines. We recommend `Flake8 <https://pypi.org/project/flake8/>`_ as one of the tools for enforcing PEP8 guidelines.
     - Include a docstring that follows either `numpy or google <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ docstring style.
+    - Go back and forth with the code writer until you are both happy with the function.
 
-Go back and forth with the code writer until you are both happy with the function
-
-Some good Git best practices
+Some Git best practices
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    - Commit related changes
-    - Commit often
-    - Don't commit unfinished work
-    - Test before you commit
-    - Write useful commit messages
-    - Use branches
+- Use branches
+- Name the branches with appropriate prefixes
+- Commit related changes
+- Commit often
+- Don't commit unfinished work
+- Test before you commit
+- Write useful commit messages
 
 For more details see Git Commit Best Practices `Page <https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices>`_
 
