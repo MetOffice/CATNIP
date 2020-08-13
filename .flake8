@@ -1,0 +1,49 @@
+[flake8]
+# References:
+#   https://flake8.pycqa.org/en/latest/user/options.html
+#   https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
+
+count = True
+max-line-length = 40
+max-doc-length = 79
+statistics = True
+doctests = True
+include_in_doctest =
+    lib/catnip/preparation.py,
+    lib/catnip/analysis.py,
+    lib/catnip/utils.py
+
+# it's not a bug that we aren't using all of hacking, ignore:
+# F812: list comprehension redefines ...
+# F401: unused import 
+# H101: Use TODO(NAME)
+# H202: assertRaises Exception too broad
+# H233: Python 3.x incompatible use of print operator
+# H301: one import per line
+# H306: imports not in alphabetical order (time, os)
+# H401: docstring should not start with a space
+# H403: multi line docstrings should end on a new line
+# H404: multi line docstring should start without a leading new line
+# H405: multi line docstring summary not separated with an empty line
+# H501: Do not use self.__dict__ for string formatting
+# E203: whitespace before ':'
+# E226: missing whitespace around arithmetic operator
+# E231: missing whitespace after ',', ';', or ':'
+# E402: module level imports on one line
+# E501: line too long
+# W503: line break before binary operator
+# W504: line break after binary operator
+ignore = F812,F401,H101,H202,H233,H301,H306,H401,H403,H404,H405,H501,E203,E226,E231,E402,E501,W503,W504,E114,E116,E126,E127,E251,E261,E265,E272,E302,E303,E721,E722,F403,F405,F821,F841,W291,W391,W605
+
+exclude = 
+    # ignore the following directories/files
+    docs,
+    docsrc,
+    .git,
+    __pycache__,
+    pytest.ini,
+    .pytest_cache,
+    data,
+    *.pyc,
+    runAll.py,
+    testconf.py

@@ -47,7 +47,7 @@
             
   <div class="section" id="useful-commands">
 <h1>Useful commands<a class="headerlink" href="#useful-commands" title="Permalink to this headline">¶</a></h1>
-<p>Below are some fcm commands and tips I have found useful.</p>
+<p>Below are some useful git commands and tips.</p>
 <div class="section" id="getting-your-own-local-copy-of-catnip">
 <h2>Getting your own local copy of CATNIP<a class="headerlink" href="#getting-your-own-local-copy-of-catnip" title="Permalink to this headline">¶</a></h2>
 <p>CATNIP is a Metoffice/Private repository. You must have a github account with at least a <em>Read</em> access. You can get
@@ -147,6 +147,7 @@ needs to fix a bug or add new features without affecting the current working cod
 </div>
 <p>output:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">master</span>
+
 <span class="o">*</span> <span class="p">[</span><span class="n">branch</span> <span class="n">name</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -210,25 +211,24 @@ e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
 </dd>
 <dt>Also bear in mind that ideally all functions will:</dt>
 <dd><ul class="first last simple">
-<li>Compatible with Python 2 and 3 (you can use <a class="reference external" href="https://docs.python.org/2/library/2to3.html">2to3</a></li>
-<li>Follow the <a class="reference external" href="https://docs.pylint.org/en/1.6.0/features.html">pylint</a> type style guidelines.</li>
+<li>Compatible with Python 2 and 3 (you can use <a class="reference external" href="https://docs.python.org/2/library/2to3.html">2to3</a>.</li>
+<li>Follow the <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a> styling guidelines. We recommend <a class="reference external" href="https://pypi.org/project/flake8/">Flake8</a> as one of the tools for enforcing PEP8 guidelines.</li>
 <li>Include a docstring that follows either <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html">numpy or google</a> docstring style.</li>
+<li>Go back and forth with the code writer until you are both happy with the function.</li>
 </ul>
 </dd>
 </dl>
-<p>Go back and forth with the code writer until you are both happy with the function</p>
-<div class="section" id="some-good-git-best-practices">
-<h2>Some good Git best practices<a class="headerlink" href="#some-good-git-best-practices" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
+<div class="section" id="some-git-best-practices">
+<h2>Some Git best practices<a class="headerlink" href="#some-git-best-practices" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Use branches</li>
+<li>Name the branches with appropriate prefixes</li>
 <li>Commit related changes</li>
 <li>Commit often</li>
 <li>Don’t commit unfinished work</li>
 <li>Test before you commit</li>
 <li>Write useful commit messages</li>
-<li>Use branches</li>
 </ul>
-</div></blockquote>
 <p>For more details see Git Commit Best Practices <a class="reference external" href="https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices">Page</a></p>
 </div>
 </div>
@@ -256,7 +256,7 @@ e.g. <em>cd ~/CATNIP</em>, then run the following command:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#qa-instructions-for-the-reviewer">QA instructions for the reviewer</a><ul>
-<li><a class="reference internal" href="#some-good-git-best-practices">Some good Git best practices</a></li>
+<li><a class="reference internal" href="#some-git-best-practices">Some Git best practices</a></li>
 </ul>
 </li>
 </ul>
