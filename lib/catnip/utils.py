@@ -319,7 +319,7 @@ def compare_cubes(cube1, cube2):
 
     if dim_coords:
         print("Checking matching dim coords")
-        for c in dim_coords:
+        for c in sorted(dim_coords):
             print("-- {} vs {} --".format(c, c))
             compare_coords(cube1.coord(c), cube2.coord(c))
     else:
@@ -341,7 +341,7 @@ def compare_cubes(cube1, cube2):
 
     if aux_coords:
         print("Checking matching aux and scalar coords")
-        for ca in aux_coords:
+        for ca in sorted(aux_coords):
             print("-- {} vs {} -- ".format(ca, ca))
             compare_coords(cube1.coord(ca), cube2.coord(ca))
     else:
