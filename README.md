@@ -1,6 +1,6 @@
 # CATNIP
 
-Climate Analysis Tools: Now In Python
+**C**limate **A**nalysis **T**ools: **N**ow **I**n **P**ython
 
 This library is a collection of routines to make common analysis and
 visusaliastion tasks in Iris easier and quicker to write.
