@@ -15,7 +15,7 @@ extend-ignore = E203
 
 
 count = True
-max-doc-length = 79
+max-doc-length = 88
 statistics = True
 doctests = True
 include_in_doctest =
