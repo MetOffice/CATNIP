@@ -4,7 +4,7 @@ analysis module
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: analysis
+.. automodule:: catnip.analysis
     :members:
 
 preparation module
@@ -13,7 +13,7 @@ preparation module
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: preparation
+.. automodule:: catnip.preparation
     :members:
 
 
@@ -23,7 +23,7 @@ visualisation module
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: visualisation
+.. automodule:: catnip.visualisation
     :members:
 
 .. image:: images/regress_ci.png
@@ -38,5 +38,5 @@ utils module
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: utils
+.. automodule:: catnip.utils
     :members:
