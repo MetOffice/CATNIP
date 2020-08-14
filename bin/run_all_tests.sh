@@ -35,6 +35,11 @@ function test_documentation {
 	echo "TODO"
 }
 
+function test_license {
+        echo -e "\033[1;32m[RUNNING DOCUMENTATION TESTS]\033[0m"
+        echo "TODO"
+}
+
 function test_pytest {
 	echo -e "\033[1;32m[RUNNING PY TESTS]\033[0m"
 	cd $CATNIP_LIB_DIR	
@@ -52,12 +57,14 @@ test_flake8
 # Run black codestyling tests
 test_black
 
+# Run black codestyling tests
+test_documentation
 
 # Run black codestyling tests
 test_documentation
 
-
 # Run doc and unittests 
 test_pytest
+
 
 
