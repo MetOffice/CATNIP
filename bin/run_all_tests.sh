@@ -2,7 +2,6 @@
 
 set -eu
 
-module unload scitools
 module load scitools
 
 # set the library root path
