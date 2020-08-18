@@ -13,8 +13,6 @@ import os.path
 import catnip.config as conf
 
 
-
-
 def linear_regress(xi, yi):
     """
     Solves y = mx + c by returning the
