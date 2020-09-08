@@ -1,7 +1,35 @@
-"""
-Created on March, 2020
-Authors: Dave Rowell, Grace Redmond, Saeed Sadri, Hamish Steptoe
-"""
+# -*- coding: utf-8 -*-
+# -----------------------------------------------------------------------------
+# (C) British Crown Copyright 2017-2020 Met Office.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of the copyright holder nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+# -----------------------------------------------------------------------------
+
 import numpy as np
 from scipy.stats.distributions import t
 import matplotlib.pyplot as plt
@@ -11,143 +39,6 @@ import cartopy.crs as ccrs
 import doctest
 import os.path
 import catnip.config as conf
-
-
-def calculate_dewpoint(p, q, t):
-
-    """ A function to calculate the dew point temperature, it
-    expects three iris cubes p, q, t. Stash codes needed are
-    00001, 03237, 03236.
-
-    args
-    ----
-    p: P star cube
-    q: 1.5m specific humidity cube
-    t: 1.5m temperature cube
-
-    Returns
-    -------
-    TD: 1.5m dew point temperature cube
-
-    Notes
-    -----
-    Based on the UM routine /home/h04/precis/um/vn4.5/source/umpl/DEWPNT1A.dk
-    which uses /home/h04/precis/um/vn4.5/source/umpl/QSAT2A.dk
-
-    This test compares dewpoint calculated by the
-    calculate_dewpoint function, to dewpoint directly
-    output from the UM i.e. uses the fortran routine
-
-
-    >>> file1 = os.path.join(conf.DATA_DIR, 'dewpointtest_pt1.pp')
-    >>> file2 = os.path.join(conf.DATA_DIR, 'dewpointtest_pt2.pp')
-    >>> p=iris.load_cube(file2, 'surface_air_pressure')
-    >>> t=iris.load_cube(file1, 'air_temperature')
-    >>> q=iris.load_cube(file1, 'specific_humidity')
-    >>>
-    >>> dewpoint=iris.load_cube(file1, 'dew_point_temperature')
-    >>> td = calculate_dewpoint(p, q, t)
-    WARNING dewpoint temp. > air temp ---> setting td = t
-    >>>
-    >>> diff = dewpoint - td
-    >>> print(np.max(diff.data))
-    0.37731934
-    >>> print(np.min(diff.data))
-    -0.31027222
-    >>> print(np.mean(diff.data))
-    2.934921e-05
-    >>> print(np.std(diff.data))
-    0.0058857435
-    """
-    try:
-        from improver.psychrometric_calculations.psychrometric_calculations import (
-            WetBulbTemperature,
-        )
-    except:
-        raise ImportError(
-            "No module named improver found. You must create a  "
-            "~/.local/lib/python3.6/site-packages/improver.pth file "
-            "containing the line /home/h05/gredmond/improver-master/lib "
-            "and try again."
-        )
-
-    # Constants:
-    #    -   LC       is the latent heat of condensation of water at 0 deg C.
-    #    -   RL1      is the latent heat of evaporation
-    #    -   TM       is the temperature at which fresh waster freezes
-    #    -   EPSILON  is the ratio of molecular weights of water and dry air
-    #    -   R        the gas constant for dry air (J/kg/K)
-    #    -   RV       gas constant for moist air (J/kg/K)
-
-    LC = 2.501e6
-    RL1 = -2.73e3
-    TM = 273.15
-    EPSILON = 0.62198
-    R = 287.05
-    RV = R / EPSILON
-
-    if not isinstance(p, iris.cube.Cube):
-        raise TypeError("First argument is not a cube")
-
-    if not isinstance(q, iris.cube.Cube):
-        raise TypeError("Second argument is not a cube")
-
-    if not isinstance(t, iris.cube.Cube):
-        raise TypeError("Third argument is not a cube")
-
-    if not p.units == "Pa":
-        raise ValueError("P star must be in units of Pa not {}".format(p.units))
-    if not t.units == "K":
-        raise ValueError(
-            "1.5m temperature must be in units of K not {}".format(t.units)
-        )
-    if not q.units == "1":
-        raise ValueError(
-            "1.5m specific humidity must be in units of 1 not {}".format(q.units)
-        )
-
-    # Set up output cube for dewpoint data
-    td = t.copy()
-    td.rename("dew_point_temperature")
-    td.attributes.pop("STASH", None)
-
-    # Convert pressure from Pa to hPa
-    p1 = p.data / 100.00
-
-    # Calculate RL - The latent heat of evaporation.
-    rl = LC + RL1 * (t.data - TM)
-
-    #  Calculate Vapour pressure
-    v_pres = q.data * p1 / (EPSILON + q.data)
-
-    # Calculate saturation mixing ratio (Q0)
-    # Uses the _calculate_mixing_ratio improver library function with ~gredmond's water/supercooled water
-    # look up table to compute the mixing ratio given temperature and pressure.
-    # See https://github.com/metoppv/improver/blob/master/lib/improver/psychrometric_calculations/psychrometric_calculations.py
-    # Expects pressure in Pa, temperature in K
-    cmr = WetBulbTemperature()  # Create an instance of class
-    q0 = cmr._calculate_mixing_ratio(t, p)
-
-    # Calculate dew point
-    # Make sure vapour pressure is positive before calculating
-    where_pos = np.where(v_pres > 0)
-    es0 = (q0.data[where_pos] * p1[where_pos]) / (EPSILON + q0.data[where_pos])
-    rt = (1 / t.data[where_pos]) - (RV * np.log(v_pres[where_pos] / es0)) / rl[
-        where_pos
-    ]
-    td.data[where_pos] = 1.0 / rt
-    where_td_gt_t = np.where(td.data > t.data)
-    if where_td_gt_t[0].shape[0] > 0:
-        print("WARNING dewpoint temp. > air temp ---> setting td = t")
-        td.data[where_td_gt_t] = t.data[where_td_gt_t]
-
-    # Check for any 0 or negative vaules of vapour pressure and set to NaN
-    where_neg = np.where(v_pres <= 0)
-    if where_neg[0].shape[0] > 0:
-        print("WARNING. Neg or zero Q in dewpoint calc. ---> setting td = NaN")
-        td.data[where_neg] = float("nan")
-
-    return td
 
 
 def linear_regress(xi, yi):
