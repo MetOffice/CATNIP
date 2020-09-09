@@ -494,8 +494,8 @@ def seas_time_stat(
     Calculating min for 2000-2000 son
     Calculating min for 2000-2000 djf
     >>> seas_mean_cubelist = seas_time_stat(cube, \
-                                            seas_mons=[[1,2],[6,7,8],[6,7,8,9],[10,11]], \
-                                            ext_area=[340, 350, 0,10])
+                                            seas_mons=\
+[[1,2],[6,7,8],[6,7,8,9],[10,11]], ext_area=[340, 350, 0,10])
     WARNING - the cube is on a rotated pole, the area you extract might not be \
 where you think it is! You can use regular_point_to_rotated to check your ext_area \
 lat and lon

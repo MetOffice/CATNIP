@@ -8,11 +8,12 @@ max-complexity = 10
 # E123, E133 describe styles for closing bracket.
 # E226 Due to whitespace around operators (e.g. 2*x + 3).
 # W503 Break before binary operator is preferred by PEP8
+# E721 do not compare types, use 'isinstance()'
 # These are ones we want to remove later but keep for now
 # C901 function too complex
 # F405  may be undefined, or defined from star imports
 
-ignore = E123, E133, E226, W503, C901, F405
+ignore = E123, E133, E226, W503, C901, F405, E721
 
 # Black compatibility:
 max-line-length = 88
