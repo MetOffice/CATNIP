@@ -268,7 +268,7 @@ def regrid_to_target(cube, target_cube, method="linear", extrap="mask", mdtol=0.
     >>> cube = iris.load_cube(file1, 'air_temperature')
     >>> tgrid = iris.load_cube(file2, 'air_temperature')
     >>> cube_reg = regrid_to_target(cube, tgrid)
-    regridding from GeogCS(6371229.0) to
+    regridding from GeogCS(6371229.0) to \
 RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear
     >>> print(cube.shape, tgrid.shape)
     (145, 192) (2, 433, 444)
@@ -493,11 +493,11 @@ def seas_time_stat(
     Calculating min for 2000-2000 jja
     Calculating min for 2000-2000 son
     Calculating min for 2000-2000 djf
-    >>> seas_mean_cubelist = seas_time_stat(cube,
-                                            seas_mons=[[1,2],[6,7,8],[6,7,8,9],[10,11]],
+    >>> seas_mean_cubelist = seas_time_stat(cube, \
+                                            seas_mons=[[1,2],[6,7,8],[6,7,8,9],[10,11]], \
                                             ext_area=[340, 350, 0,10])
-    WARNING - the cube is on a rotated pole, the area you extract might not be
-where you think it is! You can use regular_point_to_rotated to check your ext_area
+    WARNING - the cube is on a rotated pole, the area you extract might not be \
+where you think it is! You can use regular_point_to_rotated to check your ext_area \
 lat and lon
     Calculating mean for 2000-2001 jf
     Calculating mean for 2000-2001 jja
@@ -505,7 +505,7 @@ lat and lon
     Calculating mean for 2000-2001 on
     >>> # now load a gcm cube
     ... cube2 = iris.load_cube(file2)
-    >>> seas_pc_cubelist = seas_time_stat(cube2, seas_mons=[[11]],
+    >>> seas_pc_cubelist = seas_time_stat(cube2, seas_mons=[[11]], \
 metric='percentile', pc=95, ext_area=[340, 350, 0,10])
     Calculating percentile for 490-747 n
     >>> # print an example of the output
@@ -517,7 +517,7 @@ metric='percentile', pc=95, ext_area=[340, 350, 0,10])
          Scalar coordinates:
               season: jja
               season_fullname: junjulaug
-              time: 2000-07-16 00:00:00,
+              time: 2000-07-16 00:00:00, \
 bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
          Attributes:
               Conventions: CF-1.5
