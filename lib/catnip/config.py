@@ -1,6 +1,4 @@
 import os.path
-import configparser
-
 
 # The full path to the "catnip" package.
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))

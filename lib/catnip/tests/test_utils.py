@@ -34,7 +34,6 @@ import os
 import sys
 from io import StringIO
 import unittest
-import numpy
 import iris
 from catnip.utils import *
 import catnip.config as conf
@@ -178,8 +177,9 @@ class TestUtils(unittest.TestCase):
 
     def test_date_chunks(self):
         """
-        Generate a series of random numbers to cover the number of years between the start and end date
-        and pass it as a parameter to the data_chunks() function and assert the results
+        Generate a series of random numbers to cover the number of years
+        between the start and end date and pass it as a parameter to the
+        data_chunks() function and assert the results
 
         """
 
@@ -207,7 +207,8 @@ class TestUtils(unittest.TestCase):
             )
             self.assertEqual(expected_year_span, output_year_span)
 
-            # check that the year difference between the chunked years is <= year_chunk value
+            # check that the year difference between the chunked years
+            # is <= year_chunk value
             for years_pair in expected_result:
                 start_year = int(years_pair[0].split("/")[0])
                 end_year = int(years_pair[1].split("/")[0])
@@ -265,7 +266,8 @@ class TestUtils(unittest.TestCase):
 
     def test_sort_cube(self):
         """
-        add and sort integer and char values to an iris cube coordinate and assert the results
+        add and sort integer and char values to an iris cube coordinate
+        and assert the results
         """
         # test for some integer values
         int_values = [-1, 2, 3, 0, 4, 5, 6, 50, -5]

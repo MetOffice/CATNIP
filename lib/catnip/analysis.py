@@ -214,8 +214,11 @@ def ci_interval(xi, yi, alpha=0.05):
         # Note, this isn't meaningful if x=0 is not physically meaningful
         yfact0 = np.sqrt((1.0 / n) + ((np.mean(xi) ** 2) / sxx))
         intcp_conf_int = (t_val * sd_err) * yfact0
-        intcp_lo = intcp - intcp_conf_int
-        intcp_hi = intcp + intcp_conf_int
+
+        # if we need the high and low values of the intercept we
+        # could add the following vaariables to the return statement
+        # intcp_lo = intcp - intcp_conf_int
+        # intcp_hi = intcp + intcp_conf_int
 
         return (
             slope_conf_int,
