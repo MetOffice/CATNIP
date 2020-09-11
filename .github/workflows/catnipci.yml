@@ -30,5 +30,7 @@ jobs:
         run: npm build
         
       - name: test
-        run: ls -l
+        run: |
+          cd bin
+          ls -l
 
