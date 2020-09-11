@@ -37,10 +37,9 @@ jobs:
           pip install matplotlib 
           pip install six
           pip install scipy
+          pip install pytest
           
       - name: pytest
-        run: |
-          pip install pytest
-          py.test
+        run: pip list
 
 
