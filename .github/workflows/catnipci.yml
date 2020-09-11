@@ -40,6 +40,6 @@ jobs:
           pip install scipy
           
       - name: lint with flake8
-        run: flake8
+        run: pytest
 
 
