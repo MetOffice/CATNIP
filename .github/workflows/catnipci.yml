@@ -29,8 +29,9 @@ jobs:
       - name: build
         run: npm build
         
-      - name: test
+      - name: install dependencies
         run: |
-          cd bin
-          ./run_all_tests.sh
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+
 
