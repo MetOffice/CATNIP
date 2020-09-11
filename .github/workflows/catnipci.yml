@@ -22,7 +22,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs pytest
-      - name: pytest
-        run: pwd
+      # install dependencies 
+      - name: install
+        run: npm install
+        
+      - name: build
+        run: npm build
 
