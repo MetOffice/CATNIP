@@ -41,6 +41,5 @@ jobs:
           
       - name: lint with flake8
         run: flake8
-          tu
 
 
