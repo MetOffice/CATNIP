@@ -26,13 +26,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
-      - name: load scitools 
-        run: module load scitools
-
-      # Runs a flake8 test
-      - name: Lint with flake8
-        run: flake8
 
       # Runs pytest
       - name: pytest
