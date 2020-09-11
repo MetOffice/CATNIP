@@ -38,10 +38,12 @@ jobs:
           pip install six
           pip install scipy
           pip install pytest
+          pip install flake8
           
       - name: pytest
         run: |
           which flake8
           echo $PATH
+          python -V
 
 
