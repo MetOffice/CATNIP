@@ -82,7 +82,7 @@ class TestAnalysis(unittest.TestCase):
 
         grad, intcp, xp, yp, sum_res = linear_regress(x, y)
         self.assertEqual(grad, 0.5367828229496657)
-        self.assertEqual(intcp, -0.2435762055614227)
+        self.assertEqual(intcp, -0.2435762055614211)
         self.assertEqual(xp, [2, 18])
 
         self.assertRaises(ValueError, linear_regress, x, 1)
