@@ -28,5 +28,5 @@ jobs:
     - name: Test with pytest
       run: |
         conda install pytest
-        echo pwd
+        pwd
         #$CONDA/bin/pytest CATNIP/lib/
