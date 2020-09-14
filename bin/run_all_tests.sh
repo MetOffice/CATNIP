@@ -78,7 +78,7 @@ __TEXT__
 					if [[ -s $FILE ]]; then
 							file_contents=$(<$FILE)
 							if [[ "$file_contents" != *"$expected"* ]]; then
-
+								echo 'Licence information is not found in ' $FILE
 								count=$((count+1))
 							fi
 					fi
