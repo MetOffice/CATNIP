@@ -29,7 +29,9 @@ function check_black {
 
 function check_documentation {
 	echo -e "\033[1;32mChecking documentation ...\033[0m"
-	echo "TODO"
+	# Build documentation as test.
+	cd $CATNIP_ROOT_DIR/docsrc
+	make github
 }
 
 function check_license {
