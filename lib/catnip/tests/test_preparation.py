@@ -32,12 +32,10 @@
 
 import os
 import unittest
-import numpy
 import iris
 import catnip.config as conf
 import iris.analysis
 import iris.exceptions
-import iris.coord_categorisation as iccat
 from catnip.preparation import *
 
 
@@ -159,7 +157,8 @@ class TestPreparation(unittest.TestCase):
 
     def test_rim_remove(self):
         """
-        Tests to check that the correct number of coordinate points are removed and that the exceptions for invalid
+        Tests to check that the correct number of coordinate points are
+        removed and that the exceptions for invalid
         input values are caught.
         """
 
