@@ -83,7 +83,7 @@ class TestAnalysis(unittest.TestCase):
         grad, intcp, xp, yp, sum_res = linear_regress(x, y)
 
         self.assertEqual(float("%.3f" % grad), 0.537)
-        self.assertEqual(float("%.3f" % intcp), -0.243)
+        self.assertEqual(float("%.3f" % intcp), -0.244)
 
         self.assertEqual(xp, [2, 18])
 
@@ -107,7 +107,7 @@ class TestAnalysis(unittest.TestCase):
         ) = ci_interval(x, y)
 
         self.assertEqual(float("%.3f" % slope_conf_int), 0.726)
-        self.assertEqual(float("%.3f" % intcp_conf_int), 3.253)
+        self.assertEqual(float("%.3f" % intcp_conf_int), 3.254)
 
         y = np.array([5, 6, 2, 9, 1, 4, 7])
         self.assertRaises(ValueError, ci_interval, x, y)
