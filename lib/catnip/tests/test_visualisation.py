@@ -30,12 +30,8 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 
-import os
 import unittest
-import numpy
-import iris
 from catnip.visualisation import *
-import catnip.config as conf
 
 
 class TestVisualisation(unittest.TestCase):
