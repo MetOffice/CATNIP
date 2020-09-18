@@ -5,8 +5,7 @@ on: [push]
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 5
+    timeout-minutes: 5
 
     steps:
     - uses: actions/checkout@v2
@@ -31,4 +30,3 @@ jobs:
         conda install pytest
         cd lib
         $CONDA/bin/pytest
-        # TODO: can add more tests: licence, documentation etc
