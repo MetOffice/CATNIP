@@ -3,37 +3,9 @@
 #   https://flake8.pycqa.org/en/latest/user/options.html
 #   https://pycodestyle.pycqa.org/en/latest/intro.html#error-codes
 
-# We want to reduce the max-complexity over time - this allows
-# us to cap it at the worst we currently have (add_time_coord_cats)
-max-complexity = 22
-# Ignores as suggested on Yammer
-# E123, E133 describe styles for closing bracket.
-# E226 Due to whitespace around operators (e.g. 2*x + 3).
-# W503 Break before binary operator is preferred by PEP8
-# E721 do not compare types, use 'isinstance()' - need to compare type of 2
-#      objects. When using later versions of flake8 will be possible
-#       to apply this ignore to only 1 file.
-# E402 module level import not at top of file - violated by setting Agg
-#
-# These are ones we want to remove later but keep for now. Need issues for
-# these. In order of importance
-# F821 looks like a bug in visualisation.py:146:28: F821 undefined name 'np'
-# F841 bug? local variables latloncube latlon_coord assigned to but never used
-#
-# These all relate to use of * imports
-# F403 import *' used; unable to detect undefined names
-# F405 may be undefined, or defined from star imports
-# F401 imported but unused - causes failure in test_visualisation due to
-#      use of wildcard import. Rethink approach here?
-ignore = E123, E133, E226, W503, F405, E721, E402, F821, F403, F841, F401
-
-# Black compatibility:
-max-line-length = 88
-extend-ignore = E203
-
-
 count = True
-max-doc-length = 88
+max-line-length = 40
+max-doc-length = 79
 statistics = True
 doctests = True
 include_in_doctest =
@@ -41,7 +13,29 @@ include_in_doctest =
     lib/catnip/analysis.py,
     lib/catnip/utils.py
 
-exclude =
+# it's not a bug that we aren't using all of hacking, ignore:
+# F812: list comprehension redefines ...
+# F401: unused import 
+# H101: Use TODO(NAME)
+# H202: assertRaises Exception too broad
+# H233: Python 3.x incompatible use of print operator
+# H301: one import per line
+# H306: imports not in alphabetical order (time, os)
+# H401: docstring should not start with a space
+# H403: multi line docstrings should end on a new line
+# H404: multi line docstring should start without a leading new line
+# H405: multi line docstring summary not separated with an empty line
+# H501: Do not use self.__dict__ for string formatting
+# E203: whitespace before ':'
+# E226: missing whitespace around arithmetic operator
+# E231: missing whitespace after ',', ';', or ':'
+# E402: module level imports on one line
+# E501: line too long
+# W503: line break before binary operator
+# W504: line break after binary operator
+ignore = F812,F401,H101,H202,H233,H301,H306,H401,H403,H404,H405,H501,E203,E226,E231,E402,E501,W503,W504,E114,E116,E126,E127,E251,E261,E265,E272,E302,E303,E721,E722,F403,F405,F821,F841,W291,W391,W605
+
+exclude = 
     # ignore the following directories/files
     docs,
     docsrc,
