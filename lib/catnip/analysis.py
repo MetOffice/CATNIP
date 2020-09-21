@@ -32,7 +32,9 @@
 
 import numpy as np
 from scipy.stats.distributions import t
+import matplotlib.pyplot as plt
 import iris
+import iris.analysis as ia
 import cartopy.crs as ccrs
 import doctest
 import os.path
@@ -131,15 +133,13 @@ def ci_interval(xi, yi, alpha=0.05):
     xpts: the min and max value of xi.
     slope_lo_pts: for plotting, min and max y value of lower bound of CI of slope
     slope_hi_pts: for plotting, min and max y value of upper bound of CI of slope
-    xreg: x values spanning xmin to xmax linearly spaced, for plotting against
-          yi CI curve.
+    xreg: x values spanning xmin to xmax linearly spaced, for plotting against  yi CI curve.
     y_conf_int_lo: for plotting, lower bound of CI region for yi
     y_conf_int_hi: for plotting, upper bound of CI region for yi
 
     Notes
     -----
-    Parameters have been calculated using von Storch & Zwiers
-    Statisical Analysis in Climate Research
+    Parameters have been calculated using von Storch & Zwiers Statisical Analysis in Climate Research
     Sect.8.3.7 and 8.3.10
 
     A simple example:
@@ -214,11 +214,8 @@ def ci_interval(xi, yi, alpha=0.05):
         # Note, this isn't meaningful if x=0 is not physically meaningful
         yfact0 = np.sqrt((1.0 / n) + ((np.mean(xi) ** 2) / sxx))
         intcp_conf_int = (t_val * sd_err) * yfact0
-
-        # if we need the high and low values of the intercept we
-        # could add the following vaariables to the return statement
-        # intcp_lo = intcp - intcp_conf_int
-        # intcp_hi = intcp + intcp_conf_int
+        intcp_lo = intcp - intcp_conf_int
+        intcp_hi = intcp + intcp_conf_int
 
         return (
             slope_conf_int,
@@ -241,8 +238,7 @@ def regrid_to_target(cube, target_cube, method="linear", extrap="mask", mdtol=0.
     to mask the data, even if the source data is not
     a masked array. And, if the method is areaweighted,
     choose a missing data tolerance, default is 0.5.
-    For full info, see
-    https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html
+    For full info, see https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html
 
     args
     ----
@@ -250,8 +246,7 @@ def regrid_to_target(cube, target_cube, method="linear", extrap="mask", mdtol=0.
     target_cube: cube on the target grid
     method: method of regridding, options are 'linear', 'nearest' and 'areaweighted'.
     extrap: extraopolation mode, options are 'mask', 'nan', 'error' and 'nanmask'
-    mdtol: tolerated fraction of masked data in any given target grid-box, only used
-           if method='areaweighted', between 0 and 1.
+    mdtol: tolerated fraction of masked data in any given target grid-box, only used if method='areaweighted', between 0 and 1.
 
     Returns
     -------
@@ -259,10 +254,8 @@ def regrid_to_target(cube, target_cube, method="linear", extrap="mask", mdtol=0.
 
     Notes
     -----
-    areaweighted is VERY picky, it will not allow you to regrid using this method
-    if the two input cubes are not on the
-    same coordinate system, and both input grids must also contain monotonic,
-    bounded, 1D spatial coordinates.
+    areaweighted is VERY picky, it will not allow you to regrid using this method if the two input cubes are not on the
+    same coordinate system, and both input grids must also contain monotonic, bounded, 1D spatial coordinates.
 
     An example:
 
@@ -271,8 +264,7 @@ def regrid_to_target(cube, target_cube, method="linear", extrap="mask", mdtol=0.
     >>> cube = iris.load_cube(file1, 'air_temperature')
     >>> tgrid = iris.load_cube(file2, 'air_temperature')
     >>> cube_reg = regrid_to_target(cube, tgrid)
-    regridding from GeogCS(6371229.0) to \
-RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear
+    regridding from GeogCS(6371229.0) to RotatedGeogCS(39.25, 198.0, ellipsoid=GeogCS(6371229.0)) using method linear
     >>> print(cube.shape, tgrid.shape)
     (145, 192) (2, 433, 444)
     >>> print(cube_reg.shape)
@@ -360,20 +352,16 @@ def set_regridder(cube, target_cube, method="linear", extrap="mask", mdtol=0.5):
     target_cube: cube on the target grid
     method: method of regridding, options are 'linear', 'nearest' and 'areaweighted'.
     extrap: extraopolation mode, options are 'mask', 'nan', 'error' and 'nanmask'
-    mdtol: tolerated fraction of masked data in any given target grid-box,
-           only used if method='areaweighted', between 0 and 1.
+    mdtol: tolerated fraction of masked data in any given target grid-box, only used if method='areaweighted', between 0 and 1.
 
     Returns
     -------
-    regridder: a cached regridder which can be used on any iris cube which has
-               the same grid as cube.
+    regridder: a cached regridder which can be used on any iris cube which has the same grid as cube.
 
 
     Notes
     -----
-    See:
-    https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html
-    for more information
+    See https://scitools.org.uk/iris/docs/latest/userguide/interpolation_and_regridding.html for more information
 
     An example:
 
@@ -496,20 +484,15 @@ def seas_time_stat(
     Calculating min for 2000-2000 jja
     Calculating min for 2000-2000 son
     Calculating min for 2000-2000 djf
-    >>> seas_mean_cubelist = seas_time_stat(cube, \
-                                            seas_mons=\
-[[1,2],[6,7,8],[6,7,8,9],[10,11]], ext_area=[340, 350, 0,10])
-    WARNING - the cube is on a rotated pole, the area you extract might not be \
-where you think it is! You can use regular_point_to_rotated to check your ext_area \
-lat and lon
+    >>> seas_mean_cubelist = seas_time_stat(cube, seas_mons=[[1,2],[6,7,8],[6,7,8,9],[10,11]], ext_area=[340, 350, 0,10])
+    WARNING - the cube is on a rotated pole, the area you extract might not be where you think it is! You can use regular_point_to_rotated to check your ext_area lat and lon
     Calculating mean for 2000-2001 jf
     Calculating mean for 2000-2001 jja
     Calculating mean for 2000-2001 jjas
     Calculating mean for 2000-2001 on
     >>> # now load a gcm cube
     ... cube2 = iris.load_cube(file2)
-    >>> seas_pc_cubelist = seas_time_stat(cube2, seas_mons=[[11]], \
-metric='percentile', pc=95, ext_area=[340, 350, 0,10])
+    >>> seas_pc_cubelist = seas_time_stat(cube2, seas_mons=[[11]], metric='percentile', pc=95, ext_area=[340, 350, 0,10])
     Calculating percentile for 490-747 n
     >>> # print an example of the output
     ... print(seas_mean_cubelist[1])
@@ -520,8 +503,7 @@ metric='percentile', pc=95, ext_area=[340, 350, 0,10])
          Scalar coordinates:
               season: jja
               season_fullname: junjulaug
-              time: 2000-07-16 00:00:00, \
-bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
+              time: 2000-07-16 00:00:00, bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
          Attributes:
               Conventions: CF-1.5
               STASH: m01s16i222
@@ -549,8 +531,7 @@ bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
             time_info = cube.coord("time")
             if not cube.coord("time").has_bounds():
                 raise Exception(
-                    "Coordinate 'time' does not have bounds. "
-                    "Add bounds using the add_bounds function."
+                    "Coordinate 'time' does not have bounds. Add bounds using the add_bounds function."
                 )
             years = [
                 time_info.units.num2date(time_info.bounds[0][0]).year,
@@ -562,14 +543,13 @@ bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
             cs_str = str(cube.coord_system())
             if cs_str.find("Rotated") != -1:
                 print(
-                    "WARNING - the cube is on a rotated pole, the area you "
-                    "extract might not be where you think it is! You can use "
-                    "regular_point_to_rotated to check your ext_area lat and lon"
+                    "WARNING - the cube is on a rotated pole, the area you extract might not be where you think it is! You can use regular_point_to_rotated to check your ext_area lat and lon"
                 )
             if len(ext_area) != 4:
                 raise IndexError(
-                    "area to extract must contain 4 values, "
-                    "currently contains {}".format(str(len(ext_area)))
+                    "area to extract must contain 4 values, currently contains {}".format(
+                        str(len(ext_area))
+                    )
                 )
             else:
                 if "grid_latitude" in coord_names:
@@ -584,8 +564,7 @@ bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
                     )
                 else:
                     raise IndexError(
-                        "Neither latitude nor grid_latitude coordinates in "
-                        "cube, can't extract area"
+                        "Neither latitude nor grid_latitude coordinates in cube, can't extract area"
                     )
 
         # dictionary of month number to month letter, used to make strings
@@ -656,8 +635,7 @@ bound=(2000-06-01 00:00:00, 2000-09-01 00:00:00)
             # make sure season_cube exists
             if season_cube is None:
                 raise Exception(
-                    "Cube constriants of seas_mons and/or years do not match "
-                    "data in the input cube"
+                    "Cube constriants of seas_mons and/or years do not match data in the input cube"
                 )
 
             # calculate a time mean
@@ -876,17 +854,14 @@ def wind_direction(u_cube, v_cube, unrotate=True):
     Note: If you are unsure whether your winds need to be
     unrotated you can use http://www-nwp/umdoc/pages/stashtech.html
     and navigate to the relevant UM version and stash code:
-        -    Rotate=0 means data is relative to the model grid and DOES need to
-             be unrotated.
-        -    Rotate=1 means data is relative to the lat-lon grid and
-             DOES NOT need unrotating.
+        -    Rotate=0 means data is relative to the model grid and DOES need to be unrotated.
+        -    Rotate=1 means data is relative to the lat-lon grid and DOES NOT need unrotating.
 
     args
     ----
     u_cube: cube of eastward wind
     v_cube: cube of northward wind
-    unrotate: boolean, defaults to True. If true and data is rotated pole,
-              the winds are unrotated, if set to False, they are not.
+    unrotate: boolean, defaults to True. If true and data is rotated pole, the winds are unrotated, if set to False, they are not.
 
     Returns
     -------
