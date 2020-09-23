@@ -11,7 +11,7 @@ The developer who reviews each pull request is responsible for checking that the
 file before merging the changes into master branch.
 
 ## Code Contributors  
- * Zubair Malllick (Met Office, UK), [zubair.maalick@metoffice.gov.uk](mailto:zubair.maalick@metoffice.gov.uk)
+ * Zubair Maalick (Met Office, UK), [zubair.maalick@metoffice.gov.uk](mailto:zubair.maalick@metoffice.gov.uk)
  * Nicolas Savage (Met Office, UK), [nicholas.savage@metoffice.gov.uk](mailto:nicholas.savage@metoffice.gov.uk)
  * Grace Redmond (Met Office, UK), [grace.redmond@metoffice.gov.uk](mailto:grace.redmond@metoffice.gov.uk)
  * Saeed Sadri (Met Office, UK), [saeed.sadri@metoffice.gov.uk](mailto:saeed.sadri@metoffice.gov.uk])
