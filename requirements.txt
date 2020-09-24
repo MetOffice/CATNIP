@@ -1,4 +1,3 @@
-iris==2.2.0
 numpy==1.15.4
 matplotlib==2.2.3
 six==1.12.0
