@@ -98,8 +98,8 @@ class TestPreparation(unittest.TestCase):
             self.mslp_daily_cube, ["grid_latitude", "grid_longitude"]
         )
         for coord in ["grid_latitude", "grid_longitude"]:
-            latlon_coord = tcube.coord(coord)
-            self.assertTrue(t_coord.has_bounds())
+            latlon_coord = latloncube.coord(coord)
+            self.assertTrue(latlon_coord.has_bounds())
 
         self.assertRaises(AttributeError, add_bounds, self.mslp_daily_cube, "t")
         self.assertRaises(TypeError, add_bounds, self.rcm_monthly_cube, "time")
