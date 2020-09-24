@@ -11,15 +11,7 @@ Complete documentation can be found at: [CATNIP Docs](https://metoffice.github.i
 ## Requirements
 Please ensure you have the following dependencies installed:  
 
-`iris`
-
-`numpy`
-
-`matplotlib`
-
-`six`
-
-`scipy`
+`iris` `numpy` `matplotlib` `six` `scipy`
 
 ## Usage
 To get started make sure all the requirements are installed, then clone the repository
