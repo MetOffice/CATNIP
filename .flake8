@@ -25,7 +25,7 @@ max-complexity = 22
 # F405 may be undefined, or defined from star imports
 # F401 imported but unused - causes failure in test_visualisation due to
 #      use of wildcard import. Rethink approach here?
-ignore = E123, E133, E226, W503, F405, E721, E402, F821, F403, F841, F401
+ignore = E123, E133, E226, W503, F405, E721, E402, F403, F841, F401
 
 # Black compatibility:
 max-line-length = 88

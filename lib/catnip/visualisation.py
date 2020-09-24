@@ -39,6 +39,7 @@ import iris.quickplot as qplt
 import doctest
 import iris
 from catnip.analysis import linear_regress, ci_interval
+import numpy as np
 
 
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
