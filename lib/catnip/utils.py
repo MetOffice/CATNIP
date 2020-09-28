@@ -86,19 +86,13 @@ def common_timeperiod(cube1, cube2):
     >>> cube2=iris.load_cube(file2)
     >>> st, et, c1, c2 = common_timeperiod(cube1, cube2)
     >>> print(c1.coord('time')[0])
-    DimCoord([1999-08-08 12:00:00], \
-bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], \
-standard_name='time', calendar='360_day')
+    DimCoord([1999-08-08 12:00:00], bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], standard_name='time', calendar='360_day')
     >>> print(c2.coord('time')[0])
-    DimCoord([1999-08-08 12:00:00], \
-bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], standard_name='time', \
-calendar='360_day')
+    DimCoord([1999-08-08 12:00:00], bounds=[[1999-08-08 00:00:00, 1999-08-09 00:00:00]], standard_name='time', calendar='360_day')
     >>> print(c1.coord('time')[-1])
-    DimCoord([1999-08-22 12:00:00], bounds=\
-[[1999-08-22 00:00:00, 1999-08-23 00:00:00]], standard_name='time', calendar='360_day')
+    DimCoord([1999-08-22 12:00:00], bounds=[[1999-08-22 00:00:00, 1999-08-23 00:00:00]], standard_name='time', calendar='360_day')
     >>> print(c2.coord('time')[-1])
-    DimCoord([1999-08-22 12:00:00], bounds=\
-[[1999-08-22 00:00:00, 1999-08-23 00:00:00]], standard_name='time', calendar='360_day')
+    DimCoord([1999-08-22 12:00:00], bounds=[[1999-08-22 00:00:00, 1999-08-23 00:00:00]], standard_name='time', calendar='360_day')
     """
 
     # Get time info for both cubes
@@ -129,8 +123,7 @@ calendar='360_day')
 
     if start_time >= end_time:
         raise ValueError(
-            "No common time period. Start time ({}) is later than or the "
-            "same as end time({})".format(
+            "No common time period. Start time ({}) is later than or the same as end time({})".format(
                 str(start_time), str(end_time)
             )
         )
@@ -199,6 +192,8 @@ def compare_coords(c1, c2):
     Point dtypes differ: float32 and float64
     One has bounds, the other doesn't
     """
+
+    output_string = []
 
     namelist = "long_name", "standard_name", "var_name"
     for aname in namelist:
@@ -290,9 +285,7 @@ def compare_cubes(cube1, cube2):
     Point values are different
     Point dtypes differ: float32 and float64
     One has bounds, the other doesn't
-    WARNING - Aux and/or Scalar coords differ on the following coord(s): \
-['air_pressure', 'forecast_period', 'forecast_reference_time', 'height', \
-'month_number', 'time', 'year']
+    WARNING - Aux and/or Scalar coords differ on the following coord(s): ['air_pressure', 'forecast_period', 'forecast_reference_time', 'height', 'month_number', 'time', 'year']
     Cubes have no matching aux or scalar coords
 
     """
@@ -386,9 +379,8 @@ def date_chunks(
     startdate, enddate, yearchunk, indatefmt="%Y/%m/%d", outdatefmt="%Y/%m/%d"
 ):
     """
-    Make date chunks from min and max date range. Make contiguous pairs of
-    date intervals to aid chunking of MASS retrievals. Where the date interval
-    is not a multiple of `yearchunk`, intervals of less than `yearchunk`
+    Make date chunks from min and max date range. Make contiguous pairs of date intervals to aid chunking
+    of MASS retrievals. Where the date interval is not a multiple of `yearchunk`, intervals of less than `yearchunk`
     may be returned.
 
 
@@ -397,10 +389,8 @@ def date_chunks(
         startdate (string): Starting date (min date)
         enddate (string): Ending date (max date)
         yearchunk (int): Year chunks to split the date interval into
-        indatefmt (string, optional): String format for input dates.
-                                      Defaults to yyyy/mm/dd
-        outdatefmt (string, optional): String format for ouput dates.
-                                       Defaults to yyyy/mm/dd
+        indatefmt (string, optional): String format for input dates. Defaults to yyyy/mm/dd
+        outdatefmt (string, optional): String format for ouput dates. Defaults to yyyy/mm/dd
 
     Returns
     -------
@@ -411,8 +401,7 @@ def date_chunks(
     This function is only compatible with python 3.
 
     Raises:
-        ValueError: If `enddate` (ie. max date) is less than or
-                    equal to `startdate` (ie. min date)
+        ValueError: If `enddate` (ie. max date) is less than or equal to `startdate` (ie. min date)
         Excpetion: If `yearchunk` is not an integer
         Exception: If not using python 3
 
@@ -420,8 +409,7 @@ def date_chunks(
           >>> date_chunks('1851/1/1', '1899/12/31', 25)
           [('1851/01/01', '1875/12/26'), ('1875/12/26', '1899/12/31')]
           >>> date_chunks('1890/1/1', '1942/12/31', 25)
-          [('1890/01/01', '1914/12/27'), ('1914/12/27', '1939/12/21'), \
-('1939/12/21', '1942/12/31')]
+          [('1890/01/01', '1914/12/27'), ('1914/12/27', '1939/12/21'), ('1939/12/21', '1942/12/31')]
 
 
     """
@@ -562,8 +550,7 @@ def convert_from_um_stamp(datestamp, fmt):
 
     Notes
     -----
-    Does not support 3 monthly seasons e.g. JJA as described in the
-    Precis technical manual, page 119.
+    Does not support 3 monthly seasons e.g. JJA as described in the Precis technical manual, page 119.
 
 
     >>> print (convert_from_um_stamp('k5bu0', 'YYMDH'))
@@ -838,8 +825,7 @@ def um_file_list(runid, startd, endd, freq):
 
 def umstash_2_pystash(stash):
     """
-    Function to take um style stash codes e.g. 24, 05216 and convert them into
-    'python' stash codes e.g.m01s00i024, m01s05i216
+    Function to take um style stash codes e.g. 24, 05216 and convert them into 'python' stash codes e.g.m01s00i024, m01s05i216
 
     args
     ----
@@ -904,8 +890,9 @@ def umstash_2_pystash(stash):
             raise TypeError("{} must be a string".format(scode))
         if len(scode) > 5:
             raise IndexError(
-                "stash item is {}. Stash items must be no longer than 5 characters"
-                .format(scode)
+                "stash item is {}. Stash items must be no longer than 5 characters".format(
+                    scode
+                )
             )
         if not scode.isdigit():
             raise AttributeError(
@@ -915,7 +902,7 @@ def umstash_2_pystash(stash):
             )
 
         # to split 3223 in to sec=3 and item=223
-        sec, item = re.match(r"(\d{2})(\d{3})", scode.zfill(5)).groups()
+        sec, item = re.match("(\d{2})(\d{3})", scode.zfill(5)).groups()
         # to create a string m01s02i223   (if sec=03, and item=223)
         stash_list.append("m01s{}i{}".format(sec, item))
 
