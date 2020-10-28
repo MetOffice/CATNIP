@@ -88,6 +88,29 @@ class TestPreparation(unittest.TestCase):
         indices_actual = _get_xy_noborder(d)
         self.assertEqual(indices_expected, indices_actual)
 
+    def test_get_xy_noborder_false(self):
+        '''
+        Test get_xy_noborder when mask all False
+        '''
+
+        indices_expected = (0, 5, 0, 5)
+
+        # set up test data
+        d = np.full((5, 5), False)
+
+        indices_actual = _get_xy_noborder(d)
+        self.assertEqual(indices_expected, indices_actual)
+
+    def test_get_xy_noborder_true(self):
+        '''
+        Test _get_xy_noborder when all True - error
+        '''
+
+        # set up test data
+        d = np.full((5, 5), True)
+
+        self.assertRaises(ValueError, _get_xy_noborder, d)
+
     def test_add_aux_unrotated_coords(self):
 
         cube = add_aux_unrotated_coords(self.mslp_daily_cube)
