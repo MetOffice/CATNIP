@@ -119,6 +119,31 @@ class TestPreparation(unittest.TestCase):
         self.assertRaises(TypeError, add_coord_system, self.rcm_monthly_cube)
         self.assertRaises(TypeError, add_coord_system, self.mslp_daily_cube)
 
+    def test_extract_rot_cube(self):
+        '''
+        Test the shape of the extracted cube and min/max
+        lat and lon
+        '''
+
+        # define box to extract
+        min_lat = 50
+        min_lon = -10
+        max_lat = 60
+        max_lon = 0
+
+        tcube = self.rcm_monthly_cube.extract_strict('air_temperature')
+        extracted_cube = extract_rot_cube(tcube, min_lat, min_lon,
+                                   max_lat, max_lon)
+        self.assertEqual(np.shape(extracted_cube.data), (2, 102, 78))
+        self.assertEqual(np.max(extracted_cube.coord('latitude').points),
+                         61.47165097005264)
+        self.assertEqual(np.min(extracted_cube.coord('latitude').points),
+                         48.213032844268646)
+        self.assertEqual(np.max(extracted_cube.coord('longitude').points),
+                         3.642576550089792)
+        self.assertEqual(np.min(extracted_cube.coord('longitude').points),
+                         -16.385571344717235)
+
     def test_add_time_coord_cats(self):
         cube = self.mslp_daily_cube.copy()
         cube = add_time_coord_cats(cube)

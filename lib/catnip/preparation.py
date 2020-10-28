@@ -402,6 +402,40 @@ month_number, season, season_number, year
 
     return ccube
 
+def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
+    """
+    Function etracts the specific region from the cube.
+    args
+    ----
+    cube: cube on rotated coord system, used as reference grid for transformation.
+    Returns
+    -------
+    min_lat: The minimum latitude point of the desired extracted cube.
+    min_lon: The minimum longitude point of the desired extracted cube.
+    max_lat: The maximum latitude point of the desired extracted cube.
+    max_lon: The maximum longitude point of the desired extracted cube.
+    An example:
+    >>> file = os.path.join(conf.DATA_DIR, 'rcm_monthly.pp')
+    >>> cube = iris.load_cube(file, 'air_temperature')
+    >>> min_lat = 50
+    >>> min_lon = -10
+    >>> max_lat = 60
+    >>> max_lon = 0
+    >>> extracted_cube = extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon)
+    >>> print(np.max(extracted_cube.coord('latitude').points))
+    61.47165097005264
+    >>> print(np.min(extracted_cube.coord('latitude').points))
+    48.213032844268646
+    >>> print(np.max(extracted_cube.coord('longitude').points))
+    3.642576550089792
+    >>> print(np.min(extracted_cube.coord('longitude').points))
+    -16.385571344717235
+    """
+    # adding unrotated coords to the cube
+    extracted_cube = add_aux_unrotated_coords(cube)
+
+
+    return extracted_cube
 
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and
