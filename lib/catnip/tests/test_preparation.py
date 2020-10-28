@@ -37,6 +37,7 @@ import catnip.config as conf
 import iris.analysis
 import iris.exceptions
 from catnip.preparation import *
+from catnip.preparation import _get_xy_noborder
 
 
 class TestPreparation(unittest.TestCase):
@@ -69,6 +70,23 @@ class TestPreparation(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+    def test_get_xy_noborder(self):
+        '''
+        Test basic version of _get_xy_noborder
+        '''
+
+        indices_expected = (2, 4, 1, 4)
+
+        # set up test data
+        d = np.full((5, 5), True)
+        # fill some values
+        d[3,2]=False
+        d[3,3,]=False
+        d[1,3]=False
+
+        indices_actual = _get_xy_noborder(d)
+        self.assertEqual(indices_expected, indices_actual)
 
     def test_add_aux_unrotated_coords(self):
 
@@ -136,13 +154,13 @@ class TestPreparation(unittest.TestCase):
                                    max_lat, max_lon)
         self.assertEqual(np.shape(extracted_cube.data), (2, 102, 78))
         self.assertEqual(np.max(extracted_cube.coord('latitude').points),
-                         61.47165097005264)
+                         61.365291870327816)
         self.assertEqual(np.min(extracted_cube.coord('latitude').points),
                          48.213032844268646)
         self.assertEqual(np.max(extracted_cube.coord('longitude').points),
                          3.642576550089792)
         self.assertEqual(np.min(extracted_cube.coord('longitude').points),
-                         -16.385571344717235)
+                         -16.29169201066359)
 
     def test_add_time_coord_cats(self):
         cube = self.mslp_daily_cube.copy()
