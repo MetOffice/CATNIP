@@ -38,6 +38,7 @@ import catnip.config as conf
 import imagehash
 from PIL import Image
 from catnip.visualisation import vector_plot, plot_regress
+
 # import matplotlob after catnip vector plot as that sets the Agg
 # backend
 import matplotlib.pyplot as plt
@@ -48,22 +49,22 @@ _HASH_SIZE = 16
 #: Default maximum perceptual hash hamming distance.
 _HAMMING_DISTANCE = 0
 
+
 def _compare_images(figure, expected_filename):
-    '''
+    """
     Use imagehash to compare images fast and reliably.
 
     Returns True if they match within tolerance, false
     otherwise
-    '''
+    """
     img_buffer = io.BytesIO()
     figure.savefig(img_buffer, format="png")
     img_buffer.seek(0)
     gen_phash = imagehash.phash(Image.open(img_buffer), hash_size=_HASH_SIZE)
-    exp_phash = imagehash.phash(
-        Image.open(expected_filename), hash_size=_HASH_SIZE
-    )
+    exp_phash = imagehash.phash(Image.open(expected_filename), hash_size=_HASH_SIZE)
     distance = abs(gen_phash - exp_phash)
     return distance <= _HAMMING_DISTANCE
+
 
 class TestVisualisation(unittest.TestCase):
     """Unittest class for visualisation module"""
@@ -74,10 +75,10 @@ class TestVisualisation(unittest.TestCase):
         file2 = os.path.join(conf.DATA_DIR, "gcm_monthly.pp")
         self.rcm_monthly_cube = iris.load(file1)
         self.gcm_monthly_cube = iris.load(file2)
-        self.gcm_u = self.gcm_monthly_cube.extract_strict('x_wind')
-        self.gcm_v = self.gcm_monthly_cube.extract_strict('y_wind')
-        self.rcm_u = self.rcm_monthly_cube.extract_strict('x_wind')[0,...]
-        self.rcm_v = self.rcm_monthly_cube.extract_strict('y_wind')[0,...]
+        self.gcm_u = self.gcm_monthly_cube.extract_strict("x_wind")
+        self.gcm_v = self.gcm_monthly_cube.extract_strict("y_wind")
+        self.rcm_u = self.rcm_monthly_cube.extract_strict("x_wind")[0, ...]
+        self.rcm_v = self.rcm_monthly_cube.extract_strict("y_wind")[0, ...]
 
     @classmethod
     def tearDownClass(cls):
@@ -109,7 +110,7 @@ class TestVisualisation(unittest.TestCase):
 
         expected_png = os.path.join(conf.KGO_DIR, "gcm_ws_title.png")
 
-        vector_plot(self.gcm_u, self.gcm_v, title='GCM W/S')
+        vector_plot(self.gcm_u, self.gcm_v, title="GCM W/S")
 
         actual_fig = plt.gcf()
         self.assertTrue(_compare_images(actual_fig, expected_png))
@@ -136,13 +137,13 @@ class TestVisualisation(unittest.TestCase):
         vector_plot(self.gcm_u, self.gcm_v, npts=10)
 
         actual_fig = plt.gcf()
-        plt.savefig('/scratch/fris/gcm_ws_n10.png')
+        plt.savefig("/scratch/fris/gcm_ws_n10.png")
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
     def test_vector_rot_error(self):
-        '''
+        """
         Test that passing a global field gives an Exception
-        '''
+        """
 
         self.assertRaises(Exception, vector_plot, self.gcm_u, self.gcm_v, unrotate=True)
 
