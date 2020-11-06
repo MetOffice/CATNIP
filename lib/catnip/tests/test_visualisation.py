@@ -74,6 +74,10 @@ class TestVisualisation(unittest.TestCase):
         file2 = os.path.join(conf.DATA_DIR, "gcm_monthly.pp")
         self.rcm_monthly_cube = iris.load(file1)
         self.gcm_monthly_cube = iris.load(file2)
+        self.gcm_u = self.gcm_monthly_cube.extract_strict('x_wind')
+        self.gcm_v = self.gcm_monthly_cube.extract_strict('y_wind')
+        self.rcm_u = self.rcm_monthly_cube.extract_strict('x_wind')[0,...]
+        self.rcm_v = self.rcm_monthly_cube.extract_strict('y_wind')[0,...]
 
     @classmethod
     def tearDownClass(cls):
@@ -83,7 +87,8 @@ class TestVisualisation(unittest.TestCase):
         pass
 
     def tearDown(self):
-        pass
+        # we need to close the figure produced by each test
+        plt.close()
 
     def test_vector_plot_gcm(self):
         """
@@ -92,12 +97,9 @@ class TestVisualisation(unittest.TestCase):
 
         expected_png = os.path.join(conf.KGO_DIR, "gcm_ws.png")
 
-        gcm_u = self.gcm_monthly_cube.extract_strict('x_wind')
-        gcm_v = self.gcm_monthly_cube.extract_strict('y_wind')
-        vector_plot(gcm_u, gcm_v)
+        vector_plot(self.gcm_u, self.gcm_v)
 
         actual_fig = plt.gcf()
-        plt.close()
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
 
@@ -108,12 +110,9 @@ class TestVisualisation(unittest.TestCase):
 
         expected_png = os.path.join(conf.KGO_DIR, "rcm_ws.png")
 
-        rcm_u = self.rcm_monthly_cube.extract_strict('x_wind')[0,...]
-        rcm_v = self.rcm_monthly_cube.extract_strict('y_wind')[0,...]
-        vector_plot(rcm_u, rcm_v)
+        vector_plot(self.rcm_u, self.rcm_v)
 
         actual_fig = plt.gcf()
-        plt.close()
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
     def test_vector_plot_rcm_unrot(self):
@@ -123,14 +122,15 @@ class TestVisualisation(unittest.TestCase):
 
         expected_png = os.path.join(conf.KGO_DIR, "rcm_ws_unrot.png")
 
-        rcm_u = self.rcm_monthly_cube.extract_strict('x_wind')[0,...]
-        rcm_v = self.rcm_monthly_cube.extract_strict('y_wind')[0,...]
-        vector_plot(rcm_u, rcm_v, unrotate=True)
+        vector_plot(self.rcm_u, self.rcm_v, unrotate=True)
 
         actual_fig = plt.gcf()
-        plt.close()
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
+    # other tests:
+    # assert raises value error if pass in GCM cube with unrot
+    # also test optional args: npts=30, num_plot=111, title="")
+    # need to generate these - use a notebook
     @unittest.skip("TO DO")
     def test_plot_regress(self):
         """Test two"""
