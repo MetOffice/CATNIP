@@ -102,6 +102,49 @@ class TestVisualisation(unittest.TestCase):
         actual_fig = plt.gcf()
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
+    def test_vector_plot_gcm_title(self):
+        """
+        Test plotting for GCM data with a title
+        """
+
+        expected_png = os.path.join(conf.KGO_DIR, "gcm_ws_title.png")
+
+        vector_plot(self.gcm_u, self.gcm_v, title='GCM W/S')
+
+        actual_fig = plt.gcf()
+        self.assertTrue(_compare_images(actual_fig, expected_png))
+
+    def test_vector_plot_gcm_subplots(self):
+        """
+        Test plotting for GCM data with subplots
+        """
+
+        expected_png = os.path.join(conf.KGO_DIR, "gcm_ws_121.png")
+
+        vector_plot(self.gcm_u, self.gcm_v, num_plot=121)
+
+        actual_fig = plt.gcf()
+        self.assertTrue(_compare_images(actual_fig, expected_png))
+
+    def test_vector_plot_gcm_n10(self):
+        """
+        Test plotting for GCM data with npoints = 10
+        """
+
+        expected_png = os.path.join(conf.KGO_DIR, "gcm_ws_n10.png")
+
+        vector_plot(self.gcm_u, self.gcm_v, npts=10)
+
+        actual_fig = plt.gcf()
+        plt.savefig('/scratch/fris/gcm_ws_n10.png')
+        self.assertTrue(_compare_images(actual_fig, expected_png))
+
+    def test_vector_rot_error(self):
+        '''
+        Test that passing a global field gives an Exception
+        '''
+
+        self.assertRaises(Exception, vector_plot, self.gcm_u, self.gcm_v, unrotate=True)
 
     def test_vector_plot_rcm(self):
         """
@@ -117,7 +160,7 @@ class TestVisualisation(unittest.TestCase):
 
     def test_vector_plot_rcm_unrot(self):
         """
-        Test plotting for RCM data without unrotation
+        Test plotting for RCM data with unrotation
         """
 
         expected_png = os.path.join(conf.KGO_DIR, "rcm_ws_unrot.png")
