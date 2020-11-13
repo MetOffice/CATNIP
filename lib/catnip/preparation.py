@@ -97,7 +97,7 @@ def add_aux_unrotated_coords(cube):
     >>> auxcube = add_aux_unrotated_coords(cube)
     >>> print([coord.name() for coord in auxcube.coords()])
     ['time', 'grid_latitude', 'grid_longitude', 'latitude', 'longitude']
-    >>> print(auxcube.coord('latitude')) # doctest: +NORMALIZE_WHITESPACE
+    >>> print(auxcube.coord('latitude'))
     AuxCoord(array([[35.32243855, 35.33914928, 35.355619  , ..., 35.71848081,
             35.70883111, 35.69893388],
            [35.10317609, 35.11986604, 35.13631525, ..., 35.49871728,
@@ -110,8 +110,7 @@ def add_aux_unrotated_coords(cube):
            [ 5.92011032,  5.93461779,  5.94891347, ...,  6.26323044,
              6.25488773,  6.24633011],
            [ 5.70060768,  5.71510098,  5.72938268, ...,  6.04338876,
-             6.03505439,  6.02650532]]), standard_name=None, \
-units=Unit('degrees'), long_name='latitude')
+             6.03505439,  6.02650532]]), standard_name=None, units=Unit('degrees'), long_name='latitude')
     >>> print(auxcube.shape)
     (360, 136, 109)
     >>> print(auxcube.coord('latitude').shape)
@@ -276,8 +275,7 @@ def add_coord_system(cube):
 
     Returns
     -------
-    cube: The copy of the input cube with coordinate system added,
-    if the cube didn't have one already.
+    cube: The copy of the input cube with coordinate system added, if the cube didn't have one already.
 
     Notes
     -----
@@ -352,8 +350,7 @@ def add_time_coord_cats(cube):
     >>> ccube = add_time_coord_cats(cube)
     >>> coord_names = [coord.name() for coord in ccube.coords()]
     >>> print((', '.join(coord_names)))
-    time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, \
-month_number, season, season_number, year
+    time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year
     >>> # print every 50th value of the added time cat coords
     ... for c in coord_names[3:]:
     ...     print(ccube.coord(c).long_name)
@@ -491,8 +488,7 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     return extracted_cube
 
 def remove_forecast_coordinates(iris_cube):
-    """A function to remove the forecast_period and
-    forecast_reference_time coordinates from the UM PP files
+    """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
 
     args
     ----
@@ -500,8 +496,7 @@ def remove_forecast_coordinates(iris_cube):
 
     Returns
     -------
-    iris_cube: iris cube without the forecast_period and forecast_reference_time
-    coordinates
+    iris_cube: iris cube without the forecast_period and forecast_reference_time coordinates
 
     Notes
     -----
@@ -514,10 +509,8 @@ def remove_forecast_coordinates(iris_cube):
     >>> for cube in cube_list:
     ...     cube_fcr = remove_forecast_coordinates(cube)
     ...     cube_list_fcr.append(cube_fcr)
-    Removed the forecast_period coordinate from Heavyside function \
-on pressure levels cube
-    Removed the forecast_reference_time coordinate from Heavyside \
-function on pressure levels cube
+    Removed the forecast_period coordinate from Heavyside function on pressure levels cube
+    Removed the forecast_reference_time coordinate from Heavyside function on pressure levels cube
     Removed the forecast_period coordinate from air_temperature cube
     Removed the forecast_reference_time coordinate from air_temperature cube
     Removed the forecast_period coordinate from relative_humidity cube
