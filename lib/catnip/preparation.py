@@ -446,14 +446,18 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     >>> max_lat = 60
     >>> max_lon = 0
     >>> extracted_cube = extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon)
-    >>> print(np.max(extracted_cube.coord('latitude').points))
-    61.47165097005264
-    >>> print(np.min(extracted_cube.coord('latitude').points))
-    48.213032844268646
-    >>> print(np.max(extracted_cube.coord('longitude').points))
-    3.642576550089792
-    >>> print(np.min(extracted_cube.coord('longitude').points))
-    -16.385571344717235
+    >>> max_lat_cube =  np.max(extracted_cube.coord('latitude').points)
+    >>> print(f'{max_lat_cube:.3f}')
+    61.365
+    >>> min_lat_cube = np.min(extracted_cube.coord('latitude').points)
+    >>> print(f'{min_lat_cube:.3f}')
+    48.213
+    >>> max_lon_cube = np.max(extracted_cube.coord('longitude').points)
+    >>> print(f'{max_lon_cube:.3f}')
+    3.643
+    >>> min_lon_cube = np.min(extracted_cube.coord('longitude').points)
+    >>> print(f'{min_lon_cube:.3f}')
+    -16.292
     """
 
     # adding unrotated coords to the cube
