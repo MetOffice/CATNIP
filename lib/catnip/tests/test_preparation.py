@@ -39,6 +39,7 @@ import iris.analysis
 import iris.exceptions
 import iris.coord_categorisation as iccat
 from catnip.preparation import *
+from catnip.preparation import _get_xy_noborder
 
 
 class TestPreparation(unittest.TestCase):
@@ -71,6 +72,46 @@ class TestPreparation(unittest.TestCase):
 
     def tearDown(self):
         pass
+
+    def test_get_xy_noborder(self):
+        """
+        Test basic version of _get_xy_noborder
+        """
+
+        indices_expected = (2, 4, 1, 4)
+
+        # set up test data
+        d = np.full((5, 5), True)
+        # fill some values
+        d[3, 2] = False
+        d[3, 3,] = False
+        d[1, 3] = False
+
+        indices_actual = _get_xy_noborder(d)
+        self.assertEqual(indices_expected, indices_actual)
+
+    def test_get_xy_noborder_false(self):
+        """
+        Test get_xy_noborder when mask all False
+        """
+
+        indices_expected = (0, 5, 0, 5)
+
+        # set up test data
+        d = np.full((5, 5), False)
+
+        indices_actual = _get_xy_noborder(d)
+        self.assertEqual(indices_expected, indices_actual)
+
+    def test_get_xy_noborder_true(self):
+        """
+        Test _get_xy_noborder when all True - error
+        """
+
+        # set up test data
+        d = np.full((5, 5), True)
+
+        self.assertRaises(ValueError, _get_xy_noborder, d)
 
     def test_add_aux_unrotated_coords(self):
 
@@ -120,6 +161,34 @@ class TestPreparation(unittest.TestCase):
 
         self.assertRaises(TypeError, add_coord_system, self.rcm_monthly_cube)
         self.assertRaises(TypeError, add_coord_system, self.mslp_daily_cube)
+
+    def test_extract_rot_cube(self):
+        """
+        Test the shape of the extracted cube and min/max
+        lat and lon
+        """
+
+        # define box to extract
+        min_lat = 50
+        min_lon = -10
+        max_lat = 60
+        max_lon = 0
+
+        tcube = self.rcm_monthly_cube.extract_strict("air_temperature")
+        extracted_cube = extract_rot_cube(tcube, min_lat, min_lon, max_lat, max_lon)
+        self.assertEqual(np.shape(extracted_cube.data), (2, 102, 78))
+        self.assertEqual(
+            np.max(extracted_cube.coord("latitude").points), 61.365291870327816
+        )
+        self.assertEqual(
+            np.min(extracted_cube.coord("latitude").points), 48.213032844268646
+        )
+        self.assertEqual(
+            np.max(extracted_cube.coord("longitude").points), 3.642576550089792
+        )
+        self.assertEqual(
+            np.min(extracted_cube.coord("longitude").points), -16.29169201066359
+        )
 
     def test_add_time_coord_cats(self):
         cube = self.mslp_daily_cube.copy()
