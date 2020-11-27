@@ -30,7 +30,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 
-
 import io
 import os
 import unittest
@@ -65,7 +64,6 @@ def _compare_images(figure, expected_filename):
     exp_phash = imagehash.phash(Image.open(expected_filename), hash_size=_HASH_SIZE)
     distance = abs(gen_phash - exp_phash)
     return distance <= _HAMMING_DISTANCE
-
 
 
 class TestVisualisation(unittest.TestCase):
