@@ -42,8 +42,9 @@ import catnip.config as conf
 import iris.exceptions
 from dask import array as da
 
+
 def _get_xy_noborder(mask):
-    '''
+    """
     make  a function that returns the indices
     of where the mask is valid. If the mask is all True (all masked)
     raises a ValueError
@@ -56,7 +57,7 @@ def _get_xy_noborder(mask):
     -------
     x1, x2, y1, y2: int giving space where the data is valid
 
-    '''
+    """
 
     if np.all(mask):
         raise ValueError("All values masked - can't get indices")
@@ -429,6 +430,7 @@ month_number, season, season_number, year
 
     return ccube
 
+
 def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     """
     Function etracts the specific region from the cube.
@@ -467,19 +469,18 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     cube = add_aux_unrotated_coords(cube)
 
     # mask the cube using the true lat and lon
-    lats = cube.coord('latitude').points
-    lons = cube.coord('longitude').points
+    lats = cube.coord("latitude").points
+    lons = cube.coord("longitude").points
     select_lons = (lons >= min_lon) & (lons <= max_lon)
     select_lats = (lats >= min_lat) & (lats <= max_lat)
     selection = select_lats & select_lons
     selection = da.broadcast_to(selection, cube.shape)
     cube.data = da.ma.masked_where(~selection, cube.core_data())
 
-
     # grab a single 2D slice of X and Y and take the mask
-    lon_coord = cube.coord(axis='X', dim_coords=True)
-    lat_coord = cube.coord(axis='Y', dim_coords=True)
-    for yx_slice in cube.slices(['grid_latitude', 'grid_longitude']):
+    lon_coord = cube.coord(axis="X", dim_coords=True)
+    lat_coord = cube.coord(axis="Y", dim_coords=True)
+    for yx_slice in cube.slices(["grid_latitude", "grid_longitude"]):
         cmask = yx_slice.data.mask
         break
 
@@ -487,12 +488,13 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     x1, x2, y1, y2 = _get_xy_noborder(cmask)
     idx = len(cube.shape) * [slice(None)]
 
-    idx[cube.coord_dims(cube.coord(axis='x', dim_coords=True))[0]] = slice(x1, x2, 1)
-    idx[cube.coord_dims(cube.coord(axis='y', dim_coords=True))[0]] = slice(y1, y2,1)
+    idx[cube.coord_dims(cube.coord(axis="x", dim_coords=True))[0]] = slice(x1, x2, 1)
+    idx[cube.coord_dims(cube.coord(axis="y", dim_coords=True))[0]] = slice(y1, y2, 1)
 
     extracted_cube = cube[tuple(idx)]
 
     return extracted_cube
+
 
 def remove_forecast_coordinates(iris_cube):
     """A function to remove the forecast_period and
