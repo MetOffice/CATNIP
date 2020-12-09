@@ -104,7 +104,7 @@ declare -A results
 
 # test runs here ...
 
-TESTS="flake8 black documentation license pytest"
+TESTS="flake8 documentation license pytest black"
 for TEST_NAME in $TESTS; do
     "check_$TEST_NAME"
     ret=$?
