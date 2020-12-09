@@ -16,7 +16,8 @@ jobs:
     - name: Install dependencies
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
-        $CONDA/bin/conda install -c conda-forge numpy matplotlib six scipy iris=2.2.0 mo_pack imagehash
+        # note that most requirements are dependencies of iris so don't need to explicitly include
+        $CONDA/bin/conda install -c conda-forge iris=2.2.0 imagehash
     - name: Lint with flake8
       run: |
         $CONDA/bin/conda install flake8
