@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
+    - name: Set up Python 3.6
       uses: actions/setup-python@v2
       with:
         python-version: 3.6
@@ -17,7 +17,7 @@ jobs:
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         # note that most requirements are dependencies of iris so don't need to explicitly include
-        $CONDA/bin/conda install -c conda-forge iris=2.2.0 imagehash
+        $CONDA/bin/conda install -c conda-forge numpy=1.15.4 matplotlib=2.2.3 six=1.12.0 scipy=1.2.1 iris=2.2.0 mo_pack=0.2.0 imagehash=4.0
     - name: Lint with flake8
       run: |
         $CONDA/bin/conda install flake8
