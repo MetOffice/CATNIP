@@ -21,8 +21,9 @@ function check_flake8 {
 function check_black {
 	echo -e "\033[1;32mRunning black tests ...\033[0m"
 	module unload scitools
-	module load scitools/experimental-current
-        black $FILES_TO_TEST
+	#module load scitools/experimental-current
+	module load scitools/default-next
+  black $FILES_TO_TEST
 
 }
 
@@ -104,7 +105,7 @@ declare -A results
 
 # test runs here ...
 
-TESTS="flake8 black documentation license"
+TESTS="flake8 black documentation license pytest"
 for TEST_NAME in $TESTS; do
     "check_$TEST_NAME"
     ret=$?

@@ -137,7 +137,6 @@ class TestVisualisation(unittest.TestCase):
         vector_plot(self.gcm_u, self.gcm_v, npts=10)
 
         actual_fig = plt.gcf()
-        plt.savefig("/scratch/fris/gcm_ws_n10.png")
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
     def test_vector_rot_error(self):

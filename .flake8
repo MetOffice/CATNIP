@@ -53,3 +53,4 @@ exclude =
     *.pyc,
     runAll.py,
     testconf.py
+    setup.py
