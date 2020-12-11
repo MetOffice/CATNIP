@@ -96,7 +96,8 @@ needs to fix a bug or add new features without affecting the current working cod
 have chosen for CATNIP we are using the Gitflow workflow. More details can be found here:
 https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 
-CATNIP already has a develop branch so you only need to check it out, and make your new branch from this (see next section)
+This workflow uses two branches to record the history of the project. A *master* branch to store the stable version of the project
+and a *develop* branch to serve for adding new features. CATNIP already has a develop branch so you only need to check it out, and make your new branch from this (see next section)
 
 Add your feature to the branch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
