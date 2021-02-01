@@ -1,10 +1,31 @@
 import setuptools
+import os
 from distutils.core import setup
 
 
+PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
+
+def pip_requirements(*args):
+    requirements = []
+    for name in args:
+        fname = os.path.join(
+            PACKAGE_DIR, "requirements", "{}.txt".format(name)
+        )
+        if not os.path.exists(fname):
+            emsg = (
+                f"Unable to find the {name!r} requirements file at {fname!r}."
+            )
+            raise RuntimeError(emsg)
+        with open(fname, "r") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                requirements.append(line)
+    return requirements
 
 
 setup(name='mo-catnip',
@@ -19,11 +40,7 @@ setup(name='mo-catnip',
       packages=setuptools.find_packages(where='lib'),
       package_dir={"": "lib"},
       python_requires='>=3.6',
-      install_requires=['numpy',
-                        'matplotlib',
-                        'six',
-                        'scipy'
-                        ],
+      install_requires=pip_requirements("requirements"),
       keywords = ["cmip", "climate", "analysis", "rcp"],
       classifiers=[
         "Programming Language :: Python :: 3",
