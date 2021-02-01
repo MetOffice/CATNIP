@@ -1,0 +1,5 @@
+# file contains the list of required libraries for pip  build
+numpy
+matplotlib
+six
+scipy
