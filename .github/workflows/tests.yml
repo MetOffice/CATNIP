@@ -37,3 +37,10 @@ jobs:
         conda activate default-${{ matrix.env }}
         cd lib
         pytest -p no:warnings -v
+    - name: flake8
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        flake8 . --count --ignore = E123,E133,E226,W503,F405,E721,E402,F403,F401 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
