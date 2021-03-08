@@ -1,0 +1,13 @@
+# Use this file to create a conda environment using:
+# conda env create --file envs/default-current.yml
+
+name: default-current
+channels:
+  - conda-forge
+dependencies:
+  - python=3.6
+  - iris=2.2
+  - numpy=1.15.4
+  - scipy=1.3.3
+  - cftime=1.0.1
+  - pytest
