@@ -19,5 +19,9 @@ jobs:
         channel-priority: true
         activate-environment: anaconda-client-env
         environment-file: envs/default-${{ matrix.env }}.yml
-    - name: checking info
+    - name: checking conda info
       run: conda --version
+    - name: Test with pytest
+      run: |
+        cd lib
+        $CONDA/bin/pytest
