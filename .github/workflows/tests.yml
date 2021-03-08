@@ -22,6 +22,4 @@ jobs:
     - name: checking conda info
       run: conda --version
     - name: Test with pytest
-      run: |
-        cd lib
-        $CONDA/bin/pytest
+      run: conda list
