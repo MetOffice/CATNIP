@@ -31,3 +31,9 @@ jobs:
         conda activate default-${{ matrix.env }}
         conda info
         conda list
+    - name: pytest
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        cd lib
+        $CONDA/bin/pytest
