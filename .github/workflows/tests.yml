@@ -22,4 +22,4 @@ jobs:
     - name: checking conda info
       run: conda --version
     - name: Test with pytest
-      run: conda list
+      run: conda env list
