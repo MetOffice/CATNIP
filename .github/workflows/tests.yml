@@ -6,10 +6,10 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    #strategy:
+    strategy:
       #fail-fast: false
-      #matrix:
-        #env: [current, next]
+      matrix:
+        env: [current, next]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -18,6 +18,6 @@ jobs:
         channels: conda-forge
         channel-priority: true
         activate-environment: anaconda-client-env
-        environment-file: envs/default-current.yml
+        environment-file: envs/default-${{ matrix.env }}.yml
     - name: checking info
       run: conda --version
