@@ -19,15 +19,15 @@ jobs:
         #channel-priority: true
         #activate-environment: anaconda-client-env
         #environment-file: envs/default-${{ matrix.env }}.yml
-    - name: checking conda info
+    - name: update conda env
       shell: bash
       run: |
         source '/usr/share/miniconda/etc/profile.d/conda.sh'
         conda install -c conda-forge mamba
         mamba env update -q --file envs/default-${{ matrix.env }}.yml --name default-${{ matrix.env }}
-    #- name: checking conda list
-    #  shell: bash
-    #  run: |
-    #    source '/usr/share/miniconda/etc/profile.d/conda.sh'
-    #    #conda activate default-${{ matrix.env }}
-    #    conda list
+    - name: conda info
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        conda info
+        conda list
