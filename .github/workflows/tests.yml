@@ -20,10 +20,12 @@ jobs:
         activate-environment: anaconda-client-env
         environment-file: envs/default-${{ matrix.env }}.yml
     - name: checking conda info
+      shell: bash
       run: |
         conda activate default-${{ matrix.env }}
         conda --version
     - name: checking conda list
+      shell: bash
       run: |
         conda activate default-${{ matrix.env }}
         conda list
