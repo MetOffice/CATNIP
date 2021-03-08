@@ -22,8 +22,9 @@ jobs:
     - name: checking conda info
       shell: bash
       run: |
+        conda env update -f envs/default-${{ matrix.env }}.yml
         source '/usr/share/miniconda/etc/profile.d/conda.sh'
-        #conda activate default-${{ matrix.env }}
+        conda activate default-${{ matrix.env }}
         conda --version
     - name: checking conda list
       shell: bash
