@@ -1,26 +1,33 @@
-name: Python Package Using Anaconda
+name: Python Package using Conda
 
 on: [push]
 
 jobs:
-  example-6:
-    name: Ex6 Mamba
-    runs-on: "ubuntu-latest"
+  build-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          mamba-version: "*"
-          channels: conda-forge,defaults
-          channel-priority: true
-          activate-environment: anaconda-client-env
-          environment-file: envs/default-current.yml
-      - shell: bash -l {0}
-        run: |
-          conda info
-          conda list
-          conda config --show-sources
-          conda config --show
-          printenv | sort
-      - shell: bash -l {0}
-        run: mamba install jupyterlab
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.6
+    - name: Install dependencies
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        # note that most requirements are dependencies of iris so don't need to explicitly include
+        $CONDA/bin/conda install -c conda-forge python=3.6 iris=2.2.0 numpy=1.15 cartopy=0.17.0 cftime=1.0.0b1 mo_pack imagehash
+    - name: Lint with flake8
+      run: |
+        $CONDA/bin/conda install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        # TODO: Add/sub more codes below
+        $CONDA/bin/flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        $CONDA/bin/flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with pytest
+      run: |
+        conda install pytest
+        cd lib
+        $CONDA/bin/pytest
