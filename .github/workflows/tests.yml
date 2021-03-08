@@ -41,5 +41,4 @@ jobs:
       run: |
         source '/usr/share/miniconda/etc/profile.d/conda.sh'
         conda activate default-${{ matrix.env }}
-        flake8 . --count --ignore = E123,E133,E226,W503,F405,E721,E402,F403,F401 --show-source --statistics --exit-zero --max-complexity=10 --max-line-length=127
-        
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exit-zero --max-complexity=10 --max-line-length=127
