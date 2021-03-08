@@ -15,8 +15,8 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        channels: conda-forge
-        channel-priority: true
+        #channels: conda-forge
+        #channel-priority: true
         activate-environment: anaconda-client-env
         environment-file: envs/default-${{ matrix.env }}.yml
     - name: checking conda info
