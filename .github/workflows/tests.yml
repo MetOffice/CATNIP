@@ -6,7 +6,10 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-
+    strategy:
+      fail-fast: false
+      matrix:
+        env: [py36_iris22, py37_iris24]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
