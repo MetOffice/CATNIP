@@ -19,5 +19,5 @@ jobs:
         channel-priority: true
         activate-environment: anaconda-client-env
         environment-file: envs/default-current.yml
-    - shell: bash -l {0}
-        run: $CONDA/bin/conda --version
+    - name: checking info
+      run: conda --version
