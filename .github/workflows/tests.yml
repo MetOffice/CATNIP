@@ -20,4 +20,4 @@ jobs:
         activate-environment: anaconda-client-env
         environment-file: envs/default-current.yml
     - shell: bash -l {0}
-        run: conda --version
+        run: $CONDA/bin/conda --version
