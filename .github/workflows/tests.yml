@@ -3,14 +3,24 @@ name: Python Package Using Anaconda
 on: [push]
 
 jobs:
-  build-and-run:
+  example-6:
+    name: Ex6 Mamba
+    runs-on: "ubuntu-latest"
     steps:
-    - uses: actions/checkout@v1
-    - name: Update Conda environment with "requirements.yml"
-      uses: matthewrmshin/conda-action@v1
-      with:
-        args: conda env update -f envs/default-current.yml
-    - name: Run "pytest" with the Conda environment
-      uses: matthewrmshin/conda-action@v1
-      with:
-        args: pytest
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          mamba-version: "*"
+          channels: conda-forge,defaults
+          channel-priority: true
+          activate-environment: anaconda-client-env
+          environment-file: envs/default-current.yml
+      - shell: bash -l {0}
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+      - shell: bash -l {0}
+        run: mamba install jupyterlab
