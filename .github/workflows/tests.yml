@@ -36,4 +36,4 @@ jobs:
         source '/usr/share/miniconda/etc/profile.d/conda.sh'
         conda activate default-${{ matrix.env }}
         cd lib
-        $CONDA/bin/pytest
+        pytest -p no:warnings -v
