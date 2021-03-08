@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        env: [py36_iris22, py37_iris24]
+        env: [current, next]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -20,7 +20,8 @@ jobs:
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
         # note that most requirements are dependencies of iris so don't need to explicitly include
-        $CONDA/bin/conda install -c conda-forge python=3.6 iris=2.2.0 numpy=1.15 cartopy=0.17.0 cftime=1.0.0b1 mo_pack imagehash
+        $CONDA/bin/conda env update --file envs/default-current.yml --name base
+        #$CONDA/bin/conda install -c conda-forge python=3.6 iris=2.2.0 numpy=1.15 cartopy=0.17.0 cftime=1.0.0b1 mo_pack imagehash
     - name: Lint with flake8
       run: |
         $CONDA/bin/conda install flake8
