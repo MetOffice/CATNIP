@@ -7,3 +7,10 @@ channels:
 dependencies:
   - python=3.6
   - iris=2.2
+  - numpy=1.15
+  - cartopy=0.17.0
+  - cftime=1.0.0b1
+  - mo_pack
+  - imagehash
+  - pytest
+  - flake8
