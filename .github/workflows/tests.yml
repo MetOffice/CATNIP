@@ -5,8 +5,9 @@ on: [push]
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    matrix:
-      env: [current, next]
+    strategy:
+      matrix:
+        env: [current, next]
     steps:
     - uses: actions/checkout@v2
     - name: conda envs setups
