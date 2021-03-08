@@ -6,10 +6,10 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    strategy:
-      fail-fast: false
-      matrix:
-        env: [current, next]
+    #strategy:
+      #fail-fast: false
+      #matrix:
+        #env: [current, next]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
