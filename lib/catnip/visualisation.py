@@ -32,6 +32,7 @@
 
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import iris.quickplot as qplt
@@ -39,6 +40,7 @@ import doctest
 import iris
 from catnip.analysis import linear_regress, ci_interval
 import numpy as np
+
 
 def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title=""):
     """
@@ -50,16 +52,20 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
     Note: If you are unsure whether your winds need to be
     unrotated you can use http://www-nwp/umdoc/pages/stashtech.html
     and navigate to the relevant UM version and stash code:
-        -    Rotate=0 means data is relative to the model grid and DOES need to be unrotated.
-        -    Rotate=1 means data is relative to the lat-lon grid and DOES NOT need unrotating.
+        -    Rotate=0 means data is relative to the model grid and DOES need
+             to be unrotated.
+        -    Rotate=1 means data is relative to the lat-lon grid and DOES NOT
+             need unrotating.
 
     args
     ----
     u_cube: iris 2D cube of u wind component
     v_cube: iris 2D cube of v wind component
     unrotate: if set to True will unrotate wind vectors, default is False.
-    npts: integer, plot can look crowded, so plot vector arrow every npts (1=every point, 50=every 50th point), defaults to 30.
-    num_plot: if subplots required the plot number e.g. 121 can be specified here. Defaults to 111.
+    npts: integer, plot can look crowded, so plot vector arrow every npts
+          (1=every point, 50=every 50th point), defaults to 30.
+    num_plot: if subplots required the plot number e.g. 121 can be specified
+              here. Defaults to 111.
     title: plot title, must be a string, defaults to blank.
     """
 
@@ -79,7 +85,8 @@ def vector_plot(u_cube, v_cube, unrotate=False, npts=30, num_plot=111, title="")
         cs_str = str(u_cube.coord_system())
         if cs_str.find("Rotated") == -1:
             raise Exception(
-                "Will not unrotate data not on a rotated pole, unrotate must be set to False"
+                "Will not unrotate data not on a rotated pole, "
+                "unrotate must be set to False"
             )
         else:
             print("unrotating wind vectors . . . ")

@@ -30,7 +30,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 # -----------------------------------------------------------------------------
 
-
 import io
 import os
 import unittest
@@ -65,7 +64,6 @@ def _compare_images(figure, expected_filename):
     exp_phash = imagehash.phash(Image.open(expected_filename), hash_size=_HASH_SIZE)
     distance = abs(gen_phash - exp_phash)
     return distance <= _HAMMING_DISTANCE
-
 
 
 class TestVisualisation(unittest.TestCase):
@@ -139,7 +137,6 @@ class TestVisualisation(unittest.TestCase):
         vector_plot(self.gcm_u, self.gcm_v, npts=10)
 
         actual_fig = plt.gcf()
-        plt.savefig("/scratch/fris/gcm_ws_n10.png")
         self.assertTrue(_compare_images(actual_fig, expected_png))
 
     def test_vector_rot_error(self):

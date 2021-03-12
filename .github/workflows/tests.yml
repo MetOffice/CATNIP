@@ -1,0 +1,42 @@
+name: Python Package using Conda
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        env: [current, next]
+    steps:
+    - uses: actions/checkout@v2
+    - name: update conda env
+      shell: bash
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda install -c conda-forge mamba
+        mamba env update -q --file envs/default-${{ matrix.env }}.yml --name default-${{ matrix.env }}
+    - name: conda info
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        conda info
+        conda list
+    - name: pytest
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        cd lib
+        pytest -p no:warnings -v
+    - name: flake8
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exit-zero --max-complexity=10 --max-line-length=127
+    - name: Sphinx
+      run: |
+        source '/usr/share/miniconda/etc/profile.d/conda.sh'
+        conda activate default-${{ matrix.env }}
+        cd docsrc
+        make github

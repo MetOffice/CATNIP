@@ -31,8 +31,9 @@ ignore = E123, E133, E226, W503, F405, E721, E402, F403, F401
 max-line-length = 88
 extend-ignore = E203
 
+
 count = True
-max-doc-length = 79
+max-doc-length = 88
 statistics = True
 doctests = True
 include_in_doctest =
@@ -40,7 +41,7 @@ include_in_doctest =
     lib/catnip/analysis.py,
     lib/catnip/utils.py
 
-exclude = 
+exclude =
     # ignore the following directories/files
     docs,
     docsrc,
@@ -52,3 +53,4 @@ exclude =
     *.pyc,
     runAll.py,
     testconf.py
+    setup.py

@@ -42,8 +42,9 @@ import catnip.config as conf
 import iris.exceptions
 from dask import array as da
 
+
 def _get_xy_noborder(mask):
-    '''
+    """
     make  a function that returns the indices
     of where the mask is valid. If the mask is all True (all masked)
     raises a ValueError
@@ -56,7 +57,7 @@ def _get_xy_noborder(mask):
     -------
     x1, x2, y1, y2: int giving space where the data is valid
 
-    '''
+    """
 
     if np.all(mask):
         raise ValueError("All values masked - can't get indices")
@@ -97,7 +98,7 @@ def add_aux_unrotated_coords(cube):
     >>> auxcube = add_aux_unrotated_coords(cube)
     >>> print([coord.name() for coord in auxcube.coords()])
     ['time', 'grid_latitude', 'grid_longitude', 'latitude', 'longitude']
-    >>> print(auxcube.coord('latitude'))
+    >>> print(auxcube.coord('latitude')) # doctest: +NORMALIZE_WHITESPACE
     AuxCoord(array([[35.32243855, 35.33914928, 35.355619  , ..., 35.71848081,
             35.70883111, 35.69893388],
            [35.10317609, 35.11986604, 35.13631525, ..., 35.49871728,
@@ -110,7 +111,8 @@ def add_aux_unrotated_coords(cube):
            [ 5.92011032,  5.93461779,  5.94891347, ...,  6.26323044,
              6.25488773,  6.24633011],
            [ 5.70060768,  5.71510098,  5.72938268, ...,  6.04338876,
-             6.03505439,  6.02650532]]), standard_name=None, units=Unit('degrees'), long_name='latitude')
+             6.03505439,  6.02650532]]), standard_name=None, \
+units=Unit('degrees'), long_name='latitude')
     >>> print(auxcube.shape)
     (360, 136, 109)
     >>> print(auxcube.coord('latitude').shape)
@@ -275,7 +277,8 @@ def add_coord_system(cube):
 
     Returns
     -------
-    cube: The copy of the input cube with coordinate system added, if the cube didn't have one already.
+    cube: The copy of the input cube with coordinate system added,
+    if the cube didn't have one already.
 
     Notes
     -----
@@ -350,7 +353,8 @@ def add_time_coord_cats(cube):
     >>> ccube = add_time_coord_cats(cube)
     >>> coord_names = [coord.name() for coord in ccube.coords()]
     >>> print((', '.join(coord_names)))
-    time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, month_number, season, season_number, year
+    time, grid_latitude, grid_longitude, day_of_month, day_of_year, month, \
+month_number, season, season_number, year
     >>> # print every 50th value of the added time cat coords
     ... for c in coord_names[3:]:
     ...     print(ccube.coord(c).long_name)
@@ -426,6 +430,7 @@ def add_time_coord_cats(cube):
 
     return ccube
 
+
 def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     """
     Function etracts the specific region from the cube.
@@ -446,33 +451,36 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     >>> max_lat = 60
     >>> max_lon = 0
     >>> extracted_cube = extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon)
-    >>> print(np.max(extracted_cube.coord('latitude').points))
-    61.47165097005264
-    >>> print(np.min(extracted_cube.coord('latitude').points))
-    48.213032844268646
-    >>> print(np.max(extracted_cube.coord('longitude').points))
-    3.642576550089792
-    >>> print(np.min(extracted_cube.coord('longitude').points))
-    -16.385571344717235
+    >>> max_lat_cube =  np.max(extracted_cube.coord('latitude').points)
+    >>> print(f'{max_lat_cube:.3f}')
+    61.365
+    >>> min_lat_cube = np.min(extracted_cube.coord('latitude').points)
+    >>> print(f'{min_lat_cube:.3f}')
+    48.213
+    >>> max_lon_cube = np.max(extracted_cube.coord('longitude').points)
+    >>> print(f'{max_lon_cube:.3f}')
+    3.643
+    >>> min_lon_cube = np.min(extracted_cube.coord('longitude').points)
+    >>> print(f'{min_lon_cube:.3f}')
+    -16.292
     """
 
     # adding unrotated coords to the cube
     cube = add_aux_unrotated_coords(cube)
 
     # mask the cube using the true lat and lon
-    lats = cube.coord('latitude').points
-    lons = cube.coord('longitude').points
+    lats = cube.coord("latitude").points
+    lons = cube.coord("longitude").points
     select_lons = (lons >= min_lon) & (lons <= max_lon)
     select_lats = (lats >= min_lat) & (lats <= max_lat)
     selection = select_lats & select_lons
     selection = da.broadcast_to(selection, cube.shape)
     cube.data = da.ma.masked_where(~selection, cube.core_data())
 
-
     # grab a single 2D slice of X and Y and take the mask
-    lon_coord = cube.coord(axis='X', dim_coords=True)
-    lat_coord = cube.coord(axis='Y', dim_coords=True)
-    for yx_slice in cube.slices(['grid_latitude', 'grid_longitude']):
+    lon_coord = cube.coord(axis="X", dim_coords=True)
+    lat_coord = cube.coord(axis="Y", dim_coords=True)
+    for yx_slice in cube.slices(["grid_latitude", "grid_longitude"]):
         cmask = yx_slice.data.mask
         break
 
@@ -480,15 +488,17 @@ def extract_rot_cube(cube, min_lat, min_lon, max_lat, max_lon):
     x1, x2, y1, y2 = _get_xy_noborder(cmask)
     idx = len(cube.shape) * [slice(None)]
 
-    idx[cube.coord_dims(cube.coord(axis='x', dim_coords=True))[0]] = slice(x1, x2, 1)
-    idx[cube.coord_dims(cube.coord(axis='y', dim_coords=True))[0]] = slice(y1, y2,1)
+    idx[cube.coord_dims(cube.coord(axis="x", dim_coords=True))[0]] = slice(x1, x2, 1)
+    idx[cube.coord_dims(cube.coord(axis="y", dim_coords=True))[0]] = slice(y1, y2, 1)
 
     extracted_cube = cube[tuple(idx)]
 
     return extracted_cube
 
+
 def remove_forecast_coordinates(iris_cube):
-    """A function to remove the forecast_period and forecast_reference_time coordinates from the UM PP files
+    """A function to remove the forecast_period and
+    forecast_reference_time coordinates from the UM PP files
 
     args
     ----
@@ -496,7 +506,8 @@ def remove_forecast_coordinates(iris_cube):
 
     Returns
     -------
-    iris_cube: iris cube without the forecast_period and forecast_reference_time coordinates
+    iris_cube: iris cube without the forecast_period and forecast_reference_time
+    coordinates
 
     Notes
     -----
@@ -509,8 +520,10 @@ def remove_forecast_coordinates(iris_cube):
     >>> for cube in cube_list:
     ...     cube_fcr = remove_forecast_coordinates(cube)
     ...     cube_list_fcr.append(cube_fcr)
-    Removed the forecast_period coordinate from Heavyside function on pressure levels cube
-    Removed the forecast_reference_time coordinate from Heavyside function on pressure levels cube
+    Removed the forecast_period coordinate from Heavyside function \
+on pressure levels cube
+    Removed the forecast_reference_time coordinate from Heavyside \
+function on pressure levels cube
     Removed the forecast_period coordinate from air_temperature cube
     Removed the forecast_reference_time coordinate from air_temperature cube
     Removed the forecast_period coordinate from relative_humidity cube
