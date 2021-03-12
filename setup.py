@@ -29,7 +29,7 @@ def pip_requirements(*args):
 
 
 setup(name='mo-catnip',
-      version='0.0.2',
+      version='1.0',
       description='Climate analysis tool',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -46,6 +46,6 @@ setup(name='mo-catnip',
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Stable",
      ]
 )
