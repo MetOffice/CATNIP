@@ -29,7 +29,7 @@ def pip_requirements(*args):
 
 
 setup(name='mo-catnip',
-      version='1.0',
+      version='1.0.1',
       description='Climate analysis tool',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -40,7 +40,7 @@ setup(name='mo-catnip',
       packages=setuptools.find_packages(where='lib'),
       package_dir={"": "lib"},
       python_requires='>=3.6',
-      install_requires= ['scitools-iris'],#pip_requirements("requirements"),
+      install_requires=pip_requirements("requirements"),
       keywords = ["cmip", "climate", "analysis", "rcp", "iris"],
       classifiers=[
         "Programming Language :: Python :: 3",
