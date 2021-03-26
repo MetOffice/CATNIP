@@ -22,6 +22,13 @@ and set your Python environment to point to your copy, for example:
 `export PYTHONPATH=<path/to/CATNIP/lib>`
 
 
+CATNIP is also available via pypi and conda-forge:
+
+`pip install mo-catnip`
+
+`conda install -c conda-forge cube_helper`
+
+
 ## Contact
 For any suggestion, contribution and bug/error reporting, contact us at
 **catnip@metoffice.gov.uk**
