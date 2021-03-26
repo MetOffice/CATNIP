@@ -40,12 +40,12 @@ setup(name='mo-catnip',
       packages=setuptools.find_packages(where='lib'),
       package_dir={"": "lib"},
       python_requires='>=3.6',
-      install_requires=pip_requirements("requirements"),
-      keywords = ["cmip", "climate", "analysis", "rcp"],
+      install_requires= ['scitools-iris'],#pip_requirements("requirements"),
+      keywords = ["cmip", "climate", "analysis", "rcp", "iris"],
       classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
-        "Development Status :: 5 - Stable",
+        "Development Status :: 5 - Production/Stable",
      ]
 )
