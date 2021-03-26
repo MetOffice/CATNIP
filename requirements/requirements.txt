@@ -1,5 +1,4 @@
 # file contains the list of required libraries for pip  build
+scitools-iris
 numpy
-matplotlib
-six
-scipy
+
