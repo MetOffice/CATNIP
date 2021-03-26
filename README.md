@@ -24,9 +24,9 @@ and set your Python environment to point to your copy, for example:
 
 CATNIP is also available via pypi and conda-forge:
 
-'pip install mo-catnip'
+`pip install mo-catnip`
 
-'conda install -c conda-forge cube_helper'
+`conda install -c conda-forge cube_helper`
 
 
 ## Contact
