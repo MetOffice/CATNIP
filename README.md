@@ -26,7 +26,7 @@ CATNIP is also available via pypi and conda-forge:
 
 `pip install mo-catnip`
 
-`conda install -c conda-forge cube_helper`
+`conda install -c conda-forge mo-catnip`
 
 
 ## Contact
