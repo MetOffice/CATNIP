@@ -200,5 +200,4 @@ def domain_plotter(title, mapextent, domains, background=None, resolution='1.0',
             ax.plot(0.0, 0.0, marker='o', color=color, markersize=5,
                      alpha=0.7, transform=rotated_pole)
 
-    plt.show()
-    plt.close()
+    return plt.gcf()
