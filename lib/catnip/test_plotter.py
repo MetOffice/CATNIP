@@ -33,41 +33,19 @@ fig = um_domain.domain_plotter(title, mapextent, [domain_4k_v2, domain_12k],
 site_list = ['Beijing', 'Shanghai', 'Guangzhou', 'Shenzhen', 'Xian',
              'Chongqing', 'Chengdu', 'Harbin', 'Wuhan']
 
-# load populated places data from natural Earth
-shpfilename = shpreader.natural_earth(resolution='10m', category='cultural',
-    name='populated_places')
-reader = shpreader.Reader(shpfilename)
-places = reader.records()
-
-# filter only sites in the list above
-sites_shapes = [place for place in places if place.attributes['NAME'] in site_list ]
-
-ax = plt.gca()
-
-ax.scatter([point.attributes['LONGITUDE'] for point in sites_shapes],
-           [point.attributes['LATITUDE'] for point in sites_shapes],
-           c='red',
-           transform=ccrs.Geodetic())
+um_domain.plot_cities(site_list)
 plt.show()
 plt.close()
 
 # and again for 4 km and inner sites
 site_list = ['Shanghai', 'Guangzhou', 'Shenzhen', 'Wuhan']
 
-# filter only sites in the list above
-places = reader.records()
-sites_shapes = [place for place in places if place.attributes['NAME'] in site_list ]
-print(len(sites_shapes))
-
 mapextent = [108, 136, 18, 40] # x1, x2, y1, y2
 title = '4 km domain'
 fig = um_domain.domain_plotter(title, mapextent, [domain_4k_v2],
                background='topo', resolution='0.25',
                central_longitude=180)
-ax = plt.gca()
+um_domain.plot_cities(site_list)
 
-ax.scatter([point.attributes['LONGITUDE'] for point in sites_shapes],
-           [point.attributes['LATITUDE'] for point in sites_shapes],
-           c='red', transform=ccrs.Geodetic())
 plt.show()
 plt.close()

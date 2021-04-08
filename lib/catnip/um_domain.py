@@ -6,6 +6,7 @@ is supported.
 import cartopy
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+import cartopy.io.shapereader as shpreader
 import iris
 import matplotlib.pyplot as plt
 import numpy as np
@@ -201,3 +202,25 @@ def domain_plotter(title, mapextent, domains, background=None, resolution='1.0',
                      alpha=0.7, transform=rotated_pole)
 
     return plt.gcf()
+
+def plot_cities(site_list):
+    '''
+    Given a list of names of cities, plot them on the current axes
+    Must be included in the Natural Earth populated places 
+    '''
+
+    # load populated places data from natural Earth
+    shpfilename = shpreader.natural_earth(resolution='10m', category='cultural',
+        name='populated_places')
+    reader = shpreader.Reader(shpfilename)
+    places = reader.records()
+
+    # filter only sites in the list above
+    sites_shapes = [place for place in places if place.attributes['NAME'] in site_list ]
+
+    ax = plt.gca()
+
+    ax.scatter([point.attributes['LONGITUDE'] for point in sites_shapes],
+               [point.attributes['LATITUDE'] for point in sites_shapes],
+               c='red',
+               transform=ccrs.Geodetic())
