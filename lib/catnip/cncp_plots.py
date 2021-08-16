@@ -11,12 +11,12 @@ pole_lon = 310.0
 # 12lm domain-24
 domain_12k = um_domain.UmDomain(delta_lat=0.11, delta_lon=0.11,
                        frstlata=-24.0,
-                       frstlona=310.0,
+                       frstlona=309.96,
                        polelata=pole_lat, polelona=pole_lon,
                        global_row_length=700, global_rows=550)
 
 domain_4k_v2 = um_domain.UmDomain(delta_lat=0.0405, delta_lon=0.0405,
-                      frstlata=-2., frstlona=340.0,
+                      frstlata=-2.025, frstlona=340.003,
                       polelata=pole_lat, polelona=pole_lon,
                       global_row_length=500, global_rows=432)
 
