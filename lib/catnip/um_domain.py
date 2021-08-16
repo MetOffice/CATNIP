@@ -194,7 +194,7 @@ def domain_plotter(title, mapextent, domains, background=None, resolution='1.0',
              domain.minlat, domain.minlat]
 
 
-        p = ax.plot(x, y, marker='o', transform=rotated_pole)
+        p = ax.plot(x, y, marker=None, transform=rotated_pole)
         color = p[0].get_color()
         if plot_origin:
             # Add a marker for the origin of the domain
@@ -206,7 +206,7 @@ def domain_plotter(title, mapextent, domains, background=None, resolution='1.0',
 def plot_cities(site_list):
     '''
     Given a list of names of cities, plot them on the current axes
-    Must be included in the Natural Earth populated places 
+    Must be included in the Natural Earth populated places
     '''
 
     # load populated places data from natural Earth
