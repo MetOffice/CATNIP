@@ -28,6 +28,8 @@ CATNIP is also available via pypi and conda-forge:
 
 `conda install -c conda-forge mo-catnip`
 
+## Contributing
+If you want to contribute to CATNIP be sure to review the [contribution guidelines](CONTRIBUTING.md).
 
 ## Contact
 For any suggestion, contribution and bug/error reporting, contact us at
