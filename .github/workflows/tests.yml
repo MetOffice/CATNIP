@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       matrix:
-        env: [current, next]
+        env: [current, current-2022_07_26-share]
     steps:
     - uses: actions/checkout@v2
     - name: update conda env
