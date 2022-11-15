@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       matrix:
-        env: [current, current-2022-07-26-share]
+        env: [current-2022-07-26-share]
     steps:
     - uses: actions/checkout@v2
     - name: update conda env
@@ -16,7 +16,7 @@ jobs:
       run: |
         source '/usr/share/miniconda/etc/profile.d/conda.sh'
         conda install -c conda-forge mamba
-        mamba env update -q --file envs/default-${{ matrix.env }}.yml --name default-${{ matrix.env }}
+        mamba env update -q --file envs/default-${{ matrix.env }}.lock.txt --name default-${{ matrix.env }}
     - name: conda info
       run: |
         source '/usr/share/miniconda/etc/profile.d/conda.sh'
