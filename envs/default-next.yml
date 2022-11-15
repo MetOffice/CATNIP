@@ -14,4 +14,4 @@ dependencies:
   - imagehash
   - pytest
   - flake8
-  - sphinx=3.4.3
+  - sphinx>5,<6
