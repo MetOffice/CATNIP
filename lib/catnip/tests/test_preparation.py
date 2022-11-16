@@ -172,7 +172,7 @@ class TestPreparation(unittest.TestCase):
         max_lat = 60
         max_lon = 0
 
-        tcube = self.rcm_monthly_cube.extract_strict("air_temperature")
+        tcube = self.rcm_monthly_cube.extract_cube("air_temperature")
         extracted_cube = extract_rot_cube(tcube, min_lat, min_lon, max_lat, max_lon)
         self.assertEqual(np.shape(extracted_cube.data), (2, 102, 78))
         self.assertEqual(

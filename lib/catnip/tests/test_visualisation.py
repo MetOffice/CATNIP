@@ -75,10 +75,10 @@ class TestVisualisation(unittest.TestCase):
         file2 = os.path.join(conf.DATA_DIR, "gcm_monthly.pp")
         self.rcm_monthly_cube = iris.load(file1)
         self.gcm_monthly_cube = iris.load(file2)
-        self.gcm_u = self.gcm_monthly_cube.extract_strict("x_wind")
-        self.gcm_v = self.gcm_monthly_cube.extract_strict("y_wind")
-        self.rcm_u = self.rcm_monthly_cube.extract_strict("x_wind")[0, ...]
-        self.rcm_v = self.rcm_monthly_cube.extract_strict("y_wind")[0, ...]
+        self.gcm_u = self.gcm_monthly_cube.extract_cube("x_wind")
+        self.gcm_v = self.gcm_monthly_cube.extract_cube("y_wind")
+        self.rcm_u = self.rcm_monthly_cube.extract_cube("x_wind")[0, ...]
+        self.rcm_v = self.rcm_monthly_cube.extract_cube("y_wind")[0, ...]
 
     @classmethod
     def tearDownClass(cls):
