@@ -1,0 +1,108 @@
+name: default-current
+meta:
+ owner: AVD
+ contact: ml-avd-support@metoffice.gov.uk
+ released: 2022-03-22
+ core_packages:
+  - iris
+  - cartopy
+  - matplotlib
+  - numpy
+ labels:
+  - default-2022-03-22
+channels:
+- conda-forge
+dependencies:
+- agg-regrid
+- astropy
+- black
+- bokeh
+- cartopy
+- clize
+- cf-units
+- cfitsio
+- cftime=1.5.1.1  # REMOVE PIN AT NEXT RELEASE. See ssstack#127
+- configobj
+- coverage
+- cx_oracle
+- cython
+- dask>=2021.10.0 # CVE-2021-42343
+- distributed
+- docxtpl
+- eccodes=2.23.0
+- ephem
+- esmpy=*=nompi_*
+- f90nml
+- filelock
+- fiona
+- flake8
+- future
+- gdal
+- gsw
+- h5py
+- image-meta-tag
+- imagehash
+- ipython
+- ipywidgets
+- iris=3.1
+- iris-grib
+- iris-sample-data
+- jinja2
+- jupyterlab
+- lxml
+- matplotlib=3.4.2
+- mo_notebook
+- mo_pack
+- nc-time-axis
+- netcdf4
+- networkx
+- nose
+- notebook
+- numba
+- numpy
+- openpyxl
+- owslib # optional dependency for Cartopy WMTS features #124
+- pandas
+- pillow
+- proj
+- prompt-toolkit
+- psutil
+- psycopg2
+- pyasn1
+- pycodestyle
+- pyhdf
+- pykerberos=1.3.1
+- pylint
+- pyproj
+- pysteps
+- pytables
+- pytest
+- pytest-xdist
+- python=3.7
+- python-graphviz
+- python-stratify
+- pyugrid
+- rasterio
+- requests
+- scikit-image
+- scikit-learn
+- seaborn
+- setuptools
+- sphinx
+- sphinx_rtd_theme
+- sqlalchemy
+- statsmodels
+- xarray
+- xlrd
+- xlsxwriter
+- zope.interface
+# Below are extra dependencies which require pins to avoid security
+# vulnerabilities being included
+- pyyaml>=5.4 # CVE-2020-14343
+- cryptography>=3.3.2 # CVE-2020-36242
+# Below are extra dependencies which require pins to ensure we get nompi build
+# variants.
+- esmf=*=nompi_*
+- hdf5=*=nompi_*
+- libnetcdf=*=nompi_*
+- netcdf-fortran=*=nompi_*
