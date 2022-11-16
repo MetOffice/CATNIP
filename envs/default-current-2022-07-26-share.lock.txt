@@ -2,7 +2,6 @@
 # platform: linux-64
 # input_hash: 883eeae1ee12da38287053056f5f59125f4357117754abd53b722113532ec6e6
 # name: default-current
-@EXPLICIT
 https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2#d7c89558ba9fa0495403155b64376d81
 https://conda.anaconda.org/conda-forge/linux-64/ca-certificates-2021.10.8-ha878542_0.tar.bz2#575611b8a84f45960e87722eeb51fa26
 https://conda.anaconda.org/conda-forge/noarch/font-ttf-dejavu-sans-mono-2.37-hab24e00_0.tar.bz2#0c96522c6bdaed4b1566d11387caaf45
