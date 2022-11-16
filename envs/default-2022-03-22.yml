@@ -51,7 +51,6 @@ dependencies:
 - jupyterlab
 - lxml
 - matplotlib=3.4.2
-- mo_notebook
 - mo_pack
 - nc-time-axis
 - netcdf4
@@ -71,7 +70,6 @@ dependencies:
 - pyasn1
 - pycodestyle
 - pyhdf
-- pykerberos=1.3.1
 - pylint
 - pyproj
 - pysteps
