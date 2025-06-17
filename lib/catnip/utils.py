@@ -32,6 +32,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 import iris
+import iris.analysis
+import iris.coords
 import numpy as np
 import datetime as dt
 import doctest
@@ -920,6 +922,67 @@ def umstash_2_pystash(stash):
         stash_list.append("m01s{}i{}".format(sec, item))
 
     return stash_list
+
+def add_ur_lonlat(rcm_cube):
+    """
+    This function takes a cube that is on a rotated pole coordinate and adds to it two addtional auxillary coordinates
+    to hold the unrotated coordinate values. It also removes the forecast coordinates.
+    :param rcm_cube: the rcm cube with the rotated pole coordinate
+    :return: rcm_cube
+
+    >>> cube = iris.load_cube('/project/precis/stock_cubes/rcm_mslp_monthly.pp')
+    >>> cube = add_ur_lonlat(cube)
+    >>> print (cube) #doctest: +NORMALIZE_WHITESPACE
+    air_pressure_at_sea_level / (Pa)    (grid_latitude: 432; grid_longitude: 444)
+         Dimension coordinates:
+              grid_latitude                           x                    -
+              grid_longitude                          -                    x
+         Auxiliary coordinates:
+              regular_latitude                        x                    x
+              regular_longitude                       x                    x
+         Scalar coordinates:
+              forecast_period: 74514.0 hours, bound=(74154.0, 74874.0) hours
+              forecast_reference_time: 1979-12-01 06:00:00
+              time: 1988-07-16 00:00:00, bound=(1988-07-01 00:00:00, 1988-08-01 00:00:00)
+         Attributes:
+              STASH: m01s16i222
+              source: Data from Met Office Unified Model
+              um_version: 10.6
+         Cell methods:
+              mean: time (6 hour)
+
+
+    """
+    # read in the grid lat/lon points from the cube
+    glat = rcm_cube.coord('grid_latitude').points
+    glon = rcm_cube.coord('grid_longitude').points
+
+    # create a rectangular grid out of an array of glon and glat values
+    x, y = np.meshgrid(glon, glat)
+
+    # get cube's coordinate systmes
+    src_proj = rcm_cube.coord_system()
+
+    # define two new variables to hold the unrotated coordinates
+    rlongitude, rlatitude = iris.analysis.cartography.unrotate_pole(x, y, src_proj.grid_north_pole_longitude,
+                                                                    src_proj.grid_north_pole_latitude)
+
+    # add two new auxillary coordinates to the cube to hold the values of the unrotated coordinates
+    reg_long = iris.coords.AuxCoord(rlongitude, long_name='regular_longitude', units='no_unit')
+    reg_lat = iris.coords.AuxCoord(rlatitude, long_name='regular_latitude', units='no_unit')
+
+    # add two auxilary coordinates to the rcm cube holding regular(unrotated) lat/lon values
+
+    coord_names = [coord.name() for coord in rcm_cube.coords()]
+    
+    lat_dim = coord_names.index(u'grid_latitude')
+    lon_dim = coord_names.index(u'grid_longitude')
+
+    rcm_cube.add_aux_coord(reg_long, [lat_dim, lon_dim])
+    rcm_cube.add_aux_coord(reg_lat, [lat_dim, lon_dim])
+
+    return rcm_cube
+
 
 
 if __name__ == "__main__":
